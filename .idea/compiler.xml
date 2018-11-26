@@ -6,11 +6,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Java Parsons" />
+        <module name="bootstrap" />
+        <module name="compiler" />
+        <module name="core-api" />
+        <module name="exercise-types" />
+        <module name="sandbox" />
+        <module name="webapp" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Java Parsons" target="1.8" />
+      <module name="bootstrap" target="1.8" />
+      <module name="compiler" target="1.8" />
+      <module name="core-api" target="1.8" />
+      <module name="exercise-types" target="1.8" />
+      <module name="Java Parsons" target="1.5" />
+      <module name="sandbox" target="1.8" />
+      <module name="webapp" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
