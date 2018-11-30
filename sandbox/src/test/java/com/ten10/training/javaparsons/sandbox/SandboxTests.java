@@ -1,4 +1,4 @@
-package com.ten10.training.javaparsons;
+package com.ten10.training.javaparsons.sandbox;
 
 import org.junit.jupiter.api.Test;
 
