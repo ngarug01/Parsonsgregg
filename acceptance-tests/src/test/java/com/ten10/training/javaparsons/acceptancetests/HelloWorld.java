@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class HelloWorld {
@@ -28,8 +28,18 @@ class HelloWorld {
 
     @Test
     public void checkHelloWorldPrintedToOutputBox(){
+        WebElement inputBox = browser.findElement(By.cssSelector("#input-box"));
+        WebElement submitButton = browser.findElement(By.cssSelector("#EnterAnswer"));
         WebElement outputBox = browser.findElement(By.cssSelector("#output-box"));
-        assertEquals(outputBox.getText(),"Hello World!");
+        inputBox.sendKeys("public class Main\n" +
+            "{\n" +
+            "    public static void main( String[] args )\n" +
+            "    {\n" +
+            "        System.out.println(\"Hello World!\");\n" +
+            "    }\n" +
+            "}");
+        submitButton.click();
+        assertTrue(outputBox.getText().contains("Hello World!"));
     }
 
 }
