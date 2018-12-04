@@ -17,10 +17,3 @@ public class HelloController {
         return new Results() ;
     }
 }
-
-
-
-
-
-
-
