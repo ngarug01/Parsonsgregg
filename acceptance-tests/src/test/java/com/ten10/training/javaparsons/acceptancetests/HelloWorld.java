@@ -8,12 +8,15 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class HelloWorld {
     private WebDriver browser;
+    private WebDriverWait wait;
 
     @BeforeClass
     void testSetup(){
@@ -39,6 +42,7 @@ class HelloWorld {
             "    }\n" +
             "}");
         submitButton.click();
+        wait.until(ExpectedConditions.visibilityOf(outputBox));
         assertTrue(outputBox.getText().contains("Hello World!"));
     }
 
