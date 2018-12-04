@@ -1,6 +1,6 @@
 package com.ten10.training.javaparsons.sandbox;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.security.AccessController;
@@ -54,7 +54,7 @@ class SandboxTests {
     }
 
     @Test
-    @Ignore
+    @Disabled
     void classLoaderExperiments() throws ClassNotFoundException {
         assertNull(System.getSecurityManager());
 
