@@ -13,11 +13,21 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'mvn test --fail-at-end'
+                sh 'mvn -B test'
             }
             post {
                 always {
                     junit '*/target/surefire-reports/*.xml'
+                }
+            }
+        }
+        stage('Coverage') {
+            steps {
+                sh 'mvn -B test -Djacoco.skip=false'
+            }
+            post {
+                always {
+                    jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '90', maximumLineCoverage: '90', maximumMethodCoverage: '90'
                 }
             }
         }
