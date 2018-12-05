@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<HTML>
+    <header>
+        <title>Java Parsons "Hello World!"</title>
+        <script async>
+            
+         window.onload =function() {
+            document.getElementById("EnterAnswer").onclick = function postAnswer() {
+                url = "http://localhost:8080/exercise1";
+                var XHR = new XMLHttpRequest();
+                XHR.addEventListener("load", handleResponse);
+                var helloWorld = JSON.stringify({input: document.getElementById("input-box").value});
+                XHR.open("POST" , url ,true);
+                XHR.setRequestHeader('Content-Type', 'application/json');
+                XHR.send(helloWorld);
+            }
+            function handleResponse() {
+                let XHR = this;
+                var responce = XHR.responseText;
+                if (XHR.readyState === 4 && XHR.status === 200){
+                    console.log(JSON.parse(responce).status);
+                    document.getElementById("output-box").value += JSON.parse(responce).correctjava;
+                }
+                else
+                    console.log(XhR.status);
+
+                }
+            }
+
+        </script>
+    </header>
+    <body>
+    <h1> Java Parsons Problem </h1>
+    <div>
+        <p> Write a Java code which when run will produce a string which reads "Hello World!" message. </p>
+            <p>Input box</p>
+            <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"> </textarea>
+            <button id="EnterAnswer">Enter Answer</button>
+        <p>output box</p>
+        <textarea id="output-box" name="outputBox" rows="12" cols="100" readonly></textarea>
+    </div>
