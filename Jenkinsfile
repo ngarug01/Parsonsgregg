@@ -44,6 +44,9 @@ pipeline {
                     }
                 }
                 stage('Build and Deploy') {
+                    when {
+                        branch 'master'
+                    }
                     stages {
                         stage('Build Container') {
                             steps {
