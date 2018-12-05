@@ -80,6 +80,11 @@
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${springBootVersion}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -96,7 +101,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.5</version>
+                                    <version>[3.3.9,)</version>
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
