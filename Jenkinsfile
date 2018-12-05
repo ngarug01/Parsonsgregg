@@ -31,5 +31,19 @@ pipeline {
                 }
             }
         }
+        stage('Docs') {
+            steps {
+                sh 'mvn -B javadoc:aggregate'
+            }
+            post {
+                success {
+
+      publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'index.html', reportName: 'Javadoc Report', reportTitles: ''])
+
+
+
+                }
+            }
+        }
     }
 }
