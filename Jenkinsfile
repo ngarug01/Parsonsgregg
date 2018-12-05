@@ -4,21 +4,23 @@ pipeline {
             image 'maven:3-jdk-10'
             args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
         }
-     }
+    }
     stages {
-        stage ('Check') {
-            stage('Build') {
-                steps {
-                    sh 'mvn -B -DskipTests clean package'
+        stage('Check') {
+            stages {
+                stage('Build') {
+                    steps {
+                        sh 'mvn -B -DskipTests clean package'
+                    }
                 }
-            }
-            stage('Test') {
-                steps {
-                    sh 'mvn -B test'
-                }
-                post {
-                    always {
-                        junit '*/target/surefire-reports/*.xml'
+                stage('Test') {
+                    steps {
+                        sh 'mvn -B test'
+                    }
+                    post {
+                        always {
+                            junit '*/target/surefire-reports/*.xml'
+                        }
                     }
                 }
             }
@@ -42,17 +44,19 @@ pipeline {
                     }
                 }
                 stage('Build and Deploy') {
-                    stage('Build Container') {
-                        echo "Building container"
-                    }
-                    stage('Deploy Container') {
-                        echo "Deploying..."
-                    }
-                    stage('Restart Container') {
-                        echo "Restarting..."
-                    }
-                    stage('Acceptance tests') {
-                        echo "Running Acceptance Tests"
+                    stages {
+                        stage('Build Container') {
+                            echo "Building container"
+                        }
+                        stage('Deploy Container') {
+                            echo "Deploying..."
+                        }
+                        stage('Restart Container') {
+                            echo "Restarting..."
+                        }
+                        stage('Acceptance tests') {
+                            echo "Running Acceptance Tests"
+                        }
                     }
                 }
             }
