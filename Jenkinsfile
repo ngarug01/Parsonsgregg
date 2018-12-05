@@ -46,16 +46,24 @@ pipeline {
                 stage('Build and Deploy') {
                     stages {
                         stage('Build Container') {
-                            echo "Building container"
+                            steps {
+                                echo "Building container"
+                            }
                         }
                         stage('Deploy Container') {
-                            echo "Deploying..."
+                            steps {
+                                echo "Deploying..."
+                            }
                         }
                         stage('Restart Container') {
-                            echo "Restarting..."
+                            steps {
+                                echo "Restarting..."
+                            }
                         }
                         stage('Acceptance tests') {
-                            echo "Running Acceptance Tests"
+                            steps {
+                                echo "Running Acceptance Tests"
+                            }
                         }
                     }
                 }
