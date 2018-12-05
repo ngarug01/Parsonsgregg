@@ -34,7 +34,7 @@ pipeline {
         stage('Docs') {
             steps {
                 sh 'mvn -B javadoc:aggregate'
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'index.html', reportName: 'Javadoc Report', reportTitles: ''])
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
             }
         }
     }
