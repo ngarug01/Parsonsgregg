@@ -2,6 +2,7 @@ package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -96,7 +97,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    @Tag("slow")
+    @Disabled
     void methodsShouldAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
