@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ThreadSolutionRunnerTest {
@@ -27,6 +28,14 @@ class ThreadSolutionRunnerTest {
         public static void blockForever() {
             //noinspection StatementWithEmptyBody
             while (true) ;
+        }
+
+        public static void takesArgs(int a, int b) {
+
+        }
+
+        public void instanceMethod() {
+
         }
     }
 
@@ -46,9 +55,14 @@ class ThreadSolutionRunnerTest {
             public String getEntryPointMethod() {
                 return "exampleMethod";
             }
+
+            @Override
+            public Object[] getArguments() {
+                return new Object[0];
+            }
         };
         // Act
-        boolean result = runner.run(Thread.currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
         });
         //Assert
         assertTrue(result, "run() should have completed successfully");
@@ -57,11 +71,9 @@ class ThreadSolutionRunnerTest {
 
     @Test
     @Tag("slow")
-
     void methodsShouldTimeOut() {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        runner.setTimeout(500, TimeUnit.MILLISECONDS);
         final EntryPoint callInformation = new EntryPoint() {
 
             @Override
@@ -73,13 +85,81 @@ class ThreadSolutionRunnerTest {
             public String getEntryPointMethod() {
                 return "blockForever";
             }
+
+            @Override
+            public Object[] getArguments() {
+                return new Object[0];
+            }
         };
+        runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = assertTimeoutPreemptively(Duration.ofSeconds(2),
-            () -> runner.run(Thread.currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
-        }));
+        boolean result = assertTimeoutPreemptively(Duration.ofSeconds(5),
+            () -> runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+            }));
         //Assert
         assertFalse(result, "run() should not have completed successfully");
     }
+
+    @Test
+    @Disabled
+    void methodsShouldAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        // Arrange
+        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+        final EntryPoint callInformation = new EntryPoint() {
+
+            @Override
+            public String getEntryPointClass() {
+                return Example.class.getName();
+            }
+
+            @Override
+            public String getEntryPointMethod() {
+                return "takesArgs";
+            }
+
+            @Override
+            public Object[] getArguments() {
+                return new Object[] {1, 3};
+            }
+        };
+        runner.setTimeout(500, TimeUnit.MILLISECONDS);
+        // Act
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+            });
+        //Assert
+        assertTrue(result, "run() should not have completed successfully");
+    }
+
+
+    @Test
+    @Disabled
+    void handleInstanceMethods() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        // Arrange
+        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+        final EntryPoint callInformation = new EntryPoint() {
+
+            @Override
+            public String getEntryPointClass() {
+                return Example.class.getName();
+            }
+
+            @Override
+            public String getEntryPointMethod() {
+                return "instanceMethod";
+            }
+
+            @Override
+            public Object[] getArguments() {
+                return new Object[0];
+            }
+        };
+        runner.setTimeout(500, TimeUnit.MILLISECONDS);
+        // Act
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+        });
+        //Assert
+        assertTrue(result, "run() should not have completed successfully");
+    }
+
 }
 
