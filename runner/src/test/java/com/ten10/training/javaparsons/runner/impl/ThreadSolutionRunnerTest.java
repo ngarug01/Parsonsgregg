@@ -33,6 +33,10 @@ class ThreadSolutionRunnerTest {
         public static void takesArgs(int a, int b) {
 
         }
+
+        public void instanceMethod() {
+
+        }
     }
 
     @Test
@@ -125,5 +129,37 @@ class ThreadSolutionRunnerTest {
         //Assert
         assertTrue(result, "run() should not have completed successfully");
     }
+
+
+    @Test
+    @Disabled
+    void handleInstanceMethods() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        // Arrange
+        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+        final EntryPoint callInformation = new EntryPoint() {
+
+            @Override
+            public String getEntryPointClass() {
+                return Example.class.getName();
+            }
+
+            @Override
+            public String getEntryPointMethod() {
+                return "instanceMethod";
+            }
+
+            @Override
+            public Object[] getArguments() {
+                return new Object[0];
+            }
+        };
+        runner.setTimeout(500, TimeUnit.MILLISECONDS);
+        // Act
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+        });
+        //Assert
+        assertTrue(result, "run() should not have completed successfully");
+    }
+
 }
 
