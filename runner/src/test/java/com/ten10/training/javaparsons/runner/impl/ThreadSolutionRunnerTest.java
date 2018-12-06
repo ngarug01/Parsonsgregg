@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -30,7 +31,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void runShouldBeAbleToCallStaticMethodOnClass() throws ReflectiveOperationException {
+    void runShouldBeAbleToCallStaticMethodOnClass() throws ReflectiveOperationException, ExecutionException, InterruptedException {
         // Arrange
         methodCalled.set(false);
         ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -56,7 +57,7 @@ class ThreadSolutionRunnerTest {
 
     @Test
     @Tag("slow")
-    @Disabled
+
     void methodsShouldTimeOut() {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -80,6 +81,5 @@ class ThreadSolutionRunnerTest {
         //Assert
         assertFalse(result, "run() should not have completed successfully");
     }
-
 }
 
