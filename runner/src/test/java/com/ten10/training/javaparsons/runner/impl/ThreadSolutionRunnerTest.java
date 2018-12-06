@@ -2,14 +2,15 @@ package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ThreadSolutionRunnerTest {
@@ -30,7 +31,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void runShouldBeAbleToCallStaticMethodOnClass() throws ReflectiveOperationException {
+    void runShouldBeAbleToCallStaticMethodOnClass() throws ReflectiveOperationException, ExecutionException, InterruptedException {
         // Arrange
         methodCalled.set(false);
         ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -47,7 +48,7 @@ class ThreadSolutionRunnerTest {
             }
         };
         // Act
-        boolean result = runner.run(Thread.currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
         });
         //Assert
         assertTrue(result, "run() should have completed successfully");
@@ -56,11 +57,9 @@ class ThreadSolutionRunnerTest {
 
     @Test
     @Tag("slow")
-    @Disabled
     void methodsShouldTimeOut() {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        runner.setTimeout(500, TimeUnit.MILLISECONDS);
         final EntryPoint callInformation = new EntryPoint() {
 
             @Override
@@ -73,9 +72,10 @@ class ThreadSolutionRunnerTest {
                 return "blockForever";
             }
         };
+        runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = assertTimeoutPreemptively(Duration.ofSeconds(2),
-            () -> runner.run(Thread.currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
+        boolean result = assertTimeoutPreemptively(Duration.ofSeconds(5),
+            () -> runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
         }));
         //Assert
         assertFalse(result, "run() should not have completed successfully");
