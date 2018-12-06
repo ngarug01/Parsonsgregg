@@ -10,6 +10,8 @@ public interface SolutionRunner {
         String getEntryPointClass();
 
         String getEntryPointMethod();
+
+        Object[] getArguments();
     }
 
     boolean run(ClassLoader classLoader, EntryPoint solution, ErrorCollector errorCollector) throws ReflectiveOperationException, ExecutionException, InterruptedException;
