@@ -1,13 +1,12 @@
-package com.ten10.training.javaparsons.impl.compiler;
+package com.ten10.training.javaparsons.compiler.impl;
 
 import com.ten10.training.javaparsons.ErrorCollector;
-import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.Solution;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
-import javax.tools.*;
-import java.util.Optional;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,14 +24,14 @@ class CompilerIntegrationTests {
 
 
         // Act
-        Optional<Solution.CompiledSolution> result = javaSolutionCompiler.compile(data.toSolution(), new ErrorCollector() {
+        boolean result = javaSolutionCompiler.compile(data.toSolution(), new ErrorCollector() {
         });
 
         // Assert
         if (data.shouldPass()) {
-            assertTrue(result.isPresent());
+            assertTrue(result);
         } else {
-            assertFalse(result.isPresent());
+            assertFalse(result);
         }
     }
 
@@ -60,26 +59,17 @@ class CompilerIntegrationTests {
         }
 
 
-        public Solution toSolution() {
-            return new Solution() {
-                @Override
-                public Exercise getExercise() {
-                    return new Exercise() {
-                        @Override
-                        public String getClassName() {
-                            return className;
-                        }
-
-                        @Override
-                        public void close() {
-
-                        }
-                    };
-                }
+        public CompilableSolution toSolution() {
+            return new CompilableSolution() {
 
                 @Override
                 public CharSequence getFullClassText() {
                     return code;
+                }
+
+                @Override
+                public String getClassName() {
+                    return className;
                 }
             };
         }

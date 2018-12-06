@@ -1,11 +1,19 @@
-package com.ten10.training.javaparsons;
+package com.ten10.training.javaparsons.compiler;
 
-import java.util.Optional;
+import com.ten10.training.javaparsons.ErrorCollector;
+import com.ten10.training.javaparsons.Solution;
 
 /**
  * Encapsulates the machinery for dealing with a compiler, and provides a simple mechanism for compiling an exercise.
  */
 public interface SolutionCompiler {
+
+    interface CompilableSolution {
+
+        CharSequence getFullClassText();
+
+        String getClassName();
+    }
 
     /**
      * Compile the solution, reporting any errors or warnings to the errorCollector.
@@ -16,7 +24,7 @@ public interface SolutionCompiler {
      * @return a CompiledSolution upon success
      * @throws NullPointerException if either parameter is null
      */
-    Optional<Solution.CompiledSolution> compile(Solution solution, ErrorCollector errorCollector);
+    boolean compile(CompilableSolution solution, ErrorCollector errorCollector);
 
 
 

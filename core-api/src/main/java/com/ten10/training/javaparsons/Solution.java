@@ -7,10 +7,7 @@ public interface Solution {
     Exercise getExercise();
 
     /**
-     * @return The full text of the submitted solution.
+     * Compile and run the solution.
      */
-    CharSequence getFullClassText();
-
-    interface CompiledSolution extends Solution {
-    }
+    void evaluate();
 }

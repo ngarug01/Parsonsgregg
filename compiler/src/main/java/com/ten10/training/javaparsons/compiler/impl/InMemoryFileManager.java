@@ -1,4 +1,4 @@
-package com.ten10.training.javaparsons.impl.compiler;
+package com.ten10.training.javaparsons.compiler.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

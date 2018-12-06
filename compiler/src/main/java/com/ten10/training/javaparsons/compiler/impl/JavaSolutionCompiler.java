@@ -1,9 +1,9 @@
-package com.ten10.training.javaparsons.impl.compiler;
+package com.ten10.training.javaparsons.compiler.impl;
 
 import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.Solution;
-import com.ten10.training.javaparsons.SolutionCompiler;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,12 +31,11 @@ class JavaSolutionCompiler implements SolutionCompiler {
 
 
     @Override
-    public Optional<Solution.CompiledSolution> compile(final Solution solution, final ErrorCollector errorCollector) {
+    public boolean compile(final CompilableSolution solution, final ErrorCollector errorCollector) {
 
         Objects.requireNonNull(solution, "solution");
         Objects.requireNonNull(errorCollector, "errorCollector");
 
-        final Exercise exercise = solution.getExercise();
         final CharSequence classText = solution.getFullClassText();
 
         LOGGER.info("Compiling {}", solution);
@@ -47,25 +46,12 @@ class JavaSolutionCompiler implements SolutionCompiler {
         try (JavaFileManager fileManager = new InMemoryFileManager(compiler.getStandardFileManager(diagnostics, null, null))) {
 
             JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits);
-            if (!task.call()) {
-                return Optional.empty();
-            }
+            return task.call();
 
         } catch (IOException e) {
             LOGGER.error("Error closing fileManager", e);
             throw new RuntimeException(e);
         }
 
-        return Optional.of(new Solution.CompiledSolution() {
-            @Override
-            public Exercise getExercise() {
-                return exercise;
-            }
-
-            @Override
-            public CharSequence getFullClassText() {
-                return classText;
-            }
-        });
     }
 }

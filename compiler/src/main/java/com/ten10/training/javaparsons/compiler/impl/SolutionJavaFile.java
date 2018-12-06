@@ -1,22 +1,22 @@
-package com.ten10.training.javaparsons.impl.compiler;
+package com.ten10.training.javaparsons.compiler.impl;
 
-import com.ten10.training.javaparsons.Solution;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 
 import javax.tools.SimpleJavaFileObject;
 import java.net.URI;
 
 class SolutionJavaFile extends SimpleJavaFileObject {
 
-    private final Solution solution;
+    private final CompilableSolution solution;
 
-    private static URI uriFromSolution(Solution solution) {
+    private static URI uriFromSolution(CompilableSolution solution) {
         return URI.create(
                 "string:///"
-                        + solution.getExercise().getClassName().replace('.', '/')
+                        + solution.getClassName().replace('.', '/')
                         + Kind.SOURCE.extension);
     }
 
-    SolutionJavaFile(Solution solution) {
+    SolutionJavaFile(CompilableSolution solution) {
         super(uriFromSolution(solution), Kind.SOURCE);
         this.solution = solution;
     }
