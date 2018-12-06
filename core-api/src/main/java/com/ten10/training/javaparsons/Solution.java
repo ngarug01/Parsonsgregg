@@ -9,5 +9,5 @@ public interface Solution {
     /**
      * Compile and run the solution.
      */
-    void evaluate();
+    boolean evaluate();
 }
