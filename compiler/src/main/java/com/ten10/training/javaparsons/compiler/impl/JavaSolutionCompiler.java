@@ -19,13 +19,13 @@ import java.util.Optional;
  *
  * <p>Input files and class files are stored in memory</p>
  */
-class JavaSolutionCompiler implements SolutionCompiler {
+public class JavaSolutionCompiler implements SolutionCompiler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaSolutionCompiler.class);
     private final JavaCompiler compiler;
 
 
-    JavaSolutionCompiler(JavaCompiler compiler) {
+    public JavaSolutionCompiler(JavaCompiler compiler) {
         this.compiler = Objects.requireNonNull(compiler, "compiler");
     }
 
