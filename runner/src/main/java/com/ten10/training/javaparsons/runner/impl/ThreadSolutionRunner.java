@@ -4,6 +4,7 @@ import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.concurrent.*;
 
 public class ThreadSolutionRunner implements SolutionRunner {
@@ -19,13 +20,17 @@ public class ThreadSolutionRunner implements SolutionRunner {
         Class<?> klass = classLoader.loadClass(entryPointClassName);
         Class<?>[] parameterTypes = new Class<?>[]{};
         Method method = klass.getMethod(entryPointMethodName, parameterTypes);
-
+        Object instance = null;
+        if (!Modifier.isStatic(method.getModifiers())) {
+            instance = klass.getConstructor().newInstance();
+        }
+        Object finalInstance = instance;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Object> future = executor.submit(() -> method.invoke(null));
+        Future<Object> future = executor.submit(() -> method.invoke(finalInstance));
         try {
             if (timeoutMillis != 0) {
                 future.get(timeoutMillis, TimeUnit.MILLISECONDS);
-            }else {
+            } else {
                 future.get();
             }
         } catch (TimeoutException e) {
