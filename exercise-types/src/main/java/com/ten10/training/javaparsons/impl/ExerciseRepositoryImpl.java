@@ -4,19 +4,21 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     private final SolutionCompiler compiler;
+    private final List<? extends Exercise> exercises;
 
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
         this.compiler = compiler;
+        exercises = Arrays.asList(new HelloWorldExercise(compiler));
     }
 
     @Override
     public Exercise getExerciseByIdentifier(int identifier) {
-        if (identifier == 1)
-            return new HelloWorldExercise(compiler);
-        else
-            return null;
+        return exercises.get(identifier - 1);
     }
 }
