@@ -34,8 +34,16 @@ class ThreadSolutionRunnerTest {
 
         }
 
-        public void instanceMethod() {
+        public static void instanceMethod() {
+            Example2 example2 = new Example2();
+            example2.methodToBeInstanced();
 
+        }
+    }
+
+    static class Example2 {
+        void methodToBeInstanced() {
+            methodCalled.set(true);
         }
     }
 
@@ -146,7 +154,6 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    @Disabled
     void handleInstanceMethods() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -178,7 +185,7 @@ class ThreadSolutionRunnerTest {
         });
         //Assert
         assertTrue(result, "run() should not have completed successfully");
+        assertTrue(methodCalled.get(), "instanced method should be called");
     }
 
 }
-

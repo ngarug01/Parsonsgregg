@@ -4,9 +4,11 @@ import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.concurrent.*;
 
 public class ThreadSolutionRunner implements SolutionRunner {
+
     private long timeoutMillis = 0;
 
     @Override
@@ -25,11 +27,15 @@ public class ThreadSolutionRunner implements SolutionRunner {
         // Locate the method we are going to invoke
         Class<?> klass = classLoader.loadClass(entryPointClassName);
         Method method = klass.getMethod(entryPointMethodName, parameterTypes);
+        Object instance = null;
+        if (!Modifier.isStatic(method.getModifiers())) {
+            instance = klass.getConstructor().newInstance();
+        }
+        Object finalInstance = instance;
 
         // Invoke the method on an Executor
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Object> future = executor.submit(() -> method.invoke(null, parameters));
-
+        Future<Object> future = executor.submit(() -> method.invoke(finalInstance ,parameters));
         try {
             if (timeoutMillis != 0) {
                 future.get(timeoutMillis, TimeUnit.MILLISECONDS);
@@ -39,8 +45,9 @@ public class ThreadSolutionRunner implements SolutionRunner {
         } catch (TimeoutException e) {
             future.cancel(true);
             return false;
+        } finally {
+            executor.shutdownNow();
         }
-        executor.shutdown();
 
         return true;
     }
