@@ -57,7 +57,12 @@ class ThreadSolutionRunnerTest {
             }
 
             @Override
-            public Object[] getArguments() {
+            public Class<?>[] getParameterTypes() {
+                return new Class<?>[0];
+            }
+
+            @Override
+            public Object[] getParameters() {
                 return new Object[0];
             }
         };
@@ -87,7 +92,12 @@ class ThreadSolutionRunnerTest {
             }
 
             @Override
-            public Object[] getArguments() {
+            public Class<?>[] getParameterTypes() {
+                return new Class<?>[0];
+            }
+
+            @Override
+            public Object[] getParameters() {
                 return new Object[0];
             }
         };
@@ -101,7 +111,6 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    @Disabled
     void methodsShouldAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -118,7 +127,12 @@ class ThreadSolutionRunnerTest {
             }
 
             @Override
-            public Object[] getArguments() {
+            public Class<?>[] getParameterTypes() {
+                return new Class<?>[]{int.class, int.class};
+            }
+
+            @Override
+            public Object[] getParameters() {
                 return new Object[] {1, 3};
             }
         };
@@ -149,7 +163,12 @@ class ThreadSolutionRunnerTest {
             }
 
             @Override
-            public Object[] getArguments() {
+            public Class<?>[] getParameterTypes() {
+                return new Class<?>[0];
+            }
+
+            @Override
+            public Object[] getParameters() {
                 return new Object[0];
             }
         };
