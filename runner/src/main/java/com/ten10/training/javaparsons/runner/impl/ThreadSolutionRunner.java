@@ -29,9 +29,9 @@ public class ThreadSolutionRunner implements SolutionRunner {
         Method method = klass.getMethod(entryPointMethodName, parameterTypes);
         Object instance = null;
         if (!Modifier.isStatic(method.getModifiers())) {
-            instance = klass.getConstructor().newInstance();
+            instance = klass.getDeclaredConstructor().newInstance();
         }
-        Object finalInstance = instance;
+        final Object finalInstance = instance;
 
         // Invoke the method on an Executor
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -50,6 +50,10 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
 
         return true;
+    }
+
+    private boolean isStatic(Method method) {
+        return Modifier.isStatic(method.getModifiers());
     }
 
     void setTimeout(long count, TimeUnit timeUnit) {
