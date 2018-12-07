@@ -5,12 +5,11 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 
-public class HelloWorldExercise implements Exercise
-{
+public class HelloWorldExercise implements Exercise {
     private SolutionCompiler compiler;
 
-    HelloWorldExercise(SolutionCompiler compiler){
-        this.compiler=compiler;
+    HelloWorldExercise(SolutionCompiler compiler) {
+        this.compiler = compiler;
     }
 
     @Override
@@ -20,8 +19,7 @@ public class HelloWorldExercise implements Exercise
 
     @Override
     public Solution getSolutionFromUserInput(String userInput, ErrorCollector errorCollector) {
-
-        return new HelloWorldSolution(compiler,userInput, errorCollector);
+        return new HelloWorldSolution(compiler, userInput, errorCollector);
     }
 
     @Override

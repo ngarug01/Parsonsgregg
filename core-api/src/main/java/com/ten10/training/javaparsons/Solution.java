@@ -7,7 +7,7 @@ public interface Solution {
     Exercise getExercise();
 
     /**
-     * Compile and run the solution.
+     * Compile and run the solution and return true if successfully compiled.
      */
     boolean evaluate();
 }

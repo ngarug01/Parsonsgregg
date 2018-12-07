@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExerciseAndSolutionIT {
 
-    private static final String SUCCESSFUL_BUILD = "" +
+    private static final String SUCCESSFUL_BUILD =
         "public class Main {" +
         " public static void main(String[] args) {" +
         "  System.out.println(\"Hello World!\");" +
         " }" +
         "}";
 
-    private static final String UNSUCCESSFUL_BUILD = "" +
+    private static final String UNSUCCESSFUL_BUILD =
         "public class Main {" +
         " public static void main(String[] args) {" +
         "  System.out.println(\"Hello World!\");" +

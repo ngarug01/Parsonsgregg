@@ -8,8 +8,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     private final SolutionCompiler compiler;
 
-    public ExerciseRepositoryImpl(SolutionCompiler compiler){
-        this.compiler=compiler;
+    public ExerciseRepositoryImpl(SolutionCompiler compiler) {
+        this.compiler = compiler;
     }
 
     @Override

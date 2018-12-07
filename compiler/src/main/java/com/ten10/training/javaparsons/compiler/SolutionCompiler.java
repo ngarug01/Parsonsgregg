@@ -13,7 +13,6 @@ public interface SolutionCompiler {
         CharSequence getFullClassText();
 
         String getClassName();
-
     }
 
     /**
