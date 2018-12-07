@@ -16,12 +16,13 @@ class HelloWorldExerciseTest {
     private final HelloWorldExercise helloWorldExercise = new HelloWorldExercise(compiler);
 
     @Test
-    void helloWorldExerciseIdentifierIs1(){
-        assertEquals(1,helloWorldExercise.getIdentifier());
+    void helloWorldExerciseIdentifierIs1() {
+        assertEquals(1, helloWorldExercise.getIdentifier());
     }
 
     @Test
-    void getSolutionFromUserInputReturnsHelloWorldSolution(){
-        assertThat(helloWorldExercise.getSolutionFromUserInput("", new ErrorCollector(){}), is(instanceOf(HelloWorldSolution.class)));
+    void getSolutionFromUserInputReturnsHelloWorldSolution() {
+        assertThat(helloWorldExercise.getSolutionFromUserInput("", new ErrorCollector() {
+        }), is(instanceOf(HelloWorldSolution.class)));
     }
 }

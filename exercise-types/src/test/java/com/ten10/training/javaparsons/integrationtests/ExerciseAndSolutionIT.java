@@ -18,17 +18,16 @@ class ExerciseAndSolutionIT {
 
     private static final String SUCCESSFUL_BUILD =
         "public class Main {" +
-        " public static void main(String[] args) {" +
-        "  System.out.println(\"Hello World!\");" +
-        " }" +
-        "}";
+            " public static void main(String[] args) {" +
+            "  System.out.println(\"Hello World!\");" +
+            " }" +
+            "}";
 
     private static final String UNSUCCESSFUL_BUILD =
         "public class Main {" +
-        " public static void main(String[] args) {" +
-        "  System.out.println(\"Hello World!\");" +
-        " }" +
-        "";
+            " public static void main(String[] args) {" +
+            "  System.out.println(\"Hello World!\");" +
+            " }";
 
     @Test
     void helloWorldCompilerBuild() {

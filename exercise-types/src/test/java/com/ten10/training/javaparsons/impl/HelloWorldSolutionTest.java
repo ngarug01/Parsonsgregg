@@ -13,7 +13,8 @@ import static org.mockito.Mockito.verify;
 
 class HelloWorldSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private ErrorCollector errorCollector = new ErrorCollector() {};
+    private ErrorCollector errorCollector = new ErrorCollector() {
+    };
     private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, "userInput string inputted into solution", errorCollector);
 
     @Test
@@ -24,19 +25,17 @@ class HelloWorldSolutionTest {
     @Test
     void checkEvaluate() {
         helloWorldSolution.evaluate();
-        verify(compiler).compile(helloWorldSolution,errorCollector);
+        verify(compiler).compile(helloWorldSolution, errorCollector);
     }
 
     @Test
-    void checkGetFullClassText()
-    {
+    void checkGetFullClassText() {
         assertEquals("userInput string inputted into solution", helloWorldSolution.getFullClassText());
     }
 
     @Test
-    void checkGetClassName()
-    {
-        assertEquals("Main",helloWorldSolution.getClassName());
+    void checkGetClassName() {
+        assertEquals("Main", helloWorldSolution.getClassName());
     }
 }
 
