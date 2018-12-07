@@ -9,11 +9,9 @@ import java.util.List;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
-    private final SolutionCompiler compiler;
     private final List<? extends Exercise> exercises;
 
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
-        this.compiler = compiler;
         exercises = Arrays.asList(new HelloWorldExercise(compiler));
     }
 
