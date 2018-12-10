@@ -37,4 +37,9 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     public String getClassName() {
         return "Main";
     }
+
+    @Override
+    public void recordCompiledClass(byte[] byteCode) {
+
+    }
 }
