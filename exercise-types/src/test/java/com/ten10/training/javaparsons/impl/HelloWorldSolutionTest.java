@@ -13,9 +13,9 @@ import static org.mockito.Mockito.verify;
 
 class HelloWorldSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private ErrorCollector errorCollector = new ErrorCollector() {
-    };
+    private ErrorCollector errorCollector = new ErrorCollector() {};
     private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, "userInput string inputted into solution", errorCollector);
+
 
     @Test
     void getExerciseReturnsHelloWorldExercise() {
@@ -37,6 +37,8 @@ class HelloWorldSolutionTest {
     void checkGetClassName() {
         assertEquals("Main", helloWorldSolution.getClassName());
     }
+
 }
+
 
 

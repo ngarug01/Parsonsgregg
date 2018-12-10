@@ -2,7 +2,6 @@ package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.*;
@@ -18,7 +17,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
         String entryPointMethodName = solution.getEntryPointMethod();
         Class<?>[] parameterTypes = solution.getParameterTypes();
         Object[] parameters = solution.getParameters();
-
         // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
         if (parameters.length != parameterTypes.length) {
             throw new IllegalArgumentException("parameter types and parameters must be the same length");
@@ -35,7 +33,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
         // Invoke the method on an Executor
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Object> future = executor.submit(() -> method.invoke(finalInstance ,parameters));
+        Future<Object> future = executor.submit(() -> method.invoke(finalInstance, parameters));
         try {
             if (timeoutMillis != 0) {
                 future.get(timeoutMillis, TimeUnit.MILLISECONDS);

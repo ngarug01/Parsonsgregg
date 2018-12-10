@@ -5,11 +5,13 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 
+
 public class HelloWorldSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private final SolutionCompiler compiler;
     private final String userInput;
     private final ErrorCollector errorCollector;
+    private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
 
     HelloWorldSolution(SolutionCompiler compiler, String userInput, ErrorCollector errorCollector) {
 
@@ -25,7 +27,12 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
 
     @Override
     public boolean evaluate() {
-        return compiler.compile(this, errorCollector);
+        try {
+            captureConsoleOutput.start();
+            return compiler.compile(this, errorCollector);
+        } finally {
+            captureConsoleOutput.stop();
+        }
     }
 
     @Override
@@ -40,6 +47,5 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
 
     @Override
     public void recordCompiledClass(byte[] byteCode) {
-
     }
 }
