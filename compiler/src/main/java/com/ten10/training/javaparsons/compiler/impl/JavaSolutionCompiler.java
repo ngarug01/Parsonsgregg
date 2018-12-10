@@ -37,7 +37,7 @@ public class JavaSolutionCompiler implements SolutionCompiler {
         DiagnosticListener<JavaFileObject> diagnostics = new ErrorCollectorAdapter(errorCollector);
         List<SimpleJavaFileObject> compilationUnits = Collections.singletonList(new SolutionJavaFile(solution));
 
-        try (JavaFileManager fileManager = new InMemoryFileManager(compiler.getStandardFileManager(diagnostics, null, null))) {
+        try (JavaFileManager fileManager = new InMemoryFileManager(compiler.getStandardFileManager(diagnostics, null, null), solution)) {
             JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits);
             return task.call();
         } catch (IOException e) {

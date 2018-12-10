@@ -5,7 +5,6 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSoluti
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
@@ -27,7 +26,6 @@ class CompilerIntegrationTests {
 
     @ParameterizedTest
     @EnumSource(TestData.class)
-    @Disabled("Get this working!")
     void compilerFun(TestData data) {
         // Arrange
         JavaSolutionCompiler javaSolutionCompiler = new JavaSolutionCompiler(compiler);
@@ -59,19 +57,19 @@ class CompilerIntegrationTests {
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("Expected a byte[] starting with 0xCAFEBABE\n");
+                description.appendText("a byte[] starting with 0xCAFEBABE\n");
             }
         };
     }
 
     public enum TestData {
 
-        WORKING_CLASS("HelloWorld", true, "public class HelloWorld { " +
+        @SuppressWarnings("unused") WORKING_CLASS("HelloWorld", true, "public class HelloWorld { " +
             "public static void main(String[] args) {" +
             "System.out.println(\"Hello World\");" +
             "}" +
             "}"),
-        ERROR_CLASS("HelloWorld", false, "public class HelloWorld { " +
+        @SuppressWarnings("unused") ERROR_CLASS("HelloWorld", false, "public class HelloWorld { " +
             "public static void main(String[] args) {" +
             "System.out.println(\"Hello World\")" + // Missing Semicolon
             "}" +
