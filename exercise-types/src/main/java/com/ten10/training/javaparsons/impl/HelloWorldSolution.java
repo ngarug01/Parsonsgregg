@@ -42,6 +42,4 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     public void recordCompiledClass(byte[] byteCode) {
 
     }
-
-
 }

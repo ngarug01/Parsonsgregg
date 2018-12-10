@@ -20,7 +20,6 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JavaSolutionCompiler.class);
     private final JavaCompiler compiler;
-    private CompilableSolution solution;
 
 
     public JavaSolutionCompiler(JavaCompiler compiler) {
@@ -30,7 +29,6 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
     @Override
     public boolean compile(final CompilableSolution solution, final ErrorCollector errorCollector) {
-
         Objects.requireNonNull(solution, "solution");
         Objects.requireNonNull(errorCollector, "errorCollector");
 
@@ -38,6 +36,7 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
         DiagnosticListener<JavaFileObject> diagnostics = new ErrorCollectorAdapter(errorCollector);
         List<SimpleJavaFileObject> compilationUnits = Collections.singletonList(new SolutionJavaFile(solution));
+
         try (JavaFileManager fileManager = new InMemoryFileManager(compiler.getStandardFileManager(diagnostics, null, null), solution)) {
             JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits);
             return task.call();

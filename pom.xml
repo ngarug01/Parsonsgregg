@@ -152,6 +152,7 @@
         <module>compiler</module>
         <module>bootstrap</module>
         <module>acceptance-tests</module>
+        <module>runner</module>
     </modules>
 
     <dependencyManagement>

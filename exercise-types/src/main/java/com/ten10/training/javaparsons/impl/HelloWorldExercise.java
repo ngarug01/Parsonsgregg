@@ -23,6 +23,6 @@ public class HelloWorldExercise implements Exercise {
     }
 
     @Override
-    public void close(){
+    public void close() throws Exception {
     }
 }
