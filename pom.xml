@@ -147,7 +147,6 @@
     <modules>
         <module>core-api</module>
         <module>webapp</module>
-        <module>sandbox</module>
         <module>exercise-types</module>
         <module>compiler</module>
         <module>bootstrap</module>
