@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -30,7 +32,7 @@ class ExerciseAndSolutionIT {
             " }";
 
     @Test
-    void helloWorldCompilerBuild() {
+    void helloWorldCompilerBuild() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
         Exercise exercise = repository.getExerciseByIdentifier(1);
@@ -40,7 +42,7 @@ class ExerciseAndSolutionIT {
     }
 
     @Test
-    void helloWorldCompilerFailBuild() {
+    void helloWorldCompilerFailBuild() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
         Exercise exercise = repository.getExerciseByIdentifier(1);
