@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 
 import javax.tools.SimpleJavaFileObject;
