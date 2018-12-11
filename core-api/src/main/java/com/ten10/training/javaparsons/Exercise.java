@@ -21,5 +21,5 @@ public interface Exercise extends AutoCloseable {
      * @param progressReporter The callback object to use when reporting compilation and test results.
      * @return a {@see Solution} object representing the input provided.
      */
-    Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter);
+    Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws Exception;
 }

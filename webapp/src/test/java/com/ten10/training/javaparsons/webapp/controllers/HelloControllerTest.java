@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.webapp.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
@@ -11,15 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.IOException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class HelloControllerTest {
 
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
-    public static final String TRIVIAL_OUTPUT = "{}";
+    private static final String TRIVIAL_OUTPUT = "{}";
 
 
     @Autowired
@@ -40,11 +40,18 @@ class HelloControllerTest {
     private MockMvc mvc;
 
     @Test
-    public void trivialInputShouldLoad() throws IOException {
+    void trivialInputShouldLoad() throws IOException {
         SubmittedSolution value = objectMapper.readValue(TRIVIAL_INPUT, SubmittedSolution.class);
-
         assertThat(value, is(notNullValue()));
         assertThat(value.getInput(), is("foo"));
+    }
+
+    @Test
+    void serialiseResult() throws JsonProcessingException {
+        Results results = new Results();
+        results.storeCapturedOutput("Foo");
+        String output = objectMapper.writeValueAsString(results);
+        assertThat(output, is("{\"output\":\"Foo\"}"));
     }
 
     @Test

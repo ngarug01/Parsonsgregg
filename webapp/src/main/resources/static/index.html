@@ -6,6 +6,7 @@
             
          window.onload =function() {
             document.getElementById("EnterAnswer").onclick = function postAnswer() {
+                document.getElementById("output-box").value = "";
                 url = "http://localhost:8080/exercise1";
                 var XHR = new XMLHttpRequest();
                 XHR.addEventListener("load", handleResponse);
@@ -19,10 +20,10 @@
                 var responce = XHR.responseText;
                 if (XHR.readyState === 4 && XHR.status === 200){
                     console.log(JSON.parse(responce).status);
-                    document.getElementById("output-box").value += JSON.parse(responce).correctjava;
+                    document.getElementById("output-box").value += JSON.parse(responce).output;
                 }
                 else
-                    console.log(XhR.status);
+                    console.log(XHR.status);
 
                 }
             }
