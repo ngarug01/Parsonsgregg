@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
-import com.ten10.training.javaparsons.ErrorCollector;
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
@@ -33,19 +33,20 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
             return new Object[]{new String[]{}};
         }
     };
+
     private final SolutionCompiler compiler;
     private final ThreadSolutionRunner runner;
     private final String userInput;
-    private final ErrorCollector errorCollector;
+    private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
-    HelloWorldSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, ErrorCollector errorCollector) {
+    HelloWorldSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
-        this.errorCollector = errorCollector;
+        this.progressReporter = progressReporter;
     }
 
     @Override
@@ -54,17 +55,12 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     }
 
     @Override
-    public boolean evaluate() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        captureConsoleOutput.start();
-        try {
-            return compile() && run();
-        } finally {
-            captureConsoleOutput.stop();
-        }
+    public boolean evaluate() throws Exception {
+        return compile() && run();
     }
 
     private boolean compile() {
-        return compiler.compile(this, errorCollector);
+        return compiler.compile(this, progressReporter);
     }
 
     @Override
@@ -79,7 +75,6 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
 
     @Override
     public void recordCompiledClass(byte[] byteCode) {
-
         this.byteCode = byteCode;
     }
 
@@ -103,6 +98,12 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     }
 
     private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        return runner.run(getClassLoader(), entryPoint, errorCollector);
+        captureConsoleOutput.start();
+        try {
+            return runner.run(getClassLoader(), entryPoint, progressReporter);
+        } finally {
+            String output = captureConsoleOutput.stop();
+            progressReporter.storeCapturedOutput(output);
+        }
     }
 }

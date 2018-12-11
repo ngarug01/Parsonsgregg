@@ -1,7 +1,8 @@
 package com.ten10.training.javaparsons.runner.impl;
 
-import com.ten10.training.javaparsons.ErrorCollector;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.*;
@@ -11,7 +12,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private long timeoutMillis = 0;
 
     @Override
-    public boolean run(ClassLoader classLoader, EntryPoint solution, ErrorCollector errorCollector) throws ReflectiveOperationException, ExecutionException, InterruptedException {
+    public boolean run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
         // Pull data out of the entry point object
         String entryPointClassName = solution.getEntryPointClass();
         String entryPointMethodName = solution.getEntryPointMethod();

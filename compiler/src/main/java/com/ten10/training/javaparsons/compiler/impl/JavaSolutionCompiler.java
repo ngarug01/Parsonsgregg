@@ -1,9 +1,7 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
-import com.ten10.training.javaparsons.ErrorCollector;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.tools.*;
 import java.io.IOException;
@@ -18,7 +16,7 @@ import java.util.Objects;
  */
 public class JavaSolutionCompiler implements SolutionCompiler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JavaSolutionCompiler.class);
+    //  private static final Logger LOGGER = LoggerFactory.getLogger(JavaSolutionCompiler.class);
     private final JavaCompiler compiler;
 
 
@@ -28,20 +26,20 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
 
     @Override
-    public boolean compile(final CompilableSolution solution, final ErrorCollector errorCollector) {
+    public boolean compile(final CompilableSolution solution, final ProgressReporter progressReporter) {
         Objects.requireNonNull(solution, "solution");
-        Objects.requireNonNull(errorCollector, "errorCollector");
+        Objects.requireNonNull(progressReporter, "progressReporter");
 
-        LOGGER.info("Compiling {}", solution);
+        // LOGGER.info("Compiling {}", solution);
 
-        DiagnosticListener<JavaFileObject> diagnostics = new ErrorCollectorAdapter(errorCollector);
+        DiagnosticListener<JavaFileObject> diagnostics = new ProgressReporterAdapter(progressReporter);
         List<SimpleJavaFileObject> compilationUnits = Collections.singletonList(new SolutionJavaFile(solution));
 
         try (JavaFileManager fileManager = new InMemoryFileManager(compiler.getStandardFileManager(diagnostics, null, null), solution)) {
             JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits);
             return task.call();
         } catch (IOException e) {
-            LOGGER.error("Error closing fileManager", e);
+            // LOGGER.error("Error closing fileManager", e);
             throw new RuntimeException(e);
         }
     }

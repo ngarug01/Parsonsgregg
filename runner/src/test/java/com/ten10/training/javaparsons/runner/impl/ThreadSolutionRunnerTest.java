@@ -1,6 +1,6 @@
 package com.ten10.training.javaparsons.runner.impl;
 
-import com.ten10.training.javaparsons.ErrorCollector;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -12,12 +12,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class ThreadSolutionRunnerTest {
 
     private static final AtomicBoolean exampleMethodCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesArgsCalled = new AtomicBoolean(false);
     private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
+    private ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @SuppressWarnings("unused")
     static class Example {
@@ -70,8 +72,7 @@ class ThreadSolutionRunnerTest {
             }
         };
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
-        });
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
         assertTrue(result, "run() should have completed successfully");
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
@@ -107,8 +108,7 @@ class ThreadSolutionRunnerTest {
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         boolean result = assertTimeoutPreemptively(Duration.ofSeconds(5),
-            () -> runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
-            }));
+            () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
         //Assert
         assertFalse(result, "run() should not have completed successfully");
     }
@@ -141,8 +141,7 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
-        });
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
         assertTrue(result, "run() should have completed successfully");
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
@@ -177,8 +176,7 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, new ErrorCollector() {
-        });
+        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
         assertTrue(result, "run() should have completed successfully");
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
