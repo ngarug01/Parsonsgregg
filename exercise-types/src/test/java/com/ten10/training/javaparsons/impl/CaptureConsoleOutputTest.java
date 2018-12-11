@@ -24,7 +24,7 @@ class CaptureConsoleOutputTest {
     void start() {
         cco.start();
         System.out.println("I am a telly tubby developer");
-        assertEquals("I am a telly tubby developer\r\n", cco.stop());
+        assertEquals("I am a telly tubby developer"+LINE_ENDING, cco.stop());
     }
 
     @Test
