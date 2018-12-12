@@ -1,7 +1,18 @@
 package com.ten10.training.javaparsons.webapp.views;
 
-public class Results {
-    public String status = "status: OK!";
-    public String correctjava = "Correct Answer Well Done!";
-    public String incorrectjava = "Incorrect Answer. Try Again!";
+import com.ten10.training.javaparsons.ProgressReporter;
+
+public class Results implements ProgressReporter {
+
+    private String output;
+
+    public String getOutput() {
+        return output;
+    }
+
+    @Override
+    public void storeCapturedOutput(String output) {
+        this.output = output;
+    }
+
 }

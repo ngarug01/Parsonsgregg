@@ -1,6 +1,6 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
-import com.ten10.training.javaparsons.ErrorCollector;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -18,12 +18,13 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 
 class CompilerIntegrationTests {
 
     private static final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-
+    ProgressReporter progressReporter = mock(ProgressReporter.class);
     @ParameterizedTest
     @EnumSource(TestData.class)
     void compilerFun(TestData data) {
@@ -32,8 +33,7 @@ class CompilerIntegrationTests {
         TestData.TestDataCompilableSolution solution = data.toSolution();
 
         // Act
-        boolean result = javaSolutionCompiler.compile(solution, new ErrorCollector() {
-        });
+        boolean result = javaSolutionCompiler.compile(solution, progressReporter);
 
         // Assert
         if (data.shouldPass()) {

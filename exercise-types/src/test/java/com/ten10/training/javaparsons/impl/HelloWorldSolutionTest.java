@@ -1,7 +1,8 @@
 package com.ten10.training.javaparsons.impl;
 
-import com.ten10.training.javaparsons.ErrorCollector;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,9 +14,10 @@ import static org.mockito.Mockito.verify;
 
 class HelloWorldSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private ErrorCollector errorCollector = new ErrorCollector() {
-    };
-    private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, "userInput string inputted into solution", errorCollector);
+    private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, runner,"userInput string inputted into solution", progressReporter);
+
 
     @Test
     void getExerciseReturnsHelloWorldExercise() {
@@ -23,9 +25,9 @@ class HelloWorldSolutionTest {
     }
 
     @Test
-    void checkEvaluate() {
+    void checkEvaluate() throws Exception {
         helloWorldSolution.evaluate();
-        verify(compiler).compile(helloWorldSolution, errorCollector);
+        verify(compiler).compile(helloWorldSolution, progressReporter);
     }
 
     @Test
@@ -37,6 +39,8 @@ class HelloWorldSolutionTest {
     void checkGetClassName() {
         assertEquals("Main", helloWorldSolution.getClassName());
     }
+
 }
+
 
 
