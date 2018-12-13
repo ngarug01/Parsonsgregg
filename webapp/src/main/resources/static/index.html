@@ -1,42 +1,117 @@
 <!DOCTYPE html>
 <HTML>
-    <header>
-        <title>Java Parsons "Hello World!"</title>
-    </header>
-    <body>
+<header>
+    <title>Java Parsons "Hello World!"</title>
+</header>
+
+<body>
     <h1> Java Parsons Problem </h1>
     <div>
         <p> Write a Java code which when run will produce a string which reads "Hello World!" message. </p>
-            <p>Input box</p>
-            <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"> </textarea>
-            <button id="EnterAnswer">Enter Answer</button>
-        <p>output box</p>
-        <textarea id="output-box" name="outputBox" rows="12" cols="100" readonly></textarea>
+        <p>Input</p>
+        <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"> </textarea>
+        <br>
+        <button id="enter-answer">Enter Answer</button>
+        <p>Output</p>
     </div>
+    <div name = "Correct Answer" id = "correct-answer" class="output"></div>
+   <div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
+   <div name = "Information" id = "information" class  = "output"></div>
+   </body>
+   <style>
+       body {
+       background-color: #c0c0c0;
+       }
+       h1 {text-align: center;
+       color: #6758a6;
+       }
+       h2 {
+       text-align: center;
+       color:#6758a6;
+       }
+       #input-box {
+           display: block;
+           align-content: center;
+           color: #6758a6;}
+        #correct-answer{
+            background-color: rgb(135, 211, 100);
+        }
+        #incorrect-answer{
+            background-color: rgb(255, 61, 61);
+        }
+        #information{
+            background-color:  rgb(255, 192, 55);
+        }
+       button {
+       display: block;
+       margin-left: 60%;
+       margin-right: 40%;;
+       }
+       .output { display: none;
+       margin-left: auto;
+       margin-right: auto;
+       width: 50%;
+       border: 3px #6758a6;
+       padding: 10px;
+       }
+   </style>
     <script async>
 
-         window.onload =function() {
-            document.getElementById("EnterAnswer").onclick = function postAnswer() {
-                document.getElementById("output-box").value = "";
+        window.onload = function () {
+            document.getElementById("enter-answer").onclick = function postAnswer() {
+                outputReset();
                 url = "http://localhost:8080/exercise1";
                 var XHR = new XMLHttpRequest();
                 XHR.addEventListener("load", handleResponse);
-                var helloWorld = JSON.stringify({input: document.getElementById("input-box").value});
-                XHR.open("POST" , url ,true);
+                var helloWorld = JSON.stringify({ input: document.getElementById("input-box").value });
+                XHR.open("POST", url, true);
                 XHR.setRequestHeader('Content-Type', 'application/json');
                 XHR.send(helloWorld);
             }
             function handleResponse() {
                 let XHR = this;
                 var responce = XHR.responseText;
-                if (XHR.readyState === 4 && XHR.status === 200){
-                    document.getElementById("output-box").value += JSON.parse(responce).output;
+                if (XHR.readyState === 4 && XHR.status === 200) {
                     console.log("Status: OK");
+                    buildOutput(responce);
                 }
-                else
+                else {
                     console.log(XHR.status);
+                }
 
+            }
+            function buildOutput(responce) {
+                if (JSON.parse(responce).succesfulSolution === true) {
+                    document.getElementById("correct-answer").innerHTML += (JSON.parse(responce).output+"<br>Correct Answer, Well Done!!!");
+                    makeVisible("correct-answer");
+                } else {
+                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect Answer<br>Your output was: " + JSON.parse(responce).output);
+                    errors = JSON.parse(responce).compilerErrors;
+                    if(errors.length !== 0){
+                        errors.forEach(error => {
+                            document.getElementById("incorrect-answer").innerHTML += ("<br>Error on line: "+error.lineNumber+"<br>The message was: "+error.message+"<br>");
+                        });
+                    }
+                    makeVisible("incorrect-answer");
+                }
+                if(JSON.parse(responce).compilerInfo.length !== 0){
+                    information = JSON.parse(responce).compilerInfo;
+                    information.forEach(info => {
+                        document.getElementById("information").innerHTML += ("Information about line: "+info.lineNumber+"<br>The message was: "+info.message+"<br>");
+                    });
+                    makeVisible("information");
                 }
             }
+            function makeVisible(elementID){
+                document.getElementById(elementID).style = "display:block";
+            }
+            function outputReset(){
+                var elements = ["correct-answer","incorrect-answer","information"]
+                elements.forEach(element => {
+                    document.getElementById(element).style = "display:none";
+                    document.getElementById(element).innerHTML = "";
+                });
+            }
+        }
 
-        </script>
+    </script>
