@@ -64,7 +64,7 @@ class HelloControllerTest {
     void submitExerciseSuccessfully() throws Exception {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post("/exercise1")
+            .post("/exercise/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TRIVIAL_INPUT);

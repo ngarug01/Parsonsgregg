@@ -13,4 +13,5 @@ public interface ExerciseRepository {
     Exercise getExerciseByIdentifier(int identifier);
 
     int getExerciseArraySize();
+
 }
