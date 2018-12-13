@@ -43,4 +43,6 @@ public class PrintOutExercise implements Exercise {
     @Override
     public void close() throws Exception {
     }
+
+
 }
