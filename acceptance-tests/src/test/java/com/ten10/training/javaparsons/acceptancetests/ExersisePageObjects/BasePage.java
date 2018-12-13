@@ -39,7 +39,9 @@ public abstract class BasePage {
         element.sendKeys(inputString);
     }
 
-
+    void waitForDivToBeVisible(By selector){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+    }
 
     void waitForTextToAppearAtributeValue(By selector) {
         wait.until(ExpectedConditions.not(attributeToBe(selector, "value", "")));

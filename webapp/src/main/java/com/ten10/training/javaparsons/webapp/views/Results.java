@@ -53,7 +53,7 @@ public class Results implements ProgressReporter {
     }
 
     @Override
-    public void storeCompilerError(long lineNumber, String message) {
+    public void reportCompilerError(long lineNumber, String message) {
         compilerErrors.add(new Information(lineNumber, message));
     }
 
