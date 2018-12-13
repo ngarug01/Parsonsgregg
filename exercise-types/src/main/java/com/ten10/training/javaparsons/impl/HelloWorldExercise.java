@@ -20,6 +20,16 @@ public class HelloWorldExercise implements Exercise {
     }
 
     @Override
+    public String getTitle() {
+        return "Exercise "+getIdentifier()+": Hello World!";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Write a Java code which when run will produce a string which reads \"Hello World!\" message.";
+    }
+
+    @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
         return new HelloWorldSolution(compiler, runner, userInput, progressReporter);
     }

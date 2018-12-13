@@ -4,39 +4,82 @@
         <title>Java Parsons "Hello World!"</title>
     </header>
     <body>
+    <script async>
+
+            window.onload =function() {
+   
+               var XHR = new XMLHttpRequest();
+               urlGetE = "http://localhost:8080/exercise/getExercises";
+               XHR.addEventListener("load", handleResponseGet);
+               XHR.open("GET" , urlGetE ,true);
+               XHR.send(null);
+   
+               function handleResponseGet() {
+                   let XHR = this;
+                   var responce = XHR.responseText;
+                   if (XHR.readyState === 4 && XHR.status === 200){
+                       var jsonData = JSON.parse(responce);
+                       // Populate Select Field
+                       var parent = document.getElementById("ExerciseList");
+                       for (const exerciseTrio of jsonData) {
+                           const elem = document.createElement("option");
+                           elem.setAttribute("value", exerciseTrio.url);
+                           elem.setAttribute("description",exerciseTrio.description)
+                           elem.text = exerciseTrio.title;
+                           parent.appendChild(elem);
+                       }
+                        console.log(responce,jsonData);
+                        var pdes = document.getElementById("Description");
+                        var list = document.getElementById("ExerciseList");
+                        var des=list.options[list.selectedIndex].getAttribute("description");
+                        pdes.textContent = des;
+                   }
+                   else
+                       console.log(XHR.status);
+                   }  
+                   document.getElementById("ExerciseList").onchange = function descriptionChange(){
+                       var deschange = this.option[list.selectedIndex].getAttribute("description");
+                       pdes.textContent = deschange;
+                   }  
+                   
+               document.getElementById("EnterAnswer").onclick = function postAnswer() {
+                   document.getElementById("output-box").value = "";
+                   var list = document.getElementById("ExerciseList");
+                   var url =list.options[list.selectedIndex].getAttribute("value");
+                   console.log(url);
+                   XHR.addEventListener("load", handleResponsePost);
+                   var exercise = JSON.stringify({input: document.getElementById("input-box").value});
+                   XHR.open("POST" , url ,true);
+                   XHR.setRequestHeader('Content-Type', 'application/json');
+                   XHR.send(exercise);
+               }
+
+               function handleResponsePost() {
+                   let XHR = this;
+                   var responce = XHR.responseText;
+                   if (XHR.readyState === 4 && XHR.status === 200){
+                       document.getElementById("output-box").value += JSON.parse(responce).output;
+                       console.log("Status: OK");
+                   }
+                   else
+                       console.log(XHR.status);
+                   }
+                  
+               }
+           </script>
     <h1> Java Parsons Problem </h1>
     <div>
-        <p> Write a Java code which when run will produce a string which reads "Hello World!" message. </p>
+        <section id="ExerciseSelection">
+            <select id="ExerciseList">
+
+            </select>
+        </section>
+        <p id="Description" text="smsmsm" ></p>
             <p>Input box</p>
             <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"> </textarea>
             <button id="EnterAnswer">Enter Answer</button>
         <p>output box</p>
         <textarea id="output-box" name="outputBox" rows="12" cols="100" readonly></textarea>
     </div>
-    <script async>
+    </body>
 
-         window.onload =function() {
-            document.getElementById("EnterAnswer").onclick = function postAnswer() {
-                document.getElementById("output-box").value = "";
-                url = "http://localhost:8080/exercise1";
-                var XHR = new XMLHttpRequest();
-                XHR.addEventListener("load", handleResponse);
-                var helloWorld = JSON.stringify({input: document.getElementById("input-box").value});
-                XHR.open("POST" , url ,true);
-                XHR.setRequestHeader('Content-Type', 'application/json');
-                XHR.send(helloWorld);
-            }
-            function handleResponse() {
-                let XHR = this;
-                var responce = XHR.responseText;
-                if (XHR.readyState === 4 && XHR.status === 200){
-                    document.getElementById("output-box").value += JSON.parse(responce).output;
-                    console.log("Status: OK");
-                }
-                else
-                    console.log(XHR.status);
-
-                }
-            }
-
-        </script>

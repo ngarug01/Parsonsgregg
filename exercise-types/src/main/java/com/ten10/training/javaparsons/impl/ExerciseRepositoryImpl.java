@@ -19,4 +19,9 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public Exercise getExerciseByIdentifier(int identifier) {
         return exercises.get(identifier - 1);
     }
+
+    @Override
+    public int getExerciseArraySize() {
+        return exercises.size();
+    }
 }
