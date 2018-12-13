@@ -33,9 +33,9 @@ class CaptureConsoleOutputTest {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         ThreadSolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter progressReporter = mock(ProgressReporter.class);
-        HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, runner, SUCCESSFUL_BUILD, progressReporter);
+        ExerciseSolution exerciseSolution = new ExerciseSolution(compiler, runner, SUCCESSFUL_BUILD, progressReporter);
         //Act
-        helloWorldSolution.evaluate();
+        exerciseSolution.evaluate();
         //Assert
         verify(progressReporter).storeCapturedOutput("Hello World!" + LINE_ENDING);
 

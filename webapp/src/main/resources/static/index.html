@@ -38,7 +38,9 @@
                        console.log(XHR.status);
                    }  
                    document.getElementById("ExerciseList").onchange = function descriptionChange(){
-                       var deschange = this.option[list.selectedIndex].getAttribute("description");
+                       var pdes = document.getElementById("Description");
+                       var list =document.getElementById("ExerciseList");
+                       var deschange = list.options[list.selectedIndex].getAttribute("description");
                        pdes.textContent = deschange;
                    }  
                    

@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/exercise")
+@RequestMapping("/exercise/")
 public class HelloController {
 
     @Autowired
@@ -38,14 +38,14 @@ public class HelloController {
         public String getUrl() {
             return url;
         }
-        public String getDescription(){
+        public String getDescription() {
             return description;
         }
     }
 
     @RequestMapping(value = "getExercises", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ExerciseInformation> geExersises() {
+    public List<ExerciseInformation> geExercises() {
         List<ExerciseInformation> combinedExerciseParameters = new ArrayList<>();
         for (int i = 1; i <= exerciseRepository.getExerciseArraySize(); i++) {
             Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
@@ -56,21 +56,12 @@ public class HelloController {
         return combinedExerciseParameters;
     }
 
-    @RequestMapping(value = "1", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    @RequestMapping(value ="{identifier}", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public Results postRequestExersize1(@RequestBody SubmittedSolution submittedSolution) throws Exception {
+    public Results postRequestExercise(
+        @PathVariable("identifier") Exercise exercise,
+        @RequestBody SubmittedSolution submittedSolution) throws Exception {
         Results results = new Results();
-        Exercise exercise = exerciseRepository.getExerciseByIdentifier(1);
-        Solution solution = exercise.getSolutionFromUserInput(submittedSolution.getInput(), results);
-        solution.evaluate();
-        return results;
-    }
-
-    @RequestMapping(value = "2", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-    @ResponseBody
-    public Results postRequestExersize2(@RequestBody SubmittedSolution submittedSolution) throws Exception {
-        Results results = new Results();
-        Exercise exercise = exerciseRepository.getExerciseByIdentifier(2);
         Solution solution = exercise.getSolutionFromUserInput(submittedSolution.getInput(), results);
         solution.evaluate();
         return results;

@@ -10,9 +10,13 @@ import java.util.List;
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     private final List<? extends Exercise> exercises;
+    private SolutionCompiler compiler;
 
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
-        exercises = Arrays.asList(new HelloWorldExercise(compiler));
+        PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!" ,1);
+        PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!",1);
+        this.compiler = compiler;
+        exercises = Arrays.asList(helloWorld,cruelWorld);
     }
 
     @Override

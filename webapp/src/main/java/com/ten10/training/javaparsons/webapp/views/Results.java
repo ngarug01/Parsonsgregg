@@ -16,3 +16,4 @@ public class Results implements ProgressReporter {
     }
 
 }
+

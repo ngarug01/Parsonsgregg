@@ -1,6 +1,5 @@
 package com.ten10.training.javaparsons.impl;
 
-import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
@@ -9,7 +8,7 @@ import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.util.concurrent.ExecutionException;
 
-public class HelloWorldSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class ExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -41,17 +40,15 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
-    public HelloWorldSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, ProgressReporter progressReporter) {
+    public ExerciseSolution(SolutionCompiler compiler,
+                            ThreadSolutionRunner runner,
+                            String userInput,
+                            ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
         this.progressReporter = progressReporter;
-    }
-
-    @Override
-    public Exercise getExercise() {
-        return new HelloWorldExercise(compiler);
     }
 
     @Override
