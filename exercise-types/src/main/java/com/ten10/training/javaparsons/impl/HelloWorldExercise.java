@@ -9,6 +9,7 @@ import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 public class HelloWorldExercise implements Exercise {
     private SolutionCompiler compiler;
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private final String answer = "Hello World!";
 
     HelloWorldExercise(SolutionCompiler compiler) {
         this.compiler = compiler;
@@ -21,7 +22,7 @@ public class HelloWorldExercise implements Exercise {
 
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
-        return new HelloWorldSolution(compiler, runner, userInput, progressReporter);
+        return new HelloWorldSolution(compiler, runner, userInput, answer, progressReporter);
     }
 
     @Override

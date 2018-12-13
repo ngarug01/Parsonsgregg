@@ -37,15 +37,17 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     private final SolutionCompiler compiler;
     private final ThreadSolutionRunner runner;
     private final String userInput;
+    private final String answer;
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
-    public HelloWorldSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, ProgressReporter progressReporter) {
+    HelloWorldSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, String answer, ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
+        this.answer = answer;
         this.progressReporter = progressReporter;
     }
 
@@ -56,7 +58,10 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
 
     @Override
     public boolean evaluate() throws Exception {
-        return compile() && run();
+        boolean ranToCompletion = compile() && run();
+        boolean correctOutput = output.contains(answer);
+        progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
+        return ranToCompletion;
     }
 
     private boolean compile() {
@@ -96,7 +101,9 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
             }
         };
     }
-public String output ;
+
+    private String output = "";
+
     private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {

@@ -16,7 +16,7 @@ class HelloWorldSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, runner,"userInput string inputted into solution", progressReporter);
+    private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, runner,"userInput string inputted into solution", "Hello World!", progressReporter);
 
 
     @Test
