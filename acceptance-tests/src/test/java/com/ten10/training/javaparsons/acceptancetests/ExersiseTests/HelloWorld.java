@@ -10,7 +10,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+@DisplayName("Tests for feature 1: Running a very simple Program.")
 class HelloWorld {
 
     private static DriverFactory driverFactory = new DriverFactory();
@@ -36,6 +36,30 @@ class HelloWorld {
         exersise1.clickSubmit();
         result = exersise1.readFromCorrectAnswerBox();
         assertTrue(result.contains("Hello World!"));
+    }
+
+    @Test
+    void semiColonIsMissed () {
+        exersise1.enterIncorrectHelloWorldToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("Incorrect Answer"));
+    }
+
+    @Test
+    void notHelloWorld () {
+        exersise1.enterNotHelloWorldToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("Telly Tubby!"));
+    }
+
+    @Test
+    void notCalledClassMain () {
+        exersise1.enterNotMainClassToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("class ain is public, should be declared in a file named ain.java"));
     }
 
     @AfterEach

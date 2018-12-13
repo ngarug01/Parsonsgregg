@@ -12,7 +12,9 @@ public class Exersise1 extends BasePage {
     private static String URL = "localhost:8080";
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String HELLO_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
-    private static final String HELLO_WORLD_INCORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
+    private static final String HELLO_WORLD_INCORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
+    private static final String NOT_HELLO_WORLD = "public class Main {public static void main (String [] args) {System.out.println(\"Telly Tubby!\");}}";
+    private static final String NOT_MAIN_METHOD = "public class ain {public static void main (String [] args) {System.out.println(\"Hello World!\");}}";
     private static final By ENTER_BUTTON = By.cssSelector("#enter-answer");
     private static final By CORRECT_ANSWER_BOX = By.cssSelector("#correct-answer");
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
@@ -31,6 +33,13 @@ public class Exersise1 extends BasePage {
         findAndType(INPUT_BOX, HELLO_WORLD_INCORRECT);
     }
 
+    public void enterNotHelloWorldToInput() {
+        findAndType(INPUT_BOX, NOT_HELLO_WORLD);
+    }
+
+    public void enterNotMainClassToInput() {
+        findAndType(INPUT_BOX, NOT_MAIN_METHOD);
+    }
     public void clickSubmit() {
         waitAndClick(ENTER_BUTTON);
     }
@@ -44,12 +53,13 @@ public class Exersise1 extends BasePage {
     public String readFromIncorrectAnswerBox() {
         waitForDivToBeVisible(INCORRECT_ANSWER_BOX);
         WebElement outputbox = driver.findElement(INCORRECT_ANSWER_BOX);
-        return outputbox.getAttribute("value");
+        return outputbox.getText();
     }
 
     public String readFromInformationBox() {
         waitForDivToBeVisible(INFORMATION_BOX);
         WebElement outputbox = driver.findElement(INFORMATION_BOX);
-        return outputbox.getAttribute("value");
+        return outputbox.getText();
     }
+
 }
