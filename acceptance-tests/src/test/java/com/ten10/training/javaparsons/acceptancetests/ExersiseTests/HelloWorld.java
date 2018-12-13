@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class HelloWorld {
@@ -31,12 +31,11 @@ class HelloWorld {
     }
 
     @Test
-    void Test1() {
-
+    void helloWorldInputted() {
         exersise1.enterHelloWorldToInput();
-        exersise1.clickEnterAnswer();
-        result = exersise1.readFromOutputBox();
-        assertEquals("Hello World!\n", result);
+        exersise1.clickSubmit();
+        result = exersise1.readFromCorrectAnswerBox();
+        assertTrue(result.contains("Hello World!"));
     }
 
     @AfterEach

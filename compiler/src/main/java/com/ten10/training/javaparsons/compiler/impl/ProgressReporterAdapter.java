@@ -25,7 +25,7 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
         LOGGER.debug("Received diagnostic: {}", diagnostic);
         switch(diagnostic.getKind()) {
             case ERROR:
-                progressReporter.storeCompilerError(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
+                progressReporter.reportCompilerError(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
                 break;
             default:
                 progressReporter.reportCompilerInfo(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
