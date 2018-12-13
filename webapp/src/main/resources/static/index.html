@@ -3,16 +3,16 @@
 <header>
     <title>Java Parsons "Hello World!"</title>
 </header>
-
 <body>
-    <h1> Java Parsons Problem </h1>
-    <div>
-        <p> Write a Java code which when run will produce a string which reads "Hello World!" message. </p>
-        <p>Input</p>
+    <h1>Java Parsons Problems</h1>
+    <h2>Hello World! Program</h2>
+    <br>
+    <h3> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
+    <div id="input">
+        <br>
         <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"> </textarea>
         <br>
-        <button id="enter-answer">Enter Answer</button>
-        <p>Output</p>
+        <button id="enter-answer">Submit</button>
     </div>
     <div name = "Correct Answer" id = "correct-answer" class="output"></div>
    <div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
@@ -21,18 +21,25 @@
    <style>
        body {
        background-color: #c0c0c0;
+       text-align: center;
        }
-       h1 {text-align: center;
+       h1 {
        color: #6758a6;
        }
        h2 {
-       text-align: center;
        color:#6758a6;
        }
-       #input-box {
+       h3 {
+       color:#6758a6;
+       }
+       div {
            display: block;
-           align-content: center;
-           color: #6758a6;}
+           background-color: #6758a6;
+           border: #c0c0c0;
+           padding: 20px;
+           margin-left: 20%;
+           margin-right: 20%;
+        }
         #correct-answer{
             background-color: rgb(135, 211, 100);
         }
@@ -42,17 +49,11 @@
         #information{
             background-color:  rgb(255, 192, 55);
         }
-       button {
-       display: block;
-       margin-left: 60%;
-       margin-right: 40%;;
-       }
-       .output { display: none;
-       margin-left: auto;
-       margin-right: auto;
-       width: 50%;
-       border: 3px #6758a6;
-       padding: 10px;
+       .output { 
+           display: none;
+           margin: 20px;
+           margin-left: 20%;
+           margin-right: 20%;
        }
    </style>
     <script async>
@@ -85,7 +86,10 @@
                     document.getElementById("correct-answer").innerHTML += (JSON.parse(responce).output+"<br>Correct Answer, Well Done!!!");
                     makeVisible("correct-answer");
                 } else {
-                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect Answer<br>Your output was: " + JSON.parse(responce).output);
+                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect Answer")
+                    if(JSON.parse(responce).output !== ""){
+                        document.getElementById("incorrect-answer").innerHTML += ("<br>Your output was: " + JSON.parse(responce).output);
+                    }
                     errors = JSON.parse(responce).compilerErrors;
                     if(errors.length !== 0){
                         errors.forEach(error => {
