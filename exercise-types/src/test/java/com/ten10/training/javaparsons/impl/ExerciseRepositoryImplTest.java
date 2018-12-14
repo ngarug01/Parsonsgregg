@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;

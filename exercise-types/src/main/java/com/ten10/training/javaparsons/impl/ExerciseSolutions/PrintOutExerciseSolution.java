@@ -1,14 +1,16 @@
-package com.ten10.training.javaparsons.impl;
+package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class ExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class PrintOutExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -41,11 +43,11 @@ public class ExerciseSolution implements Solution, SolutionCompiler.CompilableSo
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
-    public ExerciseSolution(SolutionCompiler compiler,
-                            ThreadSolutionRunner runner,
-                            String userInput,
-                            String answer,
-                            ProgressReporter progressReporter) {
+    public PrintOutExerciseSolution(SolutionCompiler compiler,
+                                    ThreadSolutionRunner runner,
+                                    String userInput,
+                                    String answer,
+                                    ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
@@ -56,7 +58,11 @@ public class ExerciseSolution implements Solution, SolutionCompiler.CompilableSo
 
     @Override
     public boolean evaluate() throws Exception {
-        boolean ranToCompletion = compile() && run();
+        boolean canrun = false;
+        if (run() != Optional.empty()) {
+            canrun = true;
+        }
+        boolean ranToCompletion = compile() && canrun;
         boolean correctOutput = output.contains(answer);
         progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
         return ranToCompletion;
@@ -102,7 +108,7 @@ public class ExerciseSolution implements Solution, SolutionCompiler.CompilableSo
 
     private String output = "";
 
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
             return runner.run(getClassLoader(), entryPoint, progressReporter);

@@ -7,13 +7,13 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
-class CaptureConsoleOutput {
+public class CaptureConsoleOutput {
 
     private ByteArrayOutputStream outputStream;
     private PrintStream old;
     private boolean recording;
 
-    void start() {
+    public void start() {
         if (recording) {
             return;
         }
@@ -29,7 +29,7 @@ class CaptureConsoleOutput {
         System.setOut(custom);
     }
 
-    String stop() {
+    public String stop() {
         if (!recording) {
             return "stopped";
         }

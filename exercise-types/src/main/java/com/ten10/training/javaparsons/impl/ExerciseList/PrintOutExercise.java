@@ -1,9 +1,10 @@
-package com.ten10.training.javaparsons.impl;
+package com.ten10.training.javaparsons.impl.ExerciseList;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 public class PrintOutExercise implements Exercise {
@@ -13,7 +14,7 @@ public class PrintOutExercise implements Exercise {
     private final String answer;
     private final int id;
 
-    PrintOutExercise(SolutionCompiler compiler, String answer , String exerciseName ,int id) {
+    public PrintOutExercise(SolutionCompiler compiler, String answer, String exerciseName, int id) {
         this.compiler = compiler;
         this.answer =answer;
         this.exerciseName = exerciseName;
@@ -37,7 +38,7 @@ public class PrintOutExercise implements Exercise {
 
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
-        return new ExerciseSolution(compiler, runner, userInput, answer,  progressReporter);
+        return new PrintOutExerciseSolution(compiler, runner, userInput, answer,  progressReporter);
     }
 
     @Override

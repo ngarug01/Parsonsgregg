@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 
@@ -33,9 +34,9 @@ class CaptureConsoleOutputTest {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         ThreadSolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter progressReporter = mock(ProgressReporter.class);
-        ExerciseSolution exerciseSolution = new ExerciseSolution(compiler, runner, SUCCESSFUL_BUILD, "Hello World!", progressReporter);
+        PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, SUCCESSFUL_BUILD, "Hello World!", progressReporter);
         //Act
-        exerciseSolution.evaluate();
+        printOutExerciseSolution.evaluate();
         //Assert
         verify(progressReporter).storeCapturedOutput("Hello World!" + LINE_ENDING);
 
