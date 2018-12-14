@@ -47,13 +47,4 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         assertFalse(solution.evaluate());
     }
-
-    @Test
-    void enteringCodeThatHasAReturnTypeOfInterger() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
-        Exercise exercise = repository.getExerciseByIdentifier(1);
-        Solution solution = exercise.getSolutionFromUserInput(RETURN_TYPE_INT, progressReporter);
-        assertFalse(solution.evaluate());
-    }
 }
