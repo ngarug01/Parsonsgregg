@@ -27,7 +27,7 @@ class HelloWorld {
 
     @BeforeEach
     void beforeEveryTest() {
-        exersise1.goToExersise1();
+        exersise1.goToHomepage();
     }
 
     @Test

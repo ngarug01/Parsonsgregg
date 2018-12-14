@@ -10,19 +10,19 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-class HelloWorldExerciseTest {
+class PrintOutExerciseTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final HelloWorldExercise helloWorldExercise = new HelloWorldExercise(compiler);
+    private final PrintOutExercise printOutExercise = new PrintOutExercise(compiler, "","",1);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void helloWorldExerciseIdentifierIs1() {
-        assertEquals(1, helloWorldExercise.getIdentifier());
+        assertEquals(1, printOutExercise.getIdentifier());
     }
 
     @Test
     void getSolutionFromUserInputReturnsHelloWorldSolution() {
-        assertThat(helloWorldExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(HelloWorldSolution.class)));
+        assertThat(printOutExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(ExerciseSolution.class)));
     }
 }

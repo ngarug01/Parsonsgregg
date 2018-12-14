@@ -5,7 +5,11 @@
 </header>
 <body>
     <h1>Java Parsons Problems</h1>
-    <h2>Hello World! Program</h2>
+    <section id="ExerciseSelection">
+        <select id="ExerciseList">
+        </select>
+    </section>
+    <p id="Description" text="smsmsm" ></p>
     <br>
     <h3> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
     <div id="input">
@@ -18,6 +22,7 @@
    <div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
    <div name = "Information" id = "information" class  = "output"></div>
    </body>
+
    <style>
        body {
        background-color: #c0c0c0;
@@ -49,7 +54,7 @@
         #information{
             background-color:  rgb(255, 192, 55);
         }
-       .output { 
+       .output {
            display: none;
            margin: 20px;
            margin-left: 20%;
@@ -59,17 +64,54 @@
     <script async>
 
         window.onload = function () {
+         var XHR = new XMLHttpRequest();
+               urlGetE = "http://localhost:8080/exercise/getExercises";
+               XHR.addEventListener("load", handleResponseGet);
+               XHR.open("GET" , urlGetE ,true);
+               XHR.send(null);
+
+               function handleResponseGet() {
+                   let XHR = this;
+                   var responce = XHR.responseText;
+                   if (XHR.readyState === 4 && XHR.status === 200){
+                       var jsonData = JSON.parse(responce);
+                       // Populate Select Field
+                       var parent = document.getElementById("ExerciseList");
+                       for (const exerciseTrio of jsonData) {
+                           const elem = document.createElement("option");
+                           elem.setAttribute("value", exerciseTrio.url);
+                           elem.setAttribute("description",exerciseTrio.description)
+                           elem.text = exerciseTrio.title;
+                           parent.appendChild(elem);
+                        }
+                        console.log(responce,jsonData);
+                        var pdes = document.getElementById("Description");
+                        var list = document.getElementById("ExerciseList");
+                        var des=list.options[list.selectedIndex].getAttribute("description");
+                        pdes.textContent = des;
+                   }
+                   else
+                       console.log(XHR.status);
+                   }
+                   document.getElementById("ExerciseList").onchange = function descriptionChange(){
+                       var pdes = document.getElementById("Description");
+                       var list =document.getElementById("ExerciseList");
+                       var deschange = list.options[list.selectedIndex].getAttribute("description");
+                       pdes.textContent = deschange;
+                   }
+
             document.getElementById("enter-answer").onclick = function postAnswer() {
                 outputReset();
-                url = "http://localhost:8080/exercise1";
-                var XHR = new XMLHttpRequest();
-                XHR.addEventListener("load", handleResponse);
-                var helloWorld = JSON.stringify({ input: document.getElementById("input-box").value });
+                var list = document.getElementById("ExerciseList");
+                   var url =list.options[list.selectedIndex].getAttribute("value");
+                   console.log(url);
+                XHR.addEventListener("load", handleResponsePost);
+                var exercise = JSON.stringify({ input: document.getElementById("input-box").value });
                 XHR.open("POST", url, true);
                 XHR.setRequestHeader('Content-Type', 'application/json');
-                XHR.send(helloWorld);
+                XHR.send(exercise);
             }
-            function handleResponse() {
+            function handleResponsePost() {
                 let XHR = this;
                 var responce = XHR.responseText;
                 if (XHR.readyState === 4 && XHR.status === 200) {

@@ -16,6 +16,6 @@ class ExerciseRepositoryImplTest {
     @Test
     void exercise1IsAHelloWorldExercise() {
 
-        assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(HelloWorldExercise.class)));
+        assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(PrintOutExercise.class)));
     }
 }

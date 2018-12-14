@@ -21,7 +21,7 @@ public class Exersise1 extends BasePage {
     private static final By INFORMATION_BOX = By.cssSelector("#information");
 
 
-    public void goToExersise1() {
+    public void goToHomepage() {
         driver.get(URL);
     }
 

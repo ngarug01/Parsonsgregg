@@ -70,3 +70,4 @@ public class Results implements ProgressReporter {
         return succesfulSolution;
     }
 }
+
