@@ -25,7 +25,14 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
         // Locate the method we are going to invoke
         Class<?> klass = classLoader.loadClass(entryPointClassName);
-        Method method = klass.getMethod(entryPointMethodName, parameterTypes);
+        Method method;
+        try {
+            method = klass.getMethod(entryPointMethodName, parameterTypes);
+        } catch (NoSuchMethodException e) {
+            progressReporter.reportRunnerError("No such method " + entryPointMethodName);
+            return false;
+        }
+
         Object instance = null;
         if (!Modifier.isStatic(method.getModifiers())) {
             instance = klass.getDeclaredConstructor().newInstance();
@@ -47,7 +54,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
         } finally {
             executor.shutdownNow();
         }
-
         return true;
     }
 

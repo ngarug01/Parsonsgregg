@@ -90,10 +90,16 @@
                     if(JSON.parse(responce).output !== ""){
                         document.getElementById("incorrect-answer").innerHTML += ("<br>Your output was: " + JSON.parse(responce).output);
                     }
-                    errors = JSON.parse(responce).compilerErrors;
-                    if(errors.length !== 0){
-                        errors.forEach(error => {
+                    compilerErrors = JSON.parse(responce).compilerErrors;
+                    if(compilerErrors.length !== 0){
+                        compilerErrors.forEach(error => {
                             document.getElementById("incorrect-answer").innerHTML += ("<br>Error on line: "+error.lineNumber+"<br>The message was: "+error.message+"<br>");
+                        });
+                    }
+                    runnerErrors = JSON.parse(responce).runnerErrors;
+                    if(runnerErrors.length !== 0){
+                        runnerErrors.forEach(error => {
+                            document.getElementById("incorrect-answer").innerHTML += ("<br>The message was: "+error.message+"<br>");
                         });
                     }
                     makeVisible("incorrect-answer");

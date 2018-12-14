@@ -14,7 +14,19 @@ public class Exersise1 extends BasePage {
     private static final String HELLO_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
     private static final String HELLO_WORLD_INCORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
     private static final String NOT_HELLO_WORLD = "public class Main {public static void main (String [] args) {System.out.println(\"Telly Tubby!\");}}";
-    private static final String NOT_MAIN_METHOD = "public class ain {public static void main (String [] args) {System.out.println(\"Hello World!\");}}";
+    private static final String NOT_MAIN_CLASS = "public class ain {public static void main (String [] args) {System.out.println(\"Hello World!\");}}";
+    private static final String NOT_MAIN_METHOD = "public class Main {public static void ain (String [] args) {System.out.println(\"Hello World!\");}}";
+    private static final String HELLO_WORLD_INFORMATION =
+        "import java.util.List;\n" +
+        "import java.util.ArrayList;\n" +
+        "\n" +
+        "public class Main {\n" +
+        "    public static void main(String[] args) {\n" +
+        "        List<?> l = new ArrayList<>();\n" +
+        "        List<String> l2 = (List<String>) l;\n" +
+        "        System.out.println(\"Hello World!\");\n" +
+        "    }\n" +
+        "}";
     private static final By ENTER_BUTTON = By.cssSelector("#enter-answer");
     private static final By CORRECT_ANSWER_BOX = By.cssSelector("#correct-answer");
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
@@ -38,8 +50,13 @@ public class Exersise1 extends BasePage {
     }
 
     public void enterNotMainClassToInput() {
-        findAndType(INPUT_BOX, NOT_MAIN_METHOD);
+        findAndType(INPUT_BOX, NOT_MAIN_CLASS);
     }
+
+    public void enterHelloWorldInformation() {
+        findAndType(INPUT_BOX, HELLO_WORLD_INFORMATION);
+    }
+
     public void clickSubmit() {
         waitAndClick(ENTER_BUTTON);
     }
@@ -56,10 +73,13 @@ public class Exersise1 extends BasePage {
         return outputbox.getText();
     }
 
-    public String readFromInformationBox() {
+    public boolean informationBoxDisplayed() {
         waitForDivToBeVisible(INFORMATION_BOX);
         WebElement outputbox = driver.findElement(INFORMATION_BOX);
-        return outputbox.getText();
+        return true;
     }
 
+    public void enterNotMainMethodToInput() {
+        findAndType(INPUT_BOX, NOT_MAIN_METHOD);
+    }
 }

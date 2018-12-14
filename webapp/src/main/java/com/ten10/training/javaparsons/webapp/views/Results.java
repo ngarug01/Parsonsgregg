@@ -8,14 +8,21 @@ import java.util.List;
 public class Results implements ProgressReporter {
 
 
+    public List<Information> getRunnerErrors() {
+        return runnerErrors;
+    }
+
     public static class Information {
 
-        private final long lineNumber;
+        private long lineNumber;
         private final String message;
 
         Information(long lineNumber, String message) {
-
             this.lineNumber = lineNumber;
+            this.message = message;
+        }
+
+        Information(String message){
             this.message = message;
         }
 
@@ -34,6 +41,8 @@ public class Results implements ProgressReporter {
 
     private final List<Information> compilerErrors = new ArrayList<>();
     private final List<Information> compilerInfo = new ArrayList<>();
+    private final List<Information> runnerErrors = new ArrayList<>();
+
 
     public String getOutput() {
         return output;
@@ -64,6 +73,11 @@ public class Results implements ProgressReporter {
 
     public void setSuccessfulSolution(boolean answer) {
         succesfulSolution = answer;
+    }
+
+    @Override
+    public void reportRunnerError(String message) {
+        runnerErrors.add(new Information(message));
     }
 
     public boolean isSuccesfulSolution() {

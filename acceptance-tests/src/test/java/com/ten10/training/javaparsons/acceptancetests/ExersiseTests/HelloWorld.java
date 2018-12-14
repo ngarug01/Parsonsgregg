@@ -62,13 +62,24 @@ class HelloWorld {
         assertTrue(result.contains("class ain is public, should be declared in a file named ain.java"));
     }
 
-    @AfterEach
-    void afterEveryTest() {
-        driver.quit();
+    @Test
+    void notCalledMethodMain () {
+        exersise1.enterNotMainMethodToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("No such method main"));
+    }
+
+    @Test
+    void informationBoxDisplayed () {
+        exersise1.enterHelloWorldInformation();
+        exersise1.clickSubmit();
+        assertTrue(exersise1.informationBoxDisplayed());
     }
 
     @AfterAll
     static void afterAllTests() {
+        driver.quit();
         ctx.close();
     }
 }
