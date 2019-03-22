@@ -98,7 +98,7 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
         };
     }
 public String output ;
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException, IOException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
             return runner.run(getClassLoader(), entryPoint, progressReporter);

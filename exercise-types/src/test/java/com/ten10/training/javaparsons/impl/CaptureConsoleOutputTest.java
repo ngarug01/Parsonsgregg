@@ -73,20 +73,24 @@ class CaptureConsoleOutputTest {
 
     @Test
     void flushOutputStream() throws IOException {
-        OutputStreamCombiner outputStreamCombiner = mock(OutputStreamCombiner.class);
-        cco.start();
+        OutputStream mockOutputStream = mock(OutputStream.class);
+        List<OutputStream> listOutputStream = new ArrayList<>();
+        listOutputStream.add(mockOutputStream);
+        OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
         outputStreamCombiner.write('b');
         outputStreamCombiner.flush();
-        assertEquals(cco.outputStream.toString(), "");
+        assertEquals(cco.outputStream, null);
     }
 
     @Test
     void closeOutputStream() throws IOException {
-        OutputStreamCombiner outputStreamCombiner = mock(OutputStreamCombiner.class);
-        cco.start();
+        OutputStream mockOutputStream = mock(OutputStream.class);
+        List<OutputStream> listOutputStream = new ArrayList<>();
+        listOutputStream.add(mockOutputStream);
+        OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
         outputStreamCombiner.write('b');
         outputStreamCombiner.close();
-        assertEquals(cco.outputStream.toString(), "");
+        assertEquals(cco.outputStream, null);
     }
 
 }

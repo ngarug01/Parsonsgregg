@@ -29,7 +29,7 @@ class CaptureConsoleOutput {
         System.setOut(custom);
     }
 
-    String stop() throws IOException {
+    String stop() {
         if (!recording) {
             throw new IllegalStateException("stop() called before start()");
         }
