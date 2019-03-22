@@ -7,6 +7,7 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class HelloWorldSolution implements Solution, SolutionCompiler.CompilableSolution {
@@ -97,7 +98,7 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
         };
     }
 public String output ;
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException, IOException {
         captureConsoleOutput.start();
         try {
             return runner.run(getClassLoader(), entryPoint, progressReporter);

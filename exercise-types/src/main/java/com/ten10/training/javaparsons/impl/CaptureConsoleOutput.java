@@ -9,7 +9,7 @@ import java.util.List;
 
 class CaptureConsoleOutput {
 
-    private ByteArrayOutputStream outputStream;
+    ByteArrayOutputStream outputStream;
     private PrintStream old;
     private boolean recording;
 
@@ -29,9 +29,9 @@ class CaptureConsoleOutput {
         System.setOut(custom);
     }
 
-    String stop() {
+    String stop() throws IOException {
         if (!recording) {
-            return "stopped";
+            throw new IllegalStateException("stop() called before start()");
         }
 
         System.setOut(old);
@@ -45,7 +45,7 @@ class CaptureConsoleOutput {
         return capturedValue;
     }
 
-    private class OutputStreamCombiner extends OutputStream {
+    static class OutputStreamCombiner extends OutputStream {
         private List<OutputStream> outputStreams;
 
         OutputStreamCombiner(List<OutputStream> outputStreams) {
