@@ -41,8 +41,8 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void helloWorldCompilerFailBuild() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         assertFalse(solution.evaluate());

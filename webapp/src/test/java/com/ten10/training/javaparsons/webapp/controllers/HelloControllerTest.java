@@ -51,7 +51,7 @@ class HelloControllerTest {
         Results results = new Results();
         results.storeCapturedOutput("Foo");
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Foo\"}"));
+        assertThat(output, is("{\"output\":\"Foo\",\"succesfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 
     @Test

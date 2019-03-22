@@ -60,8 +60,10 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
     public boolean evaluate() throws Exception {
         boolean cancompile = compile();
         boolean canrun = false;
-        if (run() != Optional.empty()) {
-            canrun = true;
+        if(byteCode != null) {
+            if (run() != Optional.empty()) {
+                canrun = true;
+            }
         }
         boolean ranToCompletion = cancompile && canrun;
         boolean correctOutput = output.contains(answer);
