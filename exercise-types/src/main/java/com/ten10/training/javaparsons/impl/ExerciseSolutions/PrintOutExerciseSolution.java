@@ -58,11 +58,12 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
 
     @Override
     public boolean evaluate() throws Exception {
+        boolean cancompile = compile();
         boolean canrun = false;
         if (run() != Optional.empty()) {
             canrun = true;
         }
-        boolean ranToCompletion = compile() && canrun;
+        boolean ranToCompletion = cancompile && canrun;
         boolean correctOutput = output.contains(answer);
         progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
         return ranToCompletion;
