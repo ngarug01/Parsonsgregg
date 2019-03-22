@@ -59,14 +59,42 @@ class CaptureConsoleOutput {
         }
 
         public void flush() throws IOException {
+            IOException ioException=null;
+            RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
-                os.flush();
+                try {
+                    os.flush();
+                } catch(IOException e) {
+                    ioException=e;
+                } catch (RuntimeException e) {
+                    runtimeException =e;
+                }
+            }
+            if (null!=ioException){
+                throw ioException;
+            }
+            if (null!=runtimeException){
+                throw runtimeException;
             }
         }
 
         public void close() throws IOException {
+            IOException ioException=null;
+            RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
-                os.close();
+                try {
+                    os.close();
+                } catch(IOException e) {
+                    ioException=e;
+                } catch (RuntimeException e) {
+                    runtimeException =e;
+                }
+            }
+            if (null!=ioException){
+                throw ioException;
+            }
+            if (null!=runtimeException){
+                throw runtimeException;
             }
         }
     }

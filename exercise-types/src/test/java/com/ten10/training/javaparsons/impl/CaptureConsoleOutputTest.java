@@ -18,15 +18,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class CaptureConsoleOutputTest {
 
     private CaptureConsoleOutput cco = new CaptureConsoleOutput();
     private static final String LINE_ENDING = System.getProperty("line.separator");
-    private static final String SUCCESSFUL_BUILD =
-        "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
 
     @Nested
     @DisplayName("start()")
@@ -57,40 +54,148 @@ class CaptureConsoleOutputTest {
             assertThrows(IllegalStateException.class, cco::stop);
         }
 
+
+    }
+
+    @Test
+    void writeOutputStream() throws IOException {
+        OutputStream mockOutputStream = mock(OutputStream.class);
+        List<OutputStream> listOutputStream = new ArrayList<>();
+        listOutputStream.add(mockOutputStream);
+        OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+        outputStreamCombiner.write('b');
+        verify(mockOutputStream).write('b');
+    }
+
+    @Nested
+    @DisplayName("flush()")
+    class Flush {
+
         @Test
-        void correctOutputShouldBeHelloWorld() throws Exception {
-            //Arrange
-            SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-            ThreadSolutionRunner runner = new ThreadSolutionRunner();
-            ProgressReporter progressReporter = mock(ProgressReporter.class);
-            HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, runner, SUCCESSFUL_BUILD, progressReporter);
-            //Act
-            helloWorldSolution.evaluate();
-            //Assert
-            verify(progressReporter).storeCapturedOutput("Hello World!" + LINE_ENDING);
+        void flushOutputStream() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            outputStreamCombiner.flush();
+            verify(mockOutputStream).flush();
         }
+
+        @Test
+        void flushMultipleOutputStreams() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            OutputStream mockOutputStream2 = mock(OutputStream.class);
+            OutputStream mockOutputStream3 = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            listOutputStream.add(mockOutputStream2);
+            listOutputStream.add(mockOutputStream3);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            outputStreamCombiner.flush();
+            verify(mockOutputStream).flush();
+            verify(mockOutputStream2).flush();
+            verify(mockOutputStream3).flush();
+        }
+
+        @Test
+        void flushMultipleOutputStreamsWithIOException() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            OutputStream mockOutputStream2 = mock(OutputStream.class);
+            OutputStream mockOutputStream3 = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            listOutputStream.add(mockOutputStream2);
+            listOutputStream.add(mockOutputStream3);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            doThrow(new IOException()).when(mockOutputStream2).flush();
+            assertThrows(IOException.class, outputStreamCombiner::flush);
+            verify(mockOutputStream).flush();
+            verify(mockOutputStream2).flush();
+            verify(mockOutputStream3).flush();
+        }
+
+        @Test
+        void flushMultipleOutputStreamsWithRuntimeException() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            OutputStream mockOutputStream2 = mock(OutputStream.class);
+            OutputStream mockOutputStream3 = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            listOutputStream.add(mockOutputStream2);
+            listOutputStream.add(mockOutputStream3);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            doThrow(new RuntimeException()).when(mockOutputStream2).flush();
+            assertThrows(RuntimeException.class, outputStreamCombiner::flush);
+            verify(mockOutputStream).flush();
+            verify(mockOutputStream2).flush();
+            verify(mockOutputStream3).flush();
+        }
+
     }
 
-    @Test
-    void flushOutputStream() throws IOException {
-        OutputStream mockOutputStream = mock(OutputStream.class);
-        List<OutputStream> listOutputStream = new ArrayList<>();
-        listOutputStream.add(mockOutputStream);
-        OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
-        outputStreamCombiner.write('b');
-        outputStreamCombiner.flush();
-        assertEquals(cco.outputStream, null);
-    }
+    @Nested
+    @DisplayName("close()")
+    class Close {
 
-    @Test
-    void closeOutputStream() throws IOException {
-        OutputStream mockOutputStream = mock(OutputStream.class);
-        List<OutputStream> listOutputStream = new ArrayList<>();
-        listOutputStream.add(mockOutputStream);
-        OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
-        outputStreamCombiner.write('b');
-        outputStreamCombiner.close();
-        assertEquals(cco.outputStream, null);
+        @Test
+        void closeOutputStream() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            outputStreamCombiner.close();
+            verify(mockOutputStream).close();
+        }
+
+        @Test
+        void CloseMultipleOutputStreams() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            OutputStream mockOutputStream2 = mock(OutputStream.class);
+            OutputStream mockOutputStream3 = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            listOutputStream.add(mockOutputStream2);
+            listOutputStream.add(mockOutputStream3);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            outputStreamCombiner.close();
+            verify(mockOutputStream).close();
+            verify(mockOutputStream2).close();
+            verify(mockOutputStream3).close();
+        }
+
+        @Test
+        void closeMultipleOutputStreamsWithIOException() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            OutputStream mockOutputStream2 = mock(OutputStream.class);
+            OutputStream mockOutputStream3 = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            listOutputStream.add(mockOutputStream2);
+            listOutputStream.add(mockOutputStream3);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            doThrow(new IOException()).when(mockOutputStream2).close();
+            assertThrows(IOException.class, outputStreamCombiner::close);
+            verify(mockOutputStream).close();
+            verify(mockOutputStream2).close();
+            verify(mockOutputStream3).close();
+        }
+
+        @Test
+        void closeMultipleOutputStreamsWithRuntimeException() throws IOException {
+            OutputStream mockOutputStream = mock(OutputStream.class);
+            OutputStream mockOutputStream2 = mock(OutputStream.class);
+            OutputStream mockOutputStream3 = mock(OutputStream.class);
+            List<OutputStream> listOutputStream = new ArrayList<>();
+            listOutputStream.add(mockOutputStream);
+            listOutputStream.add(mockOutputStream2);
+            listOutputStream.add(mockOutputStream3);
+            OutputStreamCombiner outputStreamCombiner = new OutputStreamCombiner(listOutputStream);
+            doThrow(new RuntimeException()).when(mockOutputStream2).close();
+            assertThrows(RuntimeException.class, outputStreamCombiner::close);
+            verify(mockOutputStream).close();
+            verify(mockOutputStream2).close();
+            verify(mockOutputStream3).close();
+        }
     }
 
 }
