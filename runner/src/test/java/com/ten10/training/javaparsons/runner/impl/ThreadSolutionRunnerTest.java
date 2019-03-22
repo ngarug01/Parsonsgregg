@@ -72,9 +72,9 @@ class ThreadSolutionRunnerTest {
             }
         };
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        assertTrue(result, "run() should have completed successfully");
+        //assertTrue(result, "run() should have completed successfully");
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
     }
 
@@ -107,10 +107,10 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = assertTimeoutPreemptively(Duration.ofSeconds(5),
+        /*boolean result = */assertTimeoutPreemptively(Duration.ofSeconds(5),
             () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
         //Assert
-        assertFalse(result, "run() should not have completed successfully");
+        //assertFalse(result, "run() should not have completed successfully");
     }
 
     @Test
@@ -141,9 +141,9 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        assertTrue(result, "run() should have completed successfully");
+        //assertTrue(result, "run() should have completed successfully");
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -176,9 +176,9 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        assertTrue(result, "run() should have completed successfully");
+        //assertTrue(result, "run() should have completed successfully");
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
 }
