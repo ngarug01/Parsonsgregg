@@ -7,11 +7,6 @@ import java.util.List;
 
 public class Results implements ProgressReporter {
 
-
-    public List<Information> getRunnerErrors() {
-        return runnerErrors;
-    }
-
     public static class Information {
 
         private long lineNumber;
@@ -54,6 +49,10 @@ public class Results implements ProgressReporter {
 
     public List<Information> getCompilerInfo() {
         return compilerInfo;
+    }
+
+    public List<Information> getRunnerErrors() {
+        return runnerErrors;
     }
 
     @Override
