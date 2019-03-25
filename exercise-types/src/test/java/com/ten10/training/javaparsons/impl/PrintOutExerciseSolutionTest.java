@@ -17,11 +17,11 @@ class PrintOutExerciseSolutionTest {
     private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", progressReporter);
 
 
-/*    @Test
+   @Test
     void checkEvaluate() throws Exception {
         printOutExerciseSolution.evaluate();
         verify(compiler).compile(printOutExerciseSolution, progressReporter);
-    }*/
+    }
 
     @Test
     void checkGetFullClassText() {
@@ -32,6 +32,7 @@ class PrintOutExerciseSolutionTest {
     void checkGetClassName() {
         assertEquals("Main", printOutExerciseSolution.getClassName());
     }
+
 
 }
 
