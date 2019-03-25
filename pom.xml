@@ -148,6 +148,7 @@
         <module>core-api</module>
         <module>webapp</module>
         <module>exercise-types</module>
+        <module>exercise-types/integration-tests</module>
         <module>compiler</module>
         <module>bootstrap</module>
         <module>acceptance-tests</module>
