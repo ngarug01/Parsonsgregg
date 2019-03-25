@@ -7,24 +7,42 @@ import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     private final List<? extends Exercise> exercises;
     private SolutionCompiler compiler;
 
+    /**
+     * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
+     * @param compiler Prepares an user input to be run.
+     */
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
         PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1);
         PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2);
         this.compiler = compiler;
         exercises = Arrays.asList(helloWorld, cruelWorld);
+
     }
 
+    /**
+     * @param identifier The unique identifier for an exercise
+     * @return The exercise with a given id.
+     */
     @Override
     public Exercise getExerciseByIdentifier(int identifier) {
-        return exercises.get(identifier - 1);
+        for(Exercise exercise : exercises){
+            if(exercise.getIdentifier() == identifier){
+                return exercise;
+            }
+        }
+        return null;
     }
 
+    /**
+     * @return The number of exercises available.
+     */
     @Override
     public int getExerciseArraySize() {
         return exercises.size();
