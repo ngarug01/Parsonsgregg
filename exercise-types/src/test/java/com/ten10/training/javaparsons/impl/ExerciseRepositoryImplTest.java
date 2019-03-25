@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,7 +12,8 @@ import static org.mockito.Mockito.mock;
 class ExerciseRepositoryImplTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler);
+    private final SolutionRunner runner = mock(SolutionRunner.class);
+    private final ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler, runner);
 
     @Test
     void exercise1IsAHelloWorldExercise() {

@@ -5,7 +5,6 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.util.concurrent.ExecutionException;
 
@@ -35,13 +34,13 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
     };
 
     private final SolutionCompiler compiler;
-    private final ThreadSolutionRunner runner;
+    private final SolutionRunner runner;
     private final String userInput;
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
-    public HelloWorldSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, ProgressReporter progressReporter) {
+    public HelloWorldSolution(SolutionCompiler compiler, SolutionRunner runner, String userInput, ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
@@ -51,7 +50,7 @@ public class HelloWorldSolution implements Solution, SolutionCompiler.Compilable
 
     @Override
     public Exercise getExercise() {
-        return new HelloWorldExercise(compiler);
+        return new HelloWorldExercise(compiler, runner);
     }
 
     @Override

@@ -4,14 +4,15 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 public class HelloWorldExercise implements Exercise {
-    private SolutionCompiler compiler;
-    private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private final SolutionCompiler compiler;
+    private final SolutionRunner runner;
 
-    HelloWorldExercise(SolutionCompiler compiler) {
+    HelloWorldExercise(SolutionCompiler compiler, SolutionRunner runner) {
         this.compiler = compiler;
+        this.runner = runner;
     }
 
     @Override
