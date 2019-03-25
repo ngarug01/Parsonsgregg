@@ -33,7 +33,7 @@ class ExerciseControllerTest {
 
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
 
     @Autowired
