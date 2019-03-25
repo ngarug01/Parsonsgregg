@@ -13,14 +13,15 @@ import static org.mockito.Mockito.mock;
 class ExerciseRepositoryImplTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler);
 
     @Test
     void exercise1IsAHelloWorldExercise() {
+        ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler);
         assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(PrintOutExercise.class)));
     }
     @Test
     void getNumberOfElementsInExercisesArray(){
+        ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler);
         int result = exerciseRepository.getExerciseArraySize();
         assertEquals(2 , result);
     }

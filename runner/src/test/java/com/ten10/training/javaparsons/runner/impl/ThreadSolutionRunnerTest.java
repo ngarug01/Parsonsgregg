@@ -143,10 +143,8 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        /*boolean result = */assertTimeoutPreemptively(Duration.ofSeconds(5),
-            () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
         //Assert
-        //assertFalse(result, "run() should not have completed successfully");
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
     }
 
     @Test
