@@ -7,12 +7,19 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Store all System outs from when start() is called.
+ * Returns all System outs from when start() was called after stop() is called.
+ */
 public class CaptureConsoleOutput {
 
     private ByteArrayOutputStream outputStream;
     private PrintStream old;
     private boolean recording;
 
+    /**
+     * Begins recording everything printed out by the System.
+     */
     public void start() {
         if (recording) {
             return;
@@ -29,6 +36,10 @@ public class CaptureConsoleOutput {
         System.setOut(custom);
     }
 
+    /**
+     * Stop recording the System output and return what has been stored.
+     * @return A String of everything outputted to the System since start() was called.
+     */
     public String stop() {
         if (!recording) {
             return "stopped";

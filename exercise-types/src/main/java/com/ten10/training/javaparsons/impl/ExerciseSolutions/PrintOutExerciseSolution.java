@@ -43,6 +43,14 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
+    /**
+     * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
+     * @param compiler SolutionCompiler to compile the user input.
+     * @param runner ThreadSolutionRunner to run the compiled code.
+     * @param userInput The user input as a String.
+     * @param answer Expected result of running the user input.
+     * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
+     */
     public PrintOutExerciseSolution(SolutionCompiler compiler,
                                     ThreadSolutionRunner runner,
                                     String userInput,
@@ -56,35 +64,54 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
         this.progressReporter = progressReporter;
     }
 
+    /**
+     * Compile and Run the stored user input then compares the output to the expected output.
+     * @return True if the output matches, else return False.
+     * @throws Exception Exceptions when
+     */
     @Override
     public boolean evaluate() throws Exception {
         boolean cancompile = compile();
-        boolean canrun = false;
-        if(byteCode != null) {
-            if (run() != Optional.empty()) {
-                canrun = true;
-            }
-        }
+        boolean canrun = canRun();
         boolean ranToCompletion = cancompile && canrun;
-        boolean correctOutput = output.contains(answer);
+        boolean correctOutput = output.trim().equals(answer);
         progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
         return ranToCompletion;
+    }
+
+    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        if(byteCode != null) {
+            if (run() != Optional.empty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean compile() {
         return compiler.compile(this, progressReporter);
     }
 
+    /**
+     * @return The User Input as a CharSequence.
+     */
     @Override
     public CharSequence getFullClassText() {
         return userInput;
     }
 
+    /**
+     * @return The name of the Class for the solution.
+     */
     @Override
     public String getClassName() {
         return "Main";
     }
 
+    /**
+     * Store the byteCode of a solution. Used by the Runner to run the code.
+     * @param byteCode compiled java code.
+     */
     @Override
     public void recordCompiledClass(byte[] byteCode) {
         this.byteCode = byteCode;
