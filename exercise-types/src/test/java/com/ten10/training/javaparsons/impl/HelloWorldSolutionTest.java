@@ -2,7 +2,7 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 
 class HelloWorldSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private SolutionRunner runner = mock(SolutionRunner.class);
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
     private final HelloWorldSolution helloWorldSolution = new HelloWorldSolution(compiler, runner,"userInput string inputted into solution", progressReporter);
 
