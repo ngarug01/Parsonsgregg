@@ -8,15 +8,25 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import javax.tools.Diagnostic;
 
 import javax.tools.ToolProvider;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 
 class ExerciseAndSolutionIT {
 private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
+
     private static final String SUCCESSFUL_BUILD =
         "public class Main {" +
             " public static void main(String[] args) {" +
@@ -46,5 +56,20 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         assertFalse(solution.evaluate());
+
+
+    }
+
+    @Test
+    void helloWorldCompilerLogsCompilationError() throws Exception {
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        Exercise exercise = repository.getExerciseByIdentifier(1);
+        Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
+
+        solution.evaluate();
+
+        Mockito.verify(progressReporter, atLeastOnce()).reportCompilerError(anyLong(), anyString());
+
     }
 }

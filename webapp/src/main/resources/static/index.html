@@ -13,7 +13,7 @@
     <h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
     <div id="input">
         <br>
-        <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"></textarea>
+        <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
         <br>
         <button id="enter-answer">Submit</button>
     </div>
@@ -138,13 +138,13 @@
                     compilerErrors = JSON.parse(responce).compilerErrors;
                     if(compilerErrors.length !== 0){
                         compilerErrors.forEach(error => {
-                            document.getElementById("incorrect-answer").innerHTML += ("<br>Error on line: "+error.lineNumber+"<br>The message was: "+error.message+"<br>");
+                            document.getElementById("incorrect-answer").innerHTML += ("<br>Error on line: "+error.lineNumber+"<br>The compiler error description was: "+error.message+"<br>");
                         });
                     }
                     runnerErrors = JSON.parse(responce).runnerErrors;
                     if(runnerErrors.length !== 0){
                         runnerErrors.forEach(error => {
-                            document.getElementById("incorrect-answer").innerHTML += ("<br>The message was: "+error.message+"<br>");
+                            document.getElementById("incorrect-answer").innerHTML += ("<br>The runner error description was: "+error.message+"<br>");
                         });
                     }
                     makeVisible("incorrect-answer");
@@ -152,7 +152,7 @@
                 if(JSON.parse(responce).compilerInfo.length !== 0){
                     information = JSON.parse(responce).compilerInfo;
                     information.forEach(info => {
-                        document.getElementById("information").innerHTML += ("Information about line: "+info.lineNumber+"<br>The message was: "+info.message+"<br>");
+                        document.getElementById("information").innerHTML += ("Information about line: "+info.lineNumber+"<br>this come from here: "+info.message+"<br>");
                     });
                     makeVisible("information");
                 }

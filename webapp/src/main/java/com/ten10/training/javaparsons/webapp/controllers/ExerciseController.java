@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/exercise/")
-public class HelloController {
+public class ExerciseController {
 
     @Autowired
     ExerciseRepository exerciseRepository;

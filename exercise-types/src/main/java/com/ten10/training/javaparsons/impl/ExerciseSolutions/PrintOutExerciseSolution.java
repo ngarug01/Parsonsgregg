@@ -66,7 +66,7 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
             }
         }
         boolean ranToCompletion = cancompile && canrun;
-        boolean correctOutput = output.contains(answer);
+        boolean correctOutput = output.equals(answer) || output.equals(answer + System.lineSeparator());
         progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
         return ranToCompletion;
     }

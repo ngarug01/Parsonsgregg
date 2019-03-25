@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class HelloControllerTest {
+class ExerciseControllerTest {
 
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
     private static final String TRIVIAL_OUTPUT = "{}";
@@ -72,5 +72,14 @@ class HelloControllerTest {
         mvc.perform(requestBuilder)
             .andExpect(status().isOk())
             .andExpect(content().json(TRIVIAL_OUTPUT));
+    }
+
+    @Test
+    void serialiseCompilerError() throws JsonProcessingException {
+        Results results = new Results();
+        results.storeCapturedOutput("Null");
+        results.reportCompilerError(3, "Incorrect Method");
+        String output = objectMapper.writeValueAsString(results);
+        assertThat(output, is("{\"output\":\"Null\",\"succesfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"Incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 }
