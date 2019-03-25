@@ -128,10 +128,10 @@
             }
             function buildOutput(responce) {
                 if (JSON.parse(responce).succesfulSolution === true) {
-                    document.getElementById("correct-answer").innerHTML += (JSON.parse(responce).output+"<br>Correct Answer, Well Done!!!");
+                    document.getElementById("correct-answer").innerHTML += (JSON.parse(responce).output+"<br>Correct answer. Well done!");
                     makeVisible("correct-answer");
                 } else {
-                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect Answer")
+                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect answer")
                     if(JSON.parse(responce).output !== ""){
                         document.getElementById("incorrect-answer").innerHTML += ("<br>Your output was: " + JSON.parse(responce).output);
                     }
