@@ -33,7 +33,7 @@ pipeline {
                     }
                     post {
                         always {
-                            jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '90', maximumLineCoverage: '90', maximumMethodCoverage: '90'
+                            jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
                         }
                     }
                 }
@@ -51,6 +51,7 @@ pipeline {
                         stage('Build Container') {
                             steps {
                                 echo "Building container"
+
                             }
                         }
                         stage('Deploy Container') {
