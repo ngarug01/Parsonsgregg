@@ -29,28 +29,30 @@ pipeline {
         }
         stage('Parallel Steps') {
             parallel {
-                stage('Coverage & Docs'){
-                    stages{
+                stage('Coverage') {
+                    agent {
                         docker {
-                            image 'maven:3-jdk-10'
-                            args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
+                        image 'maven:3-jdk-10'
+                        args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
                         }
-                        stage('Coverage') {
-                            steps {
-                                sh 'mvn -B test -Djacoco.skip=false'
-                            }
-                            post {
-                                always {
-                                    jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
-                                }
-                            }
+                    }
+                    steps {
+                        sh 'mvn -B test -Djacoco.skip=false'
+                    }
+                    post {
+                        always {
+                            jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
                         }
-                        stage('Docs') {
-                            steps {
-                                sh 'mvn -B javadoc:aggregate'
-                                publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
-                            }
-                        }
+                    }
+                }
+                stage('Docs') {
+                    docker {
+                        image 'maven:3-jdk-10'
+                        args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
+                    }
+                    steps {
+                        sh 'mvn -B javadoc:aggregate'
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
                     }
                 }
                 stage('Build and Deploy') {
