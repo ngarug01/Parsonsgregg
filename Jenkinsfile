@@ -29,20 +29,26 @@ pipeline {
         }
         stage('Parallel Steps') {
             parallel {
-                stage('Coverage') {
-                    steps {
-                        sh 'mvn -B test -Djacoco.skip=false'
+                stage('Coverage & Docs'){
+                    docker {
+                        image 'maven:3-jdk-10'
+                        args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
                     }
-                    post {
-                        always {
-                            jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
+                    stage('Coverage') {
+                        steps {
+                            sh 'mvn -B test -Djacoco.skip=false'
+                        }
+                        post {
+                            always {
+                                jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
+                            }
                         }
                     }
-                }
-                stage('Docs') {
-                    steps {
-                        sh 'mvn -B javadoc:aggregate'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
+                    stage('Docs') {
+                        steps {
+                            sh 'mvn -B javadoc:aggregate'
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
+                        }
                     }
                 }
                 stage('Build and Deploy') {
