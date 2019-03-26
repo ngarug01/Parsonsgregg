@@ -31,22 +31,23 @@ public class GoodbyeWorld {
     }
 
     @Test
-    void Test1() {
+    void goodbyeCruelWorldImputed() {
         exercise2.chooseExercise2();
         exercise2.enterGoodbyeWorldToInput();
         exercise2.clickEnterAnswer();
-        result = exercise2.readFromOutputBox();
-        assertEquals("Goodbye cruel World!\n", result);
-        assertTrue(exercise2.readFromDescription().contains("\"Goodbye Cruel World!\""));
+        result = exercise2.readFromCorrectOutputBox();
+        assertTrue(result.contains("Goodbye Cruel World!"));
     }
 
-    @AfterEach
-    void afterEveryTest() {
-        driver.quit();
+    @Test
+    void descriptionChanges() {
+        exercise2.chooseExercise2();
+        assertTrue(exercise2.readFromDescription().contains("\"Goodbye Cruel World!\""));
     }
 
     @AfterAll
     static void afterAllTests() {
         ctx.close();
+        driver.quit();
     }
 }

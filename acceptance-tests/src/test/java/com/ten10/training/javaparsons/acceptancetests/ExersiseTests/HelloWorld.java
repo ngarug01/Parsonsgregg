@@ -43,7 +43,8 @@ class HelloWorld {
         exersise1.enterIncorrectHelloWorldToInput();
         exersise1.clickSubmit();
         result = exersise1.readFromIncorrectAnswerBox();
-        assertTrue(result.contains("Incorrect Answer"));
+        assertTrue(result.contains("Incorrect answer"));
+        assertTrue(result.contains("Error on line: 1\n"+"The compiler error description was: ';' expected"));
     }
 
     @Test
