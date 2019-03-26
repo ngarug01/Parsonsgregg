@@ -1,42 +1,172 @@
 <!DOCTYPE html>
 <HTML>
-    <header>
-        <title>Java Parsons "Hello World!"</title>
-    </header>
-    <body>
-    <h1> Java Parsons Problem </h1>
-    <div>
-        <p> Write a Java code which when run will produce a string which reads "Hello World!" message. </p>
-            <p>Input box</p>
-            <textarea id="input-box" name="HelloWorldJava" rows=12 cols="100"> </textarea>
-            <button id="EnterAnswer">Enter Answer</button>
-        <p>output box</p>
-        <textarea id="output-box" name="outputBox" rows="12" cols="100" readonly></textarea>
+<head>
+    <title>Java Parsons "Hello World!"</title>
+</head>
+<body>
+    <h1>Java Parsons Problems</h1>
+    <section id="ExerciseSelection">
+        <select id="ExerciseList">
+        </select>
+    </section>
+    <br>
+    <h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
+    <div id="input">
+        <br>
+        <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
+        <br>
+        <button id="enter-answer">Submit</button>
     </div>
+    <div name = "Correct Answer" id = "correct-answer" class="output"></div>
+   <div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
+   <div name = "Information" id = "information" class  = "output"></div>
+   </body>
+
+   <style>
+       body {
+       background-color: #c0c0c0;
+       text-align: center;
+       }
+       h1 {
+       color: #6758a6;
+       }
+       h2 {
+       color:#6758a6;
+       }
+       h3 {
+       color:#6758a6;
+       }
+       div {
+           display: block;
+           background-color: #6758a6;
+           border: #c0c0c0;
+           padding: 20px;
+           margin-left: 20%;
+           margin-right: 20%;
+        }
+        #correct-answer{
+            background-color: rgb(135, 211, 100);
+        }
+        #incorrect-answer{
+            background-color: rgb(255, 61, 61);
+        }
+        #information{
+            background-color:  rgb(255, 192, 55);
+        }
+       .output {
+           display: none;
+           margin: 20px;
+           margin-left: 20%;
+           margin-right: 20%;
+       }
+   </style>
     <script async>
 
-         window.onload =function() {
-            document.getElementById("EnterAnswer").onclick = function postAnswer() {
-                document.getElementById("output-box").value = "";
-                url = "http://localhost:8080/exercise1";
-                var XHR = new XMLHttpRequest();
-                XHR.addEventListener("load", handleResponse);
-                var helloWorld = JSON.stringify({input: document.getElementById("input-box").value});
-                XHR.open("POST" , url ,true);
+        window.onload = function () {
+         var XHR = new XMLHttpRequest();
+               urlGetE = "http://localhost:8080/exercise/getExercises";
+               XHR.addEventListener("load", handleResponseGet);
+               XHR.open("GET" , urlGetE ,true);
+               XHR.send(null);
+
+               function handleResponseGet() {
+                   let XHR = this;
+                   var responce = XHR.responseText;
+                   if (XHR.readyState === 4 && XHR.status === 200){
+                       var jsonData = JSON.parse(responce);
+                       // Populate Select Field
+                       var parent = document.getElementById("ExerciseList");
+                       for (const exerciseTrio of jsonData) {
+                           const elem = document.createElement("option");
+                           elem.setAttribute("value", exerciseTrio.url);
+                           elem.setAttribute("description",exerciseTrio.description)
+                           elem.text = exerciseTrio.title;
+                           parent.appendChild(elem);
+                        }
+                        console.log(responce,jsonData);
+                        var pdes = document.getElementById("Description");
+                        var list = document.getElementById("ExerciseList");
+                        var des=list.options[list.selectedIndex].getAttribute("description");
+                        pdes.textContent = des;
+                   }
+                   else
+                       console.log(XHR.status);
+                   }
+                   document.getElementById("ExerciseList").onchange = function descriptionChange(){
+                       var pdes = document.getElementById("Description");
+                       var list =document.getElementById("ExerciseList");
+                       var deschange = list.options[list.selectedIndex].getAttribute("description");
+                       pdes.textContent = deschange;
+                   }
+
+            document.getElementById("enter-answer").onclick = function postAnswer() {
+                outputReset();
+                if(document.getElementById("input-box").value === ""){
+                    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                } else {
+                var list = document.getElementById("ExerciseList");
+                   var url =list.options[list.selectedIndex].getAttribute("value");
+                   console.log(url);
+                XHR.addEventListener("load", handleResponsePost);
+                var exercise = JSON.stringify({ input: document.getElementById("input-box").value });
+                XHR.open("POST", url, true);
                 XHR.setRequestHeader('Content-Type', 'application/json');
-                XHR.send(helloWorld);
+                XHR.send(exercise);
+                }
             }
-            function handleResponse() {
+            function handleResponsePost() {
                 let XHR = this;
                 var responce = XHR.responseText;
-                if (XHR.readyState === 4 && XHR.status === 200){
-                    document.getElementById("output-box").value += JSON.parse(responce).output;
+                if (XHR.readyState === 4 && XHR.status === 200) {
                     console.log("Status: OK");
+                    buildOutput(responce);
                 }
-                else
+                else {
                     console.log(XHR.status);
+                }
 
+            }
+            function buildOutput(responce) {
+                if (JSON.parse(responce).succesfulSolution === true) {
+                    document.getElementById("correct-answer").innerHTML += (JSON.parse(responce).output+"<br>Correct answer. Well done!");
+                    makeVisible("correct-answer");
+                } else {
+                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect answer")
+                    if(JSON.parse(responce).output !== ""){
+                        document.getElementById("incorrect-answer").innerHTML += ("<br>Your output was: " + JSON.parse(responce).output);
+                    }
+                    compilerErrors = JSON.parse(responce).compilerErrors;
+                    if(compilerErrors.length !== 0){
+                        compilerErrors.forEach(error => {
+                            document.getElementById("incorrect-answer").innerHTML += ("<br>Error on line: "+error.lineNumber+"<br>The compiler error description was: "+error.message+"<br>");
+                        });
+                    }
+                    runnerErrors = JSON.parse(responce).runnerErrors;
+                    if(runnerErrors.length !== 0){
+                        runnerErrors.forEach(error => {
+                            document.getElementById("incorrect-answer").innerHTML += ("<br>The runner error description was: "+error.message+"<br>");
+                        });
+                    }
+                    makeVisible("incorrect-answer");
+                }
+                if(JSON.parse(responce).compilerInfo.length !== 0){
+                    information = JSON.parse(responce).compilerInfo;
+                    information.forEach(info => {
+                        document.getElementById("information").innerHTML += ("Information about line: "+info.lineNumber+"<br>this come from here: "+info.message+"<br>");
+                    });
+                    makeVisible("information");
                 }
             }
+            function makeVisible(elementID){
+                document.getElementById(elementID).style = "display:block";
+            }
+            function outputReset(){
+                var elements = ["correct-answer","incorrect-answer","information"]
+                elements.forEach(element => {
+                    document.getElementById(element).style = "display:none";
+                    document.getElementById(element).innerHTML = "";
+                });
+            }
+        }
 
-        </script>
+    </script>

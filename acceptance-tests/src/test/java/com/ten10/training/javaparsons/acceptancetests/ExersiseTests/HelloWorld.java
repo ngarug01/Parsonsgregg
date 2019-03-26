@@ -8,9 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
+@DisplayName("Tests for feature 1: Running a very simple Program.")
 class HelloWorld {
 
     private static DriverFactory driverFactory = new DriverFactory();
@@ -27,25 +27,60 @@ class HelloWorld {
 
     @BeforeEach
     void beforeEveryTest() {
-        exersise1.goToExersise1();
+        exersise1.goToHomepage();
     }
 
     @Test
-    void Test1() {
-
+    void helloWorldInputted() {
         exersise1.enterHelloWorldToInput();
-        exersise1.clickEnterAnswer();
-        result = exersise1.readFromOutputBox();
-        assertEquals("Hello World!\n", result);
+        exersise1.clickSubmit();
+        result = exersise1.readFromCorrectAnswerBox();
+        assertTrue(result.contains("Hello World!"));
     }
 
-    @AfterEach
-    void afterEveryTest() {
-        driver.quit();
+    @Test
+    void semiColonIsMissed () {
+        exersise1.enterIncorrectHelloWorldToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("Incorrect answer"));
+        assertTrue(result.contains("Error on line: 1\n"+"The compiler error description was: ';' expected"));
+    }
+
+    @Test
+    void notHelloWorld () {
+        exersise1.enterNotHelloWorldToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("Telly Tubby!"));
+    }
+
+    @Test
+    void notCalledClassMain () {
+        exersise1.enterNotMainClassToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("class ain is public, should be declared in a file named ain.java"));
+    }
+
+    @Test
+    void notCalledMethodMain () {
+        exersise1.enterNotMainMethodToInput();
+        exersise1.clickSubmit();
+        result = exersise1.readFromIncorrectAnswerBox();
+        assertTrue(result.contains("No such method main"));
+    }
+
+    @Test
+    void informationBoxDisplayed () {
+        exersise1.enterHelloWorldInformation();
+        exersise1.clickSubmit();
+        assertTrue(exersise1.informationBoxDisplayed());
     }
 
     @AfterAll
     static void afterAllTests() {
+        driver.quit();
         ctx.close();
     }
 }

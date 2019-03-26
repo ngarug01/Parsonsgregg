@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 
@@ -26,14 +27,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class HelloControllerTest {
+class ExerciseControllerTest {
 
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
     private static final String TRIVIAL_OUTPUT = "{}";
 
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
 
     @Autowired
@@ -51,7 +52,7 @@ class HelloControllerTest {
         Results results = new Results();
         results.storeCapturedOutput("Foo");
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Foo\"}"));
+        assertThat(output, is("{\"output\":\"Foo\",\"succesfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 
     @Test
@@ -64,7 +65,7 @@ class HelloControllerTest {
     void submitExerciseSuccessfully() throws Exception {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post("/exercise1")
+            .post("/exercise/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TRIVIAL_INPUT);
@@ -72,5 +73,32 @@ class HelloControllerTest {
         mvc.perform(requestBuilder)
             .andExpect(status().isOk())
             .andExpect(content().json(TRIVIAL_OUTPUT));
+
+    }
+
+    @Test
+    void serialiseCompilerError() throws JsonProcessingException {
+        Results results = new Results();
+        results.storeCapturedOutput("Null");
+        results.reportCompilerError(3, "incorrect Method");
+        String output = objectMapper.writeValueAsString(results);
+        assertThat(output, is("{\"output\":\"Null\",\"succesfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
+    }
+
+    private static final ExerciseController.ExerciseInformation exerciseInformation = new ExerciseController.ExerciseInformation("URL", "Title", "Description");
+
+    @Test
+    void exerciseInformationGetURL () {
+        assertEquals(exerciseInformation.getUrl(), "URL");
+    }
+
+    @Test
+    void exerciseInformationGetTitle () {
+        assertEquals(exerciseInformation.getTitle(), "Title");
+    }
+
+    @Test
+    void exerciseInformationGetDescription () {
+        assertEquals(exerciseInformation.getDescription(), "Description");
     }
 }
