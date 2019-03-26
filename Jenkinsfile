@@ -1,77 +1,62 @@
-pipeline {
-    agent {
-        docker {
-            image 'maven:3-jdk-10'
-            args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
-        }
-    }
-    stages {
-        stage('Check') {
-            stages {
-                stage('Build') {
-                    steps {
-                        sh 'mvn -B -DskipTests clean package'
+node{
+    docker.image('maven:3-jdk-10').inside('-v /var/lib/jenkins/.m2:/nonexistent/.m2'){
+        stage('C-B-T'){
+            stage('Check'){
+                stage('Build'){
+                    echo 'Building...'
+                    sh 'mvn -B -DskipTests clean package'
+                    echo 'Build Complete...'
+                }
+                stage('Test'){
+                    try{
+                        echo 'Running tests...'
+                        sh 'mvn -B test'
+                        echo 'Tests complete...'
+                    }
+                    finally{
+                        junit '*/target/surefire-reports/*.xml'
+                        // Probably archive this.
                     }
                 }
-                stage('Test') {
-                    steps {
-                        sh 'mvn -B test'
-                    }
-                    post {
-                        always {
-                            junit '*/target/surefire-reports/*.xml'
-                        }
-                    }
+                stage('Extract') {
+                    archiveArtifacts artifacts: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar', fingerprint: true, onlyIfSuccessful: true
+                    // $JENKINS_HOME/jobs/JOB_NAME/jobs/<Repository Name>/branches/<Branch Name>/builds/$BUILD_NUMBER/archive/ <--- path for archived artifacts.
                 }
             }
         }
-        stage('Parallel Steps') {
-            parallel {
-                stage('Coverage') {
-                    steps {
-                        sh 'mvn -B test -Djacoco.skip=false'
-                    }
-                    post {
-                        always {
-                            jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
-                        }
-                    }
+        stage('Parallel Steps'){
+            parallel Coverage: {
+                try{
+                    sh 'mvn -B test -Djacoco.skip=false'
                 }
-                stage('Docs') {
-                    steps {
-                        sh 'mvn -B javadoc:aggregate'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
-                    }
+                finally{
+                    jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
                 }
-                stage('Build and Deploy') {
-                    when {
-                        branch 'master'
-                    }
-                    stages {
-                        stage('Build Container') {
-                            steps {
-                                echo "Building container"
-
-                            }
-                        }
-                        stage('Deploy Container') {
-                            steps {
-                                echo "Deploying..."
-                            }
-                        }
-                        stage('Restart Container') {
-                            steps {
-                                echo "Restarting..."
-                            }
-                        }
-                        stage('Acceptance tests') {
-                            steps {
-                                echo "Running Acceptance Tests"
-                            }
-                        }
-                    }
-                }
+            }
+            Docs: {
+                sh 'mvn -B javadoc:aggregate'
+                publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
+            }
+        }       
+    }
+    docker.image('maven:3-jdk-10'){
+        // Fix above line
+        stage("Build-Deploy-Restart-AcceptanceTest"){
+            stage("Build Container"){
+                echo 'Building...'
+            }
+            stage("Deploy Container"){
+                echo 'Deploying'
+            }
+            stage("Restart Container"){
+                echo "Restarting container..."
+            }
+            stage("Run Acceptance Tests"){
+                echo 'Running acceptance tests'
             }
         }
     }
 }
+
+
+
