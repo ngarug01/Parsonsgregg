@@ -11,9 +11,9 @@ public class Exercise2 extends BasePage {
 
     private static String URL = "http://localhost:8080/";
     private static final By INPUT_BOX = By.cssSelector("#input-box");
-    private static final String GOODBYE_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Goodbye cruel World!\");}}";
-    private static final By ENTER_BUTTON = By.cssSelector("#EnterAnswer");
-    private static final By OUTPUT_BOX = By.cssSelector("#output-box");
+    private static final String GOODBYE_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Goodbye Cruel World!\");}}";
+    private static final By ENTER_BUTTON = By.cssSelector("#enter-answer");
+    private static final By CORRECT_ANSWER_BOX = By.cssSelector("#correct-answer");
     private static final By GOODBYE_WORLD_OPTION = By.cssSelector("#ExerciseList > option:nth-child(2)");
     private static final By DESCRIPTION = By.cssSelector("#Description");
 
@@ -30,13 +30,19 @@ public class Exercise2 extends BasePage {
     }
 
     public String readFromOutputBox() {
-        waitForTextToAppearAtributeValue(OUTPUT_BOX);
-        WebElement outputbox = driver.findElement(OUTPUT_BOX);
+        waitForTextToAppearAtributeValue(CORRECT_ANSWER_BOX);
+        WebElement outputbox = driver.findElement(CORRECT_ANSWER_BOX);
         return outputbox.getAttribute("value");
     }
 
     public String readFromDescription() {
         WebElement description = driver.findElement(DESCRIPTION);
         return description.getText();
+    }
+
+    public String getResultFromCorrectAnswer() {
+        WebElement element = waitAndGet(CORRECT_ANSWER_BOX);
+        return element.getText();
+
     }
 }

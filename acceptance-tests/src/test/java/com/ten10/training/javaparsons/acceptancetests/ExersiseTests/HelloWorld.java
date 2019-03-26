@@ -43,7 +43,7 @@ class HelloWorld {
         exersise1.enterIncorrectHelloWorldToInput();
         exersise1.clickSubmit();
         result = exersise1.readFromIncorrectAnswerBox();
-        assertTrue(result.contains("Incorrect Answer"));
+        assertTrue(result.contains("Incorrect answer"));
     }
 
     @Test

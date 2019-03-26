@@ -47,5 +47,9 @@ public abstract class BasePage {
         wait.until(ExpectedConditions.not(attributeToBe(selector, "value", "")));
     }
 
+    WebElement waitAndGet(By selector){
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+    }
+
 
 }

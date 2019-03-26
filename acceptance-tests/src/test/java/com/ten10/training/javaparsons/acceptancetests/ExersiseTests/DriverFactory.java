@@ -22,6 +22,7 @@ class DriverFactory {
     }
 
     private void setDriver() {
+        System.setProperty("webdriver.chrome.driver", "C:\\Program Files (x86)\\Selenium\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }

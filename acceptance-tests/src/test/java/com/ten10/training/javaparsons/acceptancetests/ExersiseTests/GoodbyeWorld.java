@@ -31,13 +31,12 @@ public class GoodbyeWorld {
     }
 
     @Test
-    void Test1() {
+    void secondExerciseCorrectAnswer(){
         exercise2.chooseExercise2();
         exercise2.enterGoodbyeWorldToInput();
         exercise2.clickEnterAnswer();
-        result = exercise2.readFromOutputBox();
-        assertEquals("Goodbye cruel World!\n", result);
-        assertTrue(exercise2.readFromDescription().contains("\"Goodbye Cruel World!\""));
+        result = exercise2.getResultFromCorrectAnswer();
+        assertTrue(result.contains("Goodbye Cruel World!\n"));
     }
 
     @AfterEach
