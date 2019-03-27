@@ -30,7 +30,7 @@ class MethodsStatementsExerciseSolutionTest {
 
     @Test
     void checkGetFullClassText() {
-        assertEquals("userInput string inputted into solution", methodsStatementsExerciseSolution.getFullClassText());
+        assertEquals("code"+"userInput string inputted into solution"+"code", methodsStatementsExerciseSolution.getFullClassText());
     }
 
     @Test
@@ -56,11 +56,11 @@ class MethodsStatementsExerciseSolutionTest {
     @Test
     void evaluateFailsOnIncorrectAnswer(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Potato", "code", "code", progressReporter);
+        String userInput = "System.out.println(\"Pie\");";
+        MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Potato", "public class Main { public static void Main {", "}}", progressReporter);
 
         try {
-            printOutExerciseSolution.evaluate();
+            methodsStatementsExerciseSolution.evaluate();
             verify(progressReporter).setSuccessfulSolution(false);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,8 +70,8 @@ class MethodsStatementsExerciseSolutionTest {
     @Test
     void evaluatePasses(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "code", "code", progressReporter);
+        String userInput = "System.out.println(\"Pie\");";
+        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "public class Main { public static void main (String[] args) { ", " }}", progressReporter);
 
         try {
             assertTrue(printOutExerciseSolution.evaluate());
