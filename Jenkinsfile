@@ -61,7 +61,7 @@ pipeline {
                     when {
                         branch 'master'
                     }
-                    steps{
+                    stages{
                         stage("Build"){
                             steps{
                                 script{
