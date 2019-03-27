@@ -13,6 +13,7 @@ public class PrintOutExercise implements Exercise {
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private final String answer;
     private final int id;
+    private final String description;
 
 
     /**
@@ -21,13 +22,17 @@ public class PrintOutExercise implements Exercise {
      * @param answer Correct input to be compared with the user input.
      * @param exerciseName Description of the exercise.
      * @param id The unique identifier of an exercise.
+     * @param description
      */
-    public PrintOutExercise(SolutionCompiler compiler, String answer, String exerciseName, int id) {
+    public PrintOutExercise(SolutionCompiler compiler, String answer, String exerciseName, int id, String description) {
         this.compiler = compiler;
         this.answer =answer;
         this.exerciseName = exerciseName;
         this.id = id;
+        this.description = description;
     }
+
+
 
     /**
      * @return The unique identifier of an exercise.
@@ -50,7 +55,7 @@ public class PrintOutExercise implements Exercise {
      */
     @Override
     public String getDescription() {
-        return "Write a Java code which when run will produce a string which reads \""+exerciseName+"\"";
+        return  description+ " " + exerciseName;
     }
 
     /**

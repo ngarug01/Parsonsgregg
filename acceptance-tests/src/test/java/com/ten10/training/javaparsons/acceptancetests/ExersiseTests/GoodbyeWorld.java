@@ -41,7 +41,7 @@ public class GoodbyeWorld {
     @Test
     void descriptionChanges() {
         exercise2.chooseExercise2();
-        assertTrue(exercise2.readFromDescription().contains("\"Goodbye Cruel World!\""));
+        assertTrue(exercise2.readFromDescription().contains("Goodbye Cruel World!"));
     }
 
     @AfterAll
