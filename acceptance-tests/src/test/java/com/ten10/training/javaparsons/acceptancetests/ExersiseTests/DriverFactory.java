@@ -9,7 +9,6 @@ class DriverFactory {
 
     static {
         ChromeDriverManager.chromedriver().setup();
-
     }
 
     private WebDriver driver;

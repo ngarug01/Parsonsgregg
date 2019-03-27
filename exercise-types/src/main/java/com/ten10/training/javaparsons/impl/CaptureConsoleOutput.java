@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class CaptureConsoleOutput {
 
-    private ByteArrayOutputStream outputStream;
+    ByteArrayOutputStream outputStream;
     private PrintStream old;
     private boolean recording;
 
@@ -42,7 +42,7 @@ public class CaptureConsoleOutput {
      */
     public String stop() {
         if (!recording) {
-            return "stopped";
+            throw new IllegalStateException("stop() called before start()");
         }
 
         System.setOut(old);
@@ -56,7 +56,7 @@ public class CaptureConsoleOutput {
         return capturedValue;
     }
 
-    private class OutputStreamCombiner extends OutputStream {
+    static class OutputStreamCombiner extends OutputStream {
         private List<OutputStream> outputStreams;
 
         OutputStreamCombiner(List<OutputStream> outputStreams) {
@@ -70,14 +70,42 @@ public class CaptureConsoleOutput {
         }
 
         public void flush() throws IOException {
+            IOException ioException=null;
+            RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
-                os.flush();
+                try {
+                    os.flush();
+                } catch(IOException e) {
+                    ioException=e;
+                } catch (RuntimeException e) {
+                    runtimeException =e;
+                }
+            }
+            if (null!=ioException){
+                throw ioException;
+            }
+            if (null!=runtimeException){
+                throw runtimeException;
             }
         }
 
         public void close() throws IOException {
+            IOException ioException=null;
+            RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
-                os.close();
+                try {
+                    os.close();
+                } catch(IOException e) {
+                    ioException=e;
+                } catch (RuntimeException e) {
+                    runtimeException =e;
+                }
+            }
+            if (null!=ioException){
+                throw ioException;
+            }
+            if (null!=runtimeException){
+                throw runtimeException;
             }
         }
     }

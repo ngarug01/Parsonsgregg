@@ -14,6 +14,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 
@@ -82,5 +83,22 @@ class ExerciseControllerTest {
         results.reportCompilerError(3, "incorrect Method");
         String output = objectMapper.writeValueAsString(results);
         assertThat(output, is("{\"output\":\"Null\",\"succesfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
+    }
+
+    private static final ExerciseController.ExerciseInformation exerciseInformation = new ExerciseController.ExerciseInformation("URL", "Title", "Description");
+
+    @Test
+    void exerciseInformationGetURL () {
+        assertEquals(exerciseInformation.getUrl(), "URL");
+    }
+
+    @Test
+    void exerciseInformationGetTitle () {
+        assertEquals(exerciseInformation.getTitle(), "Title");
+    }
+
+    @Test
+    void exerciseInformationGetDescription () {
+        assertEquals(exerciseInformation.getDescription(), "Description");
     }
 }
