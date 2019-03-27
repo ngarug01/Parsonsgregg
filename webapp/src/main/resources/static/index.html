@@ -14,9 +14,8 @@
 <div id="input">
     <div name = "Preceding Code" id = "preceding-code-box" class = "codebox"></div>
     <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
-    <br>
-    <button id="enter-answer">Submit</button>
     <div name = "Following Code" id = "following-code-box" class = "codebox"></div>
+    <button id="enter-answer">Submit</button>
 </div>
 <div name = "Correct Answer" id = "correct-answer" class="output"></div>
 <div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
@@ -55,6 +54,7 @@
             background-color:  rgb(255, 192, 55);
         }
         .codebox {
+        visibility: hidden;
            margin-left: 3%;
            margin-right: 3%;
            background-color: rgb(200, 200, 200);
@@ -108,14 +108,14 @@
                        pdes.textContent = deschange;
 
                         if(list.options[list.selectedIndex].getAttribute("precedingCode") != "null"){
-                        document.getElementById("preceding-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("precedingCode").replace("/n", "<br/>"));
+                        document.getElementById("preceding-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("precedingCode"));
                         document.getElementById("preceding-code-box").style.visibility = "visible";
                         }
                         else {
                         document.getElementById("preceding-code-box").style.visibility = "hidden"; }
 
                         if(list.options[list.selectedIndex].getAttribute("followingCode") != "null"){
-                        document.getElementById("following-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("followingCode").replace("/n", "<br/>"));
+                        document.getElementById("following-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("followingCode"));
                         document.getElementById("following-code-box").style.visibility = "visible";
                         }
                         else {
@@ -132,8 +132,8 @@
                    var url =list.options[list.selectedIndex].getAttribute("value");
                    console.log(url);
                 XHR.addEventListener("load", handleResponsePost);
-                var begin = (list.options[list.selectedIndex].getAttribute("precedingCode"));
-                var end = " }}";
+                var begin = (list.options[list.selectedIndex].getAttribute("precedingCode").replace("<br/>", ""));
+                var end = (list.options[list.selectedIndex].getAttribute("followingCode").replace("<br/>", ""));
                 var exercise = JSON.stringify({ input: begin + document.getElementById("input-box").value + end});
                 XHR.open("POST", url, true);
                 XHR.setRequestHeader('Content-Type', 'application/json');

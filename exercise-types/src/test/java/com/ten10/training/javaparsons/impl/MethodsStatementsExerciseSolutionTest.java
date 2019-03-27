@@ -4,40 +4,38 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.MethodsStatementsExerciseSolution;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-class PrintOutExerciseSolutionTest {
+class MethodsStatementsExerciseSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", progressReporter);
+    private final MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", progressReporter);
 
 
 
-   @Test
+    @Test
     void checkEvaluate() throws Exception {
-        printOutExerciseSolution.evaluate();
-        verify(compiler).compile(printOutExerciseSolution, progressReporter);
+        methodsStatementsExerciseSolution.evaluate();
+        verify(compiler).compile(methodsStatementsExerciseSolution, progressReporter);
     }
 
     @Test
     void checkGetFullClassText() {
-        assertEquals("userInput string inputted into solution", printOutExerciseSolution.getFullClassText());
+        assertEquals("userInput string inputted into solution", methodsStatementsExerciseSolution.getFullClassText());
     }
 
     @Test
     void checkGetClassName() {
-        assertEquals("Main", printOutExerciseSolution.getClassName());
+        assertEquals("Main", methodsStatementsExerciseSolution.getClassName());
     }
 
     @Test
@@ -82,6 +80,3 @@ class PrintOutExerciseSolutionTest {
         }
     }
 }
-
-
-
