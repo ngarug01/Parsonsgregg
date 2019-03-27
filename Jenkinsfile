@@ -9,9 +9,10 @@ pipeline {
                 }
             }
             stages {
-                stage('Build') {
+                stage('Build & Stash') {
                     steps {
                         sh 'mvn -B -DskipTests clean package'
+                        stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar' name: 'fatJar'
                     }
                 }
                 stage('Test') {
@@ -64,6 +65,7 @@ pipeline {
                     stages{
                         stage("Build"){
                             steps{
+                                unstash 'fatJar'
                                 script{
                                     def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                     customImage.inside{
