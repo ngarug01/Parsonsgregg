@@ -4,7 +4,7 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.MethodsStatementsExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 public class PrintOutExercise implements Exercise {
@@ -70,7 +70,7 @@ public class PrintOutExercise implements Exercise {
      */
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
-        return new PrintOutExerciseSolution(compiler, runner, userInput, answer,  progressReporter);
+        return new MethodsStatementsExerciseSolution(compiler, runner, userInput, answer,  progressReporter);
     }
 
     @Override

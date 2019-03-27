@@ -3,7 +3,7 @@ package com.ten10.training.javaparsons.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.MethodsStatementsExerciseSolution;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,7 +24,7 @@ class PrintOutExerciseTest {
 
     @Test
     void getSolutionFromUserInputReturnsHelloWorldSolution() {
-        assertThat(printOutExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(PrintOutExerciseSolution.class)));
+        assertThat(printOutExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(MethodsStatementsExerciseSolution.class)));
     }
     @Test
     void getTitleOfExercise(){
