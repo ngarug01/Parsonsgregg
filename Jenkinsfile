@@ -67,27 +67,27 @@ pipeline {
                                 script{
                                     def customImage = docker.build("Java-parsons:${env.BUILD_ID}")
                                     customImage.inside{
-                                    sh "nc -vz localhost -8080"
+                                        sh "nc -vz localhost -8080"
+                                    }
                                 }
                             }
                         }
-                    }
-                    stages {
-                        stage('Deploy Container') {
-                            steps {
-                                echo "Deploying..."
-
+                        stages {
+                            stage('Deploy Container') {
+                                steps {
+                                    echo "Deploying..."
+                                }
                             }
-                        }
-                        stage('Restart Container') {
-                            steps {
-                                echo "Restarting..."
+                            stage('Restart Container') {
+                                steps {
+                                    echo "Restarting..."
+                                }
                             }
-                        }
-                        stage('Acceptance tests') {
-                            steps {
-                                echo "Running Acceptance Tests"
-                                sh 'mvn -version'
+                            stage('Acceptance tests') {
+                                steps {
+                                    echo "Running Acceptance Tests"
+                                    sh 'mvn -version'
+                                }
                             }
                         }
                     }
