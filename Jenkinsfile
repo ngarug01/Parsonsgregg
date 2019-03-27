@@ -12,7 +12,7 @@ pipeline {
                 stage('Build & Stash') {
                     steps {
                         sh 'mvn -B -DskipTests clean package'
-                        stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar' name: 'fatJar'
+                        stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar', name: 'fatJar'
                     }
                 }
                 stage('Test') {
