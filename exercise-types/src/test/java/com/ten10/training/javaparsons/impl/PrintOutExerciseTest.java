@@ -32,6 +32,6 @@ class PrintOutExerciseTest {
     }
     @Test
     void getDescription(){
-        assertEquals(printOutExercise.getDescription(),"Write a Java code which when run will produce a string which reads \"MY NAME\"");
+        assertEquals(printOutExercise.getDescription(),"Write a Java code which when run will produce a string which reads MY NAME");
     }
 }
