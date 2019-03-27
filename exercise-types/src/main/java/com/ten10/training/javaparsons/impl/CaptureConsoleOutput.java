@@ -7,13 +7,20 @@ import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
-class CaptureConsoleOutput {
+/**
+ * Store all System outs from when start() is called.
+ * Returns all System outs from when start() was called after stop() is called.
+ */
+public class CaptureConsoleOutput {
 
-    private ByteArrayOutputStream outputStream;
+    ByteArrayOutputStream outputStream;
     private PrintStream old;
     private boolean recording;
 
-    void start() {
+    /**
+     * Begins recording everything printed out by the System.
+     */
+    public void start() {
         if (recording) {
             return;
         }
@@ -29,9 +36,13 @@ class CaptureConsoleOutput {
         System.setOut(custom);
     }
 
-    String stop() {
+    /**
+     * Stop recording the System output and return what has been stored.
+     * @return A String of everything outputted to the System since start() was called.
+     */
+    public String stop() {
         if (!recording) {
-            return "stopped";
+            throw new IllegalStateException("stop() called before start()");
         }
 
         System.setOut(old);
@@ -45,7 +56,7 @@ class CaptureConsoleOutput {
         return capturedValue;
     }
 
-    private class OutputStreamCombiner extends OutputStream {
+    static class OutputStreamCombiner extends OutputStream {
         private List<OutputStream> outputStreams;
 
         OutputStreamCombiner(List<OutputStream> outputStreams) {
@@ -59,14 +70,42 @@ class CaptureConsoleOutput {
         }
 
         public void flush() throws IOException {
+            IOException ioException=null;
+            RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
-                os.flush();
+                try {
+                    os.flush();
+                } catch(IOException e) {
+                    ioException=e;
+                } catch (RuntimeException e) {
+                    runtimeException =e;
+                }
+            }
+            if (null!=ioException){
+                throw ioException;
+            }
+            if (null!=runtimeException){
+                throw runtimeException;
             }
         }
 
         public void close() throws IOException {
+            IOException ioException=null;
+            RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
-                os.close();
+                try {
+                    os.close();
+                } catch(IOException e) {
+                    ioException=e;
+                } catch (RuntimeException e) {
+                    runtimeException =e;
+                }
+            }
+            if (null!=ioException){
+                throw ioException;
+            }
+            if (null!=runtimeException){
+                throw runtimeException;
             }
         }
     }

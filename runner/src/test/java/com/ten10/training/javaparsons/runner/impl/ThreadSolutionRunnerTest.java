@@ -6,13 +6,18 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ThreadSolutionRunnerTest {
 
@@ -72,10 +77,41 @@ class ThreadSolutionRunnerTest {
             }
         };
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        assertTrue(result, "run() should have completed successfully");
+        //assertTrue(result, "run() should have completed successfully");
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
+    }
+
+    @Test
+    void runThrowsExceptionWhenParameterListArentEqual() {
+        //Arrange
+        ClassLoader classLoader = mock(ClassLoader.class);
+        ThreadSolutionRunner threadSolutionRunner = new ThreadSolutionRunner();
+        EntryPoint entryPoint = new EntryPoint() {
+
+            @Override
+            public String getEntryPointClass() {
+                return Example.class.getName();
+            }
+
+            @Override
+            public String getEntryPointMethod() {
+                return "exampleMethod";
+            }
+
+            @Override
+            public Class<?>[] getParameterTypes() {
+                return new Class<?>[2];
+            }
+
+            @Override
+            public Object[] getParameters() {
+                return new Object[1];
+            }
+        };
+        //Assert
+        assertThrows(IllegalArgumentException.class, () -> threadSolutionRunner.run(classLoader, entryPoint, progressReporter));
     }
 
     @Test
@@ -107,10 +143,8 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = assertTimeoutPreemptively(Duration.ofSeconds(5),
-            () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
         //Assert
-        assertFalse(result, "run() should not have completed successfully");
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
     }
 
     @Test
@@ -141,9 +175,9 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        assertTrue(result, "run() should have completed successfully");
+        //assertTrue(result, "run() should have completed successfully");
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -176,9 +210,9 @@ class ThreadSolutionRunnerTest {
         };
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        boolean result = runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        assertTrue(result, "run() should have completed successfully");
+        //assertTrue(result, "run() should have completed successfully");
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
 }

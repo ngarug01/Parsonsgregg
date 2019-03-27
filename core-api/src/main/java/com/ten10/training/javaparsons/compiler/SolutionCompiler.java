@@ -21,9 +21,9 @@ public interface SolutionCompiler {
      * Return a CompiledSolution on success.
      *
      * @param solution       The submitted solution to be compiled. This will not be modified.
-     * @param progressReporter An object which will collect errors. This is modified
-     * @return a CompiledSolution upon success
-     * @throws NullPointerException if either parameter is null
+     * @param progressReporter An object which will collect errors. This is modified.
+     * @return a CompiledSolution upon success.
+     * @throws NullPointerException if either parameter is null.
      */
     boolean compile(CompilableSolution solution, ProgressReporter progressReporter);
 

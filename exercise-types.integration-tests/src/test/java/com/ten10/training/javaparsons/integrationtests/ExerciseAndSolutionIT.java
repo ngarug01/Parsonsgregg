@@ -10,15 +10,18 @@ import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
-
+import org.mockito.Mockito;
 import javax.tools.ToolProvider;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 
 class ExerciseAndSolutionIT {
 private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
+
     private static final String SUCCESSFUL_BUILD =
         "public class Main {" +
             " public static void main(String[] args) {" +
@@ -44,11 +47,25 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void helloWorldCompilerFailBuild() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         SolutionRunner runner = new ThreadSolutionRunner();
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         assertFalse(solution.evaluate());
+
+
+    }
+
+
+    @Test
+    void helloWorldCompilerLogsCompilationError() throws Exception {
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        SolutionRunner runner = new ThreadSolutionRunner();
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
+        Exercise exercise = repository.getExerciseByIdentifier(1);
+        Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
+        solution.evaluate();
+        Mockito.verify(progressReporter, atLeastOnce()).reportCompilerError(anyLong(), anyString());
     }
 }
