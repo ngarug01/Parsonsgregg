@@ -26,6 +26,10 @@ class InMemoryClassFile extends SimpleJavaFileObject {
         this.solution = solution;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public OutputStream openOutputStream() {
         return new ByteArrayOutputStream() {
