@@ -25,14 +25,14 @@ public class ExerciseController {
         private final String url;
         private final String title;
         private final String description;
-        private final String preceedingCode;
+        private final String precedingCode;
         private final String followingCode;
 
         ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode) {
             url = URL;
             this.title = title;
             this.description = description;
-            this.preceedingCode = precedingCode;
+            this.precedingCode = precedingCode;
             this.followingCode = followingCode;
         }
 
@@ -47,7 +47,7 @@ public class ExerciseController {
             return description;
         }
 
-        public String getPreceedingCode() { return preceedingCode;}
+        public String getPreceedingCode() { return precedingCode;}
         public String getFollowingCode() { return followingCode;}
     }
 
