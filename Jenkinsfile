@@ -72,22 +72,20 @@ pipeline {
                                 }
                             }
                         }
-                        stages {
-                            stage('Deploy Container') {
-                                steps {
-                                    echo "Deploying..."
-                                }
+                        stage('Deploy Container') {
+                            steps {
+                                echo "Deploying..."
                             }
-                            stage('Restart Container') {
-                                steps {
-                                    echo "Restarting..."
-                                }
+                        }
+                        stage('Restart Container') {
+                            steps {
+                                echo "Restarting..."
                             }
-                            stage('Acceptance tests') {
-                                steps {
-                                    echo "Running Acceptance Tests"
-                                    sh 'mvn -version'
-                                }
+                        }
+                        stage('Acceptance tests') {
+                            steps {
+                                echo "Running Acceptance Tests"
+                                sh 'mvn -version'
                             }
                         }
                     }
