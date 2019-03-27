@@ -51,7 +51,7 @@ public class MethodsStatementsExercise implements Exercise {
 
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws Exception {
-        return new MethodsStatementsExerciseSolution(compiler, runner, userInput, answer,  progressReporter);
+        return new MethodsStatementsExerciseSolution(compiler, runner, userInput, answer, precedingCode, followingCode,  progressReporter);
     }
 
     @Override

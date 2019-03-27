@@ -18,7 +18,7 @@ class MethodsStatementsExerciseSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", progressReporter);
+    private final MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", "code", "code", progressReporter);
 
 
 
@@ -42,7 +42,7 @@ class MethodsStatementsExerciseSolutionTest {
     void evaluateFailsOnCompileClassNameIncorrect(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
+        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "code", "code", progressReporter);
 
         try {
             printOutExerciseSolution.evaluate();
@@ -57,7 +57,7 @@ class MethodsStatementsExerciseSolutionTest {
     void evaluateFailsOnIncorrectAnswer(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Potato", progressReporter);
+        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Potato", "code", "code", progressReporter);
 
         try {
             printOutExerciseSolution.evaluate();
@@ -71,7 +71,7 @@ class MethodsStatementsExerciseSolutionTest {
     void evaluatePasses(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
+        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "code", "code", progressReporter);
 
         try {
             assertTrue(printOutExerciseSolution.evaluate());

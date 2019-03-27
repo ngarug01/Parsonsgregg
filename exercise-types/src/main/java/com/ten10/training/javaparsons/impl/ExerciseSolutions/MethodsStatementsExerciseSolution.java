@@ -38,12 +38,14 @@ public class MethodsStatementsExerciseSolution implements Solution, SolutionComp
     private final ThreadSolutionRunner runner;
     private final String userInput;
     private final String answer;
+    private final String precedingCode;
+    private final String followingCode;
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
     /**
-     * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
+     * Creates a new MethodsStatementsExerciseSolution. This constructor sets the local fields.
      * @param compiler SolutionCompiler to compile the user input.
      * @param runner ThreadSolutionRunner to run the compiled code.
      * @param userInput The user input as a String.
@@ -54,6 +56,8 @@ public class MethodsStatementsExerciseSolution implements Solution, SolutionComp
                                              ThreadSolutionRunner runner,
                                              String userInput,
                                              String answer,
+                                             String precedingCode,
+                                             String followingCode,
                                              ProgressReporter progressReporter) {
 
         this.compiler = compiler;
@@ -61,6 +65,8 @@ public class MethodsStatementsExerciseSolution implements Solution, SolutionComp
         this.userInput = userInput;
         this.answer = answer;
         this.progressReporter = progressReporter;
+        this.precedingCode = precedingCode.replace("<br/>", "");
+        this.followingCode = followingCode.replace("<br/>", "");
     }
 
     /**
@@ -96,7 +102,7 @@ public class MethodsStatementsExerciseSolution implements Solution, SolutionComp
      */
     @Override
     public CharSequence getFullClassText() {
-        return userInput;
+        return precedingCode + userInput + followingCode;
     }
 
     /**

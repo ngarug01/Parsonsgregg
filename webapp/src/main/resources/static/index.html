@@ -132,9 +132,7 @@
                    var url =list.options[list.selectedIndex].getAttribute("value");
                    console.log(url);
                 XHR.addEventListener("load", handleResponsePost);
-                var begin = (list.options[list.selectedIndex].getAttribute("precedingCode").replace("<br/>", ""));
-                var end = (list.options[list.selectedIndex].getAttribute("followingCode").replace("<br/>", ""));
-                var exercise = JSON.stringify({ input: begin + document.getElementById("input-box").value + end});
+                var exercise = JSON.stringify({ input: document.getElementById("input-box").value});
                 XHR.open("POST", url, true);
                 XHR.setRequestHeader('Content-Type', 'application/json');
                 XHR.send(exercise);

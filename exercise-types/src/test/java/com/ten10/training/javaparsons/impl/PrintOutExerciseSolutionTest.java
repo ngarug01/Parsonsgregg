@@ -44,7 +44,7 @@ class PrintOutExerciseSolutionTest {
     void evaluateFailsOnCompileClassNameIncorrect(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
+        PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
 
         try {
             printOutExerciseSolution.evaluate();
@@ -59,7 +59,7 @@ class PrintOutExerciseSolutionTest {
     void evaluateFailsOnIncorrectAnswer(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Potato", progressReporter);
+        PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Potato", progressReporter);
 
         try {
             printOutExerciseSolution.evaluate();
@@ -73,7 +73,7 @@ class PrintOutExerciseSolutionTest {
     void evaluatePasses(){
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
+        PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
 
         try {
             assertTrue(printOutExerciseSolution.evaluate());
