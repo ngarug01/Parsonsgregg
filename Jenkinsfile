@@ -61,15 +61,16 @@ pipeline {
                     when {
                         branch 'master'
                     }
-                    stage("Build"){
-                        steps{
-                            script{
-                                def customImage = docker.build("Java-parsons:${env.BUILD_ID}")
-                                customImage.inside{
-                                sh "nc -vz localhost -8080"
+                    steps{
+                        stage("Build"){
+                            steps{
+                                script{
+                                    def customImage = docker.build("Java-parsons:${env.BUILD_ID}")
+                                    customImage.inside{
+                                    sh "nc -vz localhost -8080"
+                                }
                             }
                         }
-                    }
                     }
                     stages {
                         stage('Deploy Container') {
