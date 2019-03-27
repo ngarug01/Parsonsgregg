@@ -23,8 +23,8 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
 
     /**
-     * Prepares a {@code JavaCompiler} to compile {@code CompilableSolutions}.
-     * @param compiler {@code JavaCompiler} used to compile user solutions.
+     * Prepares a {@link javax.tools.JavaCompiler} to compile {@link com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution}.
+     * @param compiler {@link javax.tools.JavaCompiler} used to compile user solutions.
      */
     public JavaSolutionCompiler(JavaCompiler compiler) {
         this.compiler = Objects.requireNonNull(compiler, "compiler");
@@ -32,11 +32,11 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
 
     /**
-     * Uses the {@code JavaCompiler} provided in the constructor to compile the {@code CompilableSolution}.
-     * Errors and progress are stored in the {@code ProgressReporter} through a {@code Logger}.
-     * @param solution         The submitted solution to be compiled. This will not be modified.
-     * @param progressReporter An object which will collect errors. This is modified
-     * @return {@code True} if the {@code CompilableSolution} compiles successfully. {@code False} if the
+     * Uses the {@link javax.tools.JavaCompiler} provided in the constructor to compile the {@link com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution}.
+     * Errors and progress are stored in the {@link ProgressReporter} through a {@link Logger}.
+     * @param solution The submitted solution to be compiled. This will not be modified.
+     * @param progressReporter An object which will collect errors. This is modified.
+     * @return {@code True} if the {@link com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution} compiles successfully. {@code False} if the
      * {@code CompilableSolution} fails to compile.
      */
     @Override

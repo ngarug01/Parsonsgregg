@@ -14,8 +14,16 @@ public interface Exercise extends AutoCloseable {
      */
     int getIdentifier();
 
+    /**
+     *
+     * @return the stored title of this exercise.
+     */
     String getTitle();
 
+    /**
+     *
+     * @return the stored Description of this exercise.
+     */
     String getDescription();
 
     /**

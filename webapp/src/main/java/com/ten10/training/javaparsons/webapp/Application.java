@@ -36,17 +36,17 @@ public class Application {
         }
     }
 
-    /** When springboot requires this method, the javaCompiler is called and this method will tell them how to make it
-     * @return the current JavaCompiler
+    /** When {@link SpringBootApplication} requires a new {@link JavaCompiler} this method is called to create it.
+     * @return a new {@link JavaCompiler}.
      */
     @Bean
     public JavaCompiler javaCompiler() {
         return ToolProvider.getSystemJavaCompiler();
     }
 
-    /** When springboot requires this method, the solutionCompiler is called and this method will tell them how to make it
-     * @param compiler will compile the solution
-     * @return the solutionCompiler
+    /** When {@link SpringBootApplication} requires a new {@link SolutionCompiler} this method is called to create it.
+     * @param compiler will compile the solution.
+     * @return a new {@link SolutionCompiler}.
      */
     @Bean
     public SolutionCompiler solutionCompiler(JavaCompiler compiler) {
@@ -54,16 +54,16 @@ public class Application {
     }
 
     /**
-     * When springboot requires this method, the exerciseRepository is called and this method will tell them how to make it
-     * @param compiler will compile the solution
-     * @return exerciseRepository
+     * When {@link SpringBootApplication} requires a new {@link ExerciseRepository} this method is called to create it.
+     * @param compiler will compile the solution.
+     * @return a new {@link ExerciseRepository}.
      */
     @Bean
     public ExerciseRepository exerciseRepository(SolutionCompiler compiler) {
         return new ExerciseRepositoryImpl(compiler);
     }
 
-    /** will run the Application when SpringApplication is called.
+    /** Runs the {@link SpringBootApplication} with this {@code class} as a parameter.
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

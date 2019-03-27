@@ -1,6 +1,5 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
-import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 
 import javax.tools.SimpleJavaFileObject;
@@ -26,7 +25,7 @@ class SolutionJavaFile extends SimpleJavaFileObject {
     }
 
     /**
-     * Get the content of the {@code CompilableSolution} as a {@code CharSequence}.
+     * Get the content of the {@link CompilableSolution} as a {@code CharSequence}.
      * @param ignoreEncodingErrors Unused by this {@code @Override} - exists because of {@code super}.
      * @return {@code CharSequence} of the user input.
      */
