@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
+import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
@@ -21,6 +22,7 @@ public class ExerciseController {
     @Autowired
     ExerciseRepository exerciseRepository;
 
+
     public static class ExerciseInformation {
         private final String url;
         private final String title;
@@ -32,21 +34,41 @@ public class ExerciseController {
             this.description = description;
         }
 
+        /**
+         * @return The title of this {@link Exercise}.
+         */
         public String getTitle() {
             return title;
         }
 
+        /**
+         * @return the URL of this {@link Exercise}.
+         */
         public String getUrl() {
             return url;
         }
+
+        /**
+         * @return the description of this {@link Exercise}.
+         */
         public String getDescription() {
             return description;
         }
     }
 
+
+    /**
+     * <p>
+     *     When {@link org.springframework.boot.autoconfigure.SpringBootApplication} receives a GET request with the
+     *     value {@code getExercises} this method is called and run.</p>
+     * <p>
+     *     This method gets all stored {@link Exercise} in the {@link ExerciseRepository} as {@link ExerciseInformation}.
+     * </p>
+     * @return a list of all exercises with the title and description
+     */
     @RequestMapping(value = "getExercises", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ExerciseInformation> geExercises() {
+    public List<ExerciseInformation> getExercises() {
         List<ExerciseInformation> combinedExerciseParameters = new ArrayList<>();
         for (int i = 1; i <= exerciseRepository.getExerciseArraySize(); i++) {
             Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
@@ -57,6 +79,22 @@ public class ExerciseController {
         return combinedExerciseParameters;
     }
 
+
+    /**
+     * <p>
+     *     When {@link org.springframework.boot.autoconfigure.SpringBootApplication} receives a POST request with the
+     *     identifier this method is called and run. The identifier corresponds to the ID of an {@link Exercise}.
+     * </p>
+     * <p>
+     *     This method stores the users input, creates a {@link Solution} using the user input, calls
+     *     {@link Solution#evaluate()} which compiles, runs, and checks the user input. Stores the results in a
+     *     {@link Results} object.
+     * </p>
+     * @param exercise the exercise type, get by the identifier given from
+     *                       {@link org.springframework.boot.autoconfigure.SpringBootApplication} from the POST request.
+     * @param submittedSolution is the solution submitted by the user
+     * @return a {@link Results} object containing the result of compiling, running, and checking the user solution.
+     */
     @RequestMapping(value ="{identifier}", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Results postRequestExercise(
