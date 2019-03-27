@@ -108,14 +108,14 @@
                        pdes.textContent = deschange;
 
                         if(list.options[list.selectedIndex].getAttribute("precedingCode") != "null"){
-                        document.getElementById("preceding-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("precedingCode"));
+                        document.getElementById("preceding-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("precedingCode").replace("/n", "<br/>"));
                         document.getElementById("preceding-code-box").style.visibility = "visible";
                         }
                         else {
                         document.getElementById("preceding-code-box").style.visibility = "hidden"; }
 
                         if(list.options[list.selectedIndex].getAttribute("followingCode") != "null"){
-                        document.getElementById("following-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("followingCode"));
+                        document.getElementById("following-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("followingCode").replace("/n", "<br/>"));
                         document.getElementById("following-code-box").style.visibility = "visible";
                         }
                         else {
