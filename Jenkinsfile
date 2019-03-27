@@ -29,56 +29,60 @@ pipeline {
         }
         stage('Parallel Steps') {
             parallel {
-                stage('Coverage') {
-                    agent {
-                        docker {
-                        image 'maven:3-jdk-10'
-                        args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
-                        }
-                    }
-                    steps {
-                        sh 'mvn -B test -Djacoco.skip=false'
-                    }
-                    post {
-                        always {
-                            jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
-                        }
-                    }
-                }
-                stage('Docs') {
-                    docker {
-                        image 'maven:3-jdk-10'
-                        args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
-                    }
-                    steps {
-                        sh 'mvn -B javadoc:aggregate'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
-                    }
-                }
-                stage('Build and Deploy') {
-                    when {
-                        branch 'master'
-                    }
-                    stages {
-                        stage('Build Container') {
-                            steps {
-                                echo "Building container"
-    
+                stages{
+                    stage('Coverage') {
+                        agent {
+                            docker {
+                                image 'maven:3-jdk-10'
+                                args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
                             }
                         }
-                        stage('Deploy Container') {
-                            steps {
-                                echo "Deploying..."
+                        steps {
+                            sh 'mvn -B test -Djacoco.skip=false'
+                        }
+                        post {
+                            always {
+                                jacoco changeBuildStatus: true, execPattern: '*/target/coverage-reports/jacoco-ut.exec', maximumBranchCoverage: '75', maximumMethodCoverage: '85'
                             }
                         }
-                        stage('Restart Container') {
-                            steps {
-                                echo "Restarting..."
+                    }
+                    stage('Docs') {
+                        agent{ 
+                            docker {
+                                image 'maven:3-jdk-10'
+                                args '-v /var/lib/jenkins/.m2:/nonexistent/.m2'
                             }
                         }
-                        stage('Acceptance tests') {
-                            steps {
-                                echo "Running Acceptance Tests"
+                        steps {
+                            sh 'mvn -B javadoc:aggregate'
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
+                        }
+                    }
+                    stage('Build and Deploy') {
+                        when {
+                            branch 'master'
+                        }
+                        stages {
+                            stage('Build Container') {
+                                steps {
+                                    echo "Building container"
+        
+                                }
+                            }
+                            stage('Deploy Container') {
+                                steps {
+                                    echo "Deploying..."
+                                }
+                            }
+                            stage('Restart Container') {
+                                steps {
+                                    echo "Restarting..."
+                                }
+                            }
+                            stage('Acceptance tests') {
+                                steps {
+                                    echo "Running Acceptance Tests"
+                                }
                             }
                         }
                     }
