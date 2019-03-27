@@ -2,8 +2,8 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.ReturnTypeExerciseSolution;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -12,26 +12,28 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
-class PrintOutExerciseTest {
+class ReturnTypeExerciseTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final PrintOutExercise printOutExercise = new PrintOutExercise(compiler, "Answer","MY NAME",1, "Write a Java code which when run will produce a string which reads");
+    private final ReturnTypeExercise returnTypeExercise = new ReturnTypeExercise(compiler, 12,"Twelve",3, "Write a Java method which when run will return");
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
-    void helloWorldExerciseIdentifierIs1() {
-        assertEquals(1, printOutExercise.getIdentifier());
+    void exerciseIdentifierIs3() {
+        assertEquals(3, returnTypeExercise.getIdentifier());
     }
 
     @Test
-    void getSolutionFromUserInputReturnsHelloWorldSolution() {
-        assertThat(printOutExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(PrintOutExerciseSolution.class)));
+    void getSolutionFromUserInputReturnsReturnTypeSolution() {
+        assertThat(returnTypeExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(ReturnTypeExerciseSolution.class)));
     }
+
     @Test
     void getTitleOfExercise(){
-        assertEquals(printOutExercise.getTitle(),"Exercise 1: MY NAME");
+        assertEquals(returnTypeExercise.getTitle(),"Exercise 3: Twelve");
     }
+
     @Test
     void getDescription(){
-        assertEquals(printOutExercise.getDescription(),"Write a Java code which when run will produce a string which reads MY NAME");
+        assertEquals(returnTypeExercise.getDescription(),"Write a Java method which when run will return Twelve");
     }
 }

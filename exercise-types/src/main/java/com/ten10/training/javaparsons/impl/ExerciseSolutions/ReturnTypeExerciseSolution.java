@@ -3,13 +3,13 @@ package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class PrintOutExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -37,24 +37,25 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
     private final SolutionCompiler compiler;
     private final ThreadSolutionRunner runner;
     private final String userInput;
-    private final String answer;
+    private final Integer answer;
     private final ProgressReporter progressReporter;
-    private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
+    private Integer output;
 
     /**
-     * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
-     * @param compiler SolutionCompiler to compile the user input.
-     * @param runner ThreadSolutionRunner to run the compiled code.
-     * @param userInput The user input as a String.
-     * @param answer Expected result of running the user input.
+     * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
+     *
+     * @param compiler         SolutionCompiler to compile the user input.
+     * @param runner           ThreadSolutionRunner to run the compiled code.
+     * @param userInput        The user input as a String.
+     * @param answer           Expected result of running the user input.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-    public PrintOutExerciseSolution(SolutionCompiler compiler,
-                                    ThreadSolutionRunner runner,
-                                    String userInput,
-                                    String answer,
-                                    ProgressReporter progressReporter) {
+    public ReturnTypeExerciseSolution(SolutionCompiler compiler,
+                                      ThreadSolutionRunner runner,
+                                      String userInput,
+                                      Integer answer,
+                                      ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
@@ -65,21 +66,28 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
 
     /**
      * Compile and Run the stored user input then compares the output to the expected output.
+     *
      * @return True if the output matches, else return False.
      * @throws Exception Exceptions when
      */
     @Override
     public boolean evaluate() throws Exception {
-        boolean cancompile = compile();
-        boolean canrun = canRun();
-        boolean ranToCompletion = cancompile && canrun;
-        boolean correctOutput = output.trim().equals(answer);
+        boolean canCompile = compile();
+        if (!canCompile){
+            return false;
+        }
+        boolean canRun = canRun();
+        boolean ranToCompletion = canCompile && canRun;
+        if (!ranToCompletion){
+            return false;
+        }
+        boolean correctOutput = output.equals(answer);
         progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
-        return ranToCompletion;
+        return true;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if(byteCode != null) {
+        if (byteCode != null) {
             if (run() != Optional.empty()) {
                 return true;
             }
@@ -109,6 +117,7 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
 
     /**
      * Store the byteCode of a solution. Used by the Runner to run the code.
+     *
      * @param byteCode compiled java code.
      */
     @Override
@@ -135,15 +144,13 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
         };
     }
 
-    private String output = "";
-
     private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        captureConsoleOutput.start();
-        try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter);
-        } finally {
-            this.output = captureConsoleOutput.stop();
-            progressReporter.storeCapturedOutput(output);
+        try{
+            runner.run(getClassLoader(),entryPoint,progressReporter);
+            return Optional.ofNullable(runner.getMethodOutput());
+        }finally {
+            this.output = (Integer) runner.getMethodOutput();
+            progressReporter.storeCapturedOutput(output.toString());
         }
     }
 }

@@ -4,6 +4,7 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
+import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,8 +21,10 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
         PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1, "Write a Java code which when run will produce a string which reads");
         PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2, "Write a Java code which when run will produce a string which reads");
+        ReturnTypeExercise return42 = new ReturnTypeExercise(compiler, 42, "Life, the Universe and Everything", 3, "Write a Java method which when run will return 42, the answer to");
+        ReturnTypeExercise returnSquareNumber = new ReturnTypeExercise(compiler, 4, "Two Squared", 4, "Write a Java method which when run will return");
         this.compiler = compiler;
-        exercises = Arrays.asList(helloWorld, cruelWorld);
+        exercises = Arrays.asList(helloWorld, cruelWorld, return42, returnSquareNumber);
 
     }
 
