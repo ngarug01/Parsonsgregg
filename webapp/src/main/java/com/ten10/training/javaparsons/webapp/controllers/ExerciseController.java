@@ -43,12 +43,10 @@ public class ExerciseController {
         public String getUrl() {
             return url;
         }
-        public String getDescription() {
-            return description;
-        }
-
-        public String getPreceedingCode() { return precedingCode;}
+        public String getDescription() { return description;}
+        public String getPrecedingCode() { return precedingCode;}
         public String getFollowingCode() { return followingCode;}
+
     }
 
     @RequestMapping(value = "getExercises", method = RequestMethod.GET, produces = "application/json")

@@ -4,25 +4,26 @@
     <title>Java Parsons "Hello World!"</title>
 </head>
 <body>
-    <h1>Java Parsons Problems</h1>
-    <section id="ExerciseSelection">
-        <select id="ExerciseList">
-        </select>
-    </section>
+<h1>Java Parsons Problems</h1>
+<section id="ExerciseSelection">
+    <select id="ExerciseList">
+    </select>
+</section>
+<br>
+<h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
+<div id="input">
+    <div name = "Preceding Code" id = "preceding-code-box" class = "codebox"></div>
+    <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
     <br>
-    <h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
-    <div id="input">
-        <br>
-        <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
-        <br>
-        <button id="enter-answer">Submit</button>
-    </div>
-    <div name = "Correct Answer" id = "correct-answer" class="output"></div>
-   <div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
-   <div name = "Information" id = "information" class  = "output"></div>
-   </body>
+    <button id="enter-answer">Submit</button>
+    <div name = "Following Code" id = "following-code-box" class = "codebox"></div>
+</div>
+<div name = "Correct Answer" id = "correct-answer" class="output"></div>
+<div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
+<div name = "Information" id = "information" class  = "output"></div>
+</body>
 
-   <style>
+<style>
        body {
        background-color: #c0c0c0;
        text-align: center;
@@ -53,6 +54,11 @@
         #information{
             background-color:  rgb(255, 192, 55);
         }
+        .codebox {
+           margin-left: 3%;
+           margin-right: 3%;
+           background-color: rgb(200, 200, 200);
+        }
        .output {
            display: none;
            margin: 20px;
@@ -60,7 +66,7 @@
            margin-right: 20%;
        }
    </style>
-    <script async>
+<script async>
 
         window.onload = function () {
          var XHR = new XMLHttpRequest();
@@ -79,7 +85,9 @@
                        for (const exerciseTrio of jsonData) {
                            const elem = document.createElement("option");
                            elem.setAttribute("value", exerciseTrio.url);
-                           elem.setAttribute("description",exerciseTrio.description)
+                           elem.setAttribute("description",exerciseTrio.description);
+                           elem.setAttribute("precedingCode", exerciseTrio.precedingCode);
+                           elem.setAttribute("followingCode", exerciseTrio.followingCode);
                            elem.text = exerciseTrio.title;
                            parent.appendChild(elem);
                         }
@@ -92,12 +100,28 @@
                    else
                        console.log(XHR.status);
                    }
+
                    document.getElementById("ExerciseList").onchange = function descriptionChange(){
                        var pdes = document.getElementById("Description");
                        var list =document.getElementById("ExerciseList");
                        var deschange = list.options[list.selectedIndex].getAttribute("description");
                        pdes.textContent = deschange;
+
+                        if(list.options[list.selectedIndex].getAttribute("precedingCode") != "null"){
+                        document.getElementById("preceding-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("precedingCode"));
+                        document.getElementById("preceding-code-box").style.visibility = "visible";
+                        }
+                        else {
+                        document.getElementById("preceding-code-box").style.visibility = "hidden"; }
+
+                        if(list.options[list.selectedIndex].getAttribute("followingCode") != "null"){
+                        document.getElementById("following-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("followingCode"));
+                        document.getElementById("following-code-box").style.visibility = "visible";
+                        }
+                        else {
+                        document.getElementById("following-code-box").style.visibility = "hidden"; }
                    }
+
 
             document.getElementById("enter-answer").onclick = function postAnswer() {
                 outputReset();
