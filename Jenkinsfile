@@ -44,7 +44,6 @@ pipeline {
                         }
                     }
                 }
-
                 stage('Docs') {
                     agent{ 
                         docker {
@@ -62,15 +61,17 @@ pipeline {
                     when {
                         branch 'master'
                     }
-                    stages {
-                        stage('Build Container') {
-                            steps {
-                                echo "Building container"
-                            }
+                    script{
+                        def customImage = docker.build("Java-parsons:${env.BUILD_ID}")
+                        customImage.inside{
+                            sh "nc -vz localhost -8080"
                         }
+                    }
+                    stages {
                         stage('Deploy Container') {
                             steps {
                                 echo "Deploying..."
+
                             }
                         }
                         stage('Restart Container') {
@@ -81,6 +82,7 @@ pipeline {
                         stage('Acceptance tests') {
                             steps {
                                 echo "Running Acceptance Tests"
+                                sh 'mvn -version'
                             }
                         }
                     }
