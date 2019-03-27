@@ -8,7 +8,6 @@ import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
@@ -22,7 +21,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
         PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1);
         PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2);
-        MethodsStatementsExercise methodStatementsHelloWorld = new MethodsStatementsExercise(compiler, "public class main { /n public static void main { /n", "}", "Hello World!", "Method Statements Hello World!", 3);
+        MethodsStatementsExercise methodStatementsHelloWorld = new MethodsStatementsExercise(compiler, "public class main { /n public static void main { /n", "}", "Hello World!", "Methods Statements Hello World", 3);
         this.compiler = compiler;
         exercises = Arrays.asList(helloWorld, cruelWorld, methodStatementsHelloWorld);
 

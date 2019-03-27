@@ -53,6 +53,16 @@ public class PrintOutExercise implements Exercise {
         return "Write a Java code which when run will produce a string which reads \""+exerciseName+"\"";
     }
 
+    @Override
+    public String getPrecedingCode() {
+        return null;
+    }
+
+    @Override
+    public String getFollowingCode() {
+        return null;
+    }
+
     /**
      * @param userInput The input provided by the user.
      * @param progressReporter The callback object to use when reporting compilation and test results.

@@ -14,8 +14,8 @@ public class MethodsStatementsExercise implements Exercise {
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private final String answer;
     private final int id;
-    public final String precedingCode;
-    public final String followingCode;
+    private final String precedingCode;
+    private final String followingCode;
 
     public MethodsStatementsExercise(SolutionCompiler compiler, String precedingCode, String followingCode, String answer, String exerciseName, int id) {
         this.compiler = compiler;
@@ -41,14 +41,12 @@ public class MethodsStatementsExercise implements Exercise {
         return "Complete the code so the method runs";
     }
 
-    @Override
     public String getPrecedingCode() {
-        return null;
+        return precedingCode;
     }
 
-    @Override
     public String getFollowingCode() {
-        return null;
+        return followingCode;
     }
 
     @Override
