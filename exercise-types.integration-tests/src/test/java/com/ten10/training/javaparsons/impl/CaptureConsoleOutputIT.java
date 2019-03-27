@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 
-class CaptureConsoleOutputTest {
+class CaptureConsoleOutputIT {
 
     private CaptureConsoleOutput cco = new CaptureConsoleOutput();
     private static final String LINE_ENDING = System.getProperty("line.separator");

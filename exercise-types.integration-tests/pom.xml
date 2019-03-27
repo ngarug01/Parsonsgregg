@@ -6,18 +6,36 @@
         <artifactId>java-parsons</artifactId>
         <groupId>com.ten10.training</groupId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../../</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>exercise-types.integration-tests</artifactId>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
             <groupId>com.ten10.training</groupId>
             <artifactId>exercise-types</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.ten10.training</groupId>
@@ -38,8 +56,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <scope>compile</scope>
         </dependency>
-
     </dependencies>
-
 </project>
