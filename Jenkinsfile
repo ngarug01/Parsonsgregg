@@ -82,7 +82,7 @@ pipeline {
                                     Perhaps you forgot to surround the code with a step that provides this, such as: node,dockerNode
                                     [Pipeline] error
                                     */
-                                    node("dockerNode"){
+                                    node{
                                         unstash 'fatJar'
                                         def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                         customImage.inside{
