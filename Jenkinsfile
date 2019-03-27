@@ -86,7 +86,7 @@ pipeline {
                                         unstash 'fatJar'
                                         def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                         customImage.inside{
-                                            sh "nc -vz localhost -8080"
+                                            sh "nc -vz localhost 8080"
                                         }
                                     }
                                 }
