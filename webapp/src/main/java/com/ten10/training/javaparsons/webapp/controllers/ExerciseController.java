@@ -83,7 +83,7 @@ public class ExerciseController {
     /**
      * <p>
      *     When {@link org.springframework.boot.autoconfigure.SpringBootApplication} receives a POST request with the
-     *     identifier this method is called and run.
+     *     identifier this method is called and run. The identifier corresponds to the ID of an {@link Exercise}.
      * </p>
      * <p>
      *     This method stores the users input, creates a {@link Solution} using the user input, calls
@@ -93,7 +93,7 @@ public class ExerciseController {
      * @param exercise the exercise type, get by the identifier given from
      *                       {@link org.springframework.boot.autoconfigure.SpringBootApplication} from the POST request.
      * @param submittedSolution is the solution submitted by the user
-     * @return the results of compiling, running, and checking the user solution.
+     * @return a {@link Results} object containing the result of compiling, running, and checking the user solution.
      */
     @RequestMapping(value ="{identifier}", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody

@@ -15,14 +15,14 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private Future<Object> future;
 
     /**
-     * Takes a compiled solution and runs this from an expected {@code EntryPoint}. Fails if the user solution does not have
-     * matching {@code EntryPoint} to what is expected.
-     * The {@code EntryPoint} is required so the runner knows where to look to begin execution.
-     * All Runtime exceptions and information is stored in the {@code ProgressReporter}.
-     * @param classLoader       Used to load the class from the expected {@code EntryPoint}.
-     * @param solution          An {@code EntryPoint}, the name of the class and method(with its params) from where to run the code.
+     * Takes a compiled solution and runs this from an expected {@link EntryPoint}. Fails if the user solution does not have
+     * matching {@link EntryPoint} to what is expected.
+     * The {@link EntryPoint} is required so the runner knows where to look to begin execution.
+     * All Runtime exceptions and information is stored in the {@link ProgressReporter}.
+     * @param classLoader       Used to load the class from the expected {@link EntryPoint}.
+     * @param solution          An {@link EntryPoint}, the name of the class and method(with its params) from where to run the code.
      * @param progressReporter  Stores any runtime exceptions.
-     * @return The result of running the given compiled code. {@code Optional.empty()} if the code fails to run.
+     * @return The result of running the given compiled code. {@link Optional#empty()} if the code fails to run.
      * @throws ReflectiveOperationException
      * @throws ExecutionException
      * @throws InterruptedException
@@ -85,11 +85,11 @@ public class ThreadSolutionRunner implements SolutionRunner {
     }
 
     /**
-     * Gets the output of the Method that was run through {@code Future}.
-     * @return The computed result of running the method. {@code Optional.empty()} if the method fails to run, either in
-     * the allotted time.
-     * @throws ExecutionException
-     * @throws InterruptedException
+     * Gets the output of the method provided from the {@link com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint}. From the user solution.
+     * @return The computed result of running the method. {@link Optional#empty()} if the method fails to run, either in
+     * the allotted time, there's a run time exception, or an {@link InterruptedException}.
+     * @throws ExecutionException throws when a run time exception occurs.
+     * @throws InterruptedException if the {@code Thread} is interrupted unexpectedly.
      */
     @Override
     public Object getMethodOutput() throws ExecutionException, InterruptedException {
