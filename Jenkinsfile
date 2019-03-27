@@ -58,9 +58,9 @@ pipeline {
                 }
 
                 stage('Build and Deploy') {
-                    when {
-                        branch 'master'
-                    }
+                   // when {
+                   //     branch 'master'
+                   //  }
                     stages{
                         stage("Build"){
                             steps{
