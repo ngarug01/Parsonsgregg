@@ -65,7 +65,7 @@ pipeline {
                         stage("Build"){
                             steps{
                                 script{
-                                    def customImage = docker.build("Java-parsons:${env.BUILD_ID}")
+                                    def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                     customImage.inside{
                                         sh "nc -vz localhost -8080"
                                     }
