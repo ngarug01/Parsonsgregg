@@ -18,6 +18,10 @@ public interface Exercise extends AutoCloseable {
 
     String getDescription();
 
+    String getPrecedingCode();
+
+    String getFollowingCode();
+
     /**
      * Builds and returns a {@link Solution} object based on the provided input. When the {@link Solution#evaluate()}
      * method is called, results will be reported through the {@link ProgressReporter} provided.

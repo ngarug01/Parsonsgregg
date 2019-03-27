@@ -25,11 +25,15 @@ public class ExerciseController {
         private final String url;
         private final String title;
         private final String description;
+        private final String preceedingCode;
+        private final String followingCode;
 
-        ExerciseInformation(String URL, String title, String description) {
+        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode) {
             url = URL;
             this.title = title;
             this.description = description;
+            this.preceedingCode = precedingCode;
+            this.followingCode = followingCode;
         }
 
         public String getTitle() {
@@ -42,17 +46,24 @@ public class ExerciseController {
         public String getDescription() {
             return description;
         }
+
+        public String getPreceedingCode() { return preceedingCode;}
+        public String getFollowingCode() { return followingCode;}
     }
 
     @RequestMapping(value = "getExercises", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<ExerciseInformation> geExercises() {
+    public List<ExerciseInformation> getExercises() {
         List<ExerciseInformation> combinedExerciseParameters = new ArrayList<>();
         for (int i = 1; i <= exerciseRepository.getExerciseArraySize(); i++) {
             Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
             combinedExerciseParameters.add(new ExerciseInformation("exercise/" + i
                 ,exercise.getTitle()
-                ,exercise.getDescription()));
+                ,exercise.getDescription()
+                ,exercise.getPrecedingCode()
+                ,exercise.getFollowingCode()
+            ));
+
         }
         return combinedExerciseParameters;
     }

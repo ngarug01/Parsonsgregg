@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.impl;
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseList.MethodsStatementsExercise;
 import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
 
 import java.util.Arrays;
@@ -21,8 +22,9 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
         PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1);
         PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2);
+        MethodsStatementsExercise methodStatementsHelloWorld = new MethodsStatementsExercise(compiler, "public class main { /n public static void main { /n", "}", "Hello World!", "Method Statements Hello World!", 3);
         this.compiler = compiler;
-        exercises = Arrays.asList(helloWorld, cruelWorld);
+        exercises = Arrays.asList(helloWorld, cruelWorld, methodStatementsHelloWorld);
 
     }
 
@@ -32,8 +34,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
      */
     @Override
     public Exercise getExerciseByIdentifier(int identifier) {
-        for(Exercise exercise : exercises){
-            if(exercise.getIdentifier() == identifier){
+        for (Exercise exercise : exercises) {
+            if (exercise.getIdentifier() == identifier) {
                 return exercise;
             }
         }
