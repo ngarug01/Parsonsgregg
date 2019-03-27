@@ -65,11 +65,29 @@ pipeline {
                     stages{
                         stage("Build"){
                             steps{
-                                unstash 'fatJar'
                                 script{
-                                    def customImage = docker.build("java-parsons:${env.BUILD_ID}")
-                                    customImage.inside{
-                                        sh "nc -vz localhost -8080"
+                                    // Build fails when unstash is not inside a node.
+
+                                    /*
+                                    [Pipeline] unstash
+                                    Fetching changes from the remote Git repository
+                                        > git config remote.origin.url git@src.thetestpeople.com:development-academy/java-parsons # timeout=10
+                                    Fetching without tags
+                                    Fetching upstream changes from git@src.thetestpeople.com:development-academy/java-parsons
+                                        > git --version # timeout=10
+                                    Required context class hudson.FilePath is missing
+                                    using GIT_SSH to set credentials java-parsons@ci.ten10.com
+                                        > git fetch --no-tags --progress git@src.thetestpeople.com:development-academy/java-parsons +refs/heads/*:refs/remotes/origin/*
+
+                                    Perhaps you forgot to surround the code with a step that provides this, such as: node,dockerNode
+                                    [Pipeline] error
+                                    */
+                                    node("dockerNode"){
+                                        unstash 'fatJar'
+                                        def customImage = docker.build("java-parsons:${env.BUILD_ID}")
+                                        customImage.inside{
+                                            sh "nc -vz localhost -8080"
+                                        }
                                     }
                                 }
                             }
