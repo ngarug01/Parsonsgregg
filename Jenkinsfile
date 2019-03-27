@@ -63,7 +63,7 @@ pipeline {
                    //     branch 'master'
                    //  }
                     stages{
-                        stage("Build"){
+                        stage("Build and Smoke Test Docker Container"){
                             steps{
                                 script{
                                     // Build fails when unstash is not inside a node.
@@ -86,7 +86,7 @@ pipeline {
                                         unstash 'fatJar'
                                         def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                         customImage.inside{
-                                            sh "nc -vz localhost 8080"
+                                            sh "while ! nc -vz localhost 8080; do sleep 1; done"
                                         }
                                     }
                                 }
