@@ -17,11 +17,19 @@ class SolutionJavaFile extends SimpleJavaFileObject {
                         + Kind.SOURCE.extension);
     }
 
+    /**
+     * @inheritDoc
+     */
     SolutionJavaFile(CompilableSolution solution) {
         super(uriFromSolution(solution), Kind.SOURCE);
         this.solution = solution;
     }
 
+    /**
+     * Get the content of the {@code CompilableSolution} as a {@code CharSequence}.
+     * @param ignoreEncodingErrors Unused by this {@code @Override} - exists because of {@code super}.
+     * @return {@code CharSequence} of the user input.
+     */
     @Override
     public CharSequence getCharContent(boolean ignoreEncodingErrors) {
         return solution.getFullClassText();

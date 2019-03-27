@@ -22,11 +22,23 @@ public class JavaSolutionCompiler implements SolutionCompiler {
     private final JavaCompiler compiler;
 
 
+    /**
+     * Prepares a {@code JavaCompiler} to compile {@code CompilableSolutions}.
+     * @param compiler {@code JavaCompiler} used to compile user solutions.
+     */
     public JavaSolutionCompiler(JavaCompiler compiler) {
         this.compiler = Objects.requireNonNull(compiler, "compiler");
     }
 
 
+    /**
+     * Uses the {@code JavaCompiler} provided in the constructor to compile the {@code CompilableSolution}.
+     * Errors and progress are stored in the {@code ProgressReporter} through a {@code Logger}.
+     * @param solution         The submitted solution to be compiled. This will not be modified.
+     * @param progressReporter An object which will collect errors. This is modified
+     * @return {@code True} if the {@code CompilableSolution} compiles successfully. {@code False} if the
+     * {@code CompilableSolution} fails to compile.
+     */
     @Override
     public boolean compile(final CompilableSolution solution, final ProgressReporter progressReporter) {
         Objects.requireNonNull(solution, "solution");

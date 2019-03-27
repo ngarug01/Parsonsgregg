@@ -14,6 +14,19 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private ExecutorService executor;
     private Future<Object> future;
 
+    /**
+     * Takes a compiled solution and runs this from an expected {@code EntryPoint}. Fails if the user solution does not have
+     * matching {@code EntryPoint} to what is expected.
+     * The {@code EntryPoint} is required so the runner knows where to look to begin execution.
+     * All Runtime exceptions and information is stored in the {@code ProgressReporter}.
+     * @param classLoader       Used to load the class from the expected {@code EntryPoint}.
+     * @param solution          An {@code EntryPoint}, the name of the class and method(with its params) from where to run the code.
+     * @param progressReporter  Stores any runtime exceptions.
+     * @return The result of running the given compiled code. {@code Optional.empty()} if the code fails to run.
+     * @throws ReflectiveOperationException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     @Override
     public Optional<Object> run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
         // Pull data out of the entry point object
@@ -71,6 +84,13 @@ public class ThreadSolutionRunner implements SolutionRunner {
         timeoutMillis = timeUnit.toMillis(count);
     }
 
+    /**
+     * Gets the output of the Method that was run through {@code Future}.
+     * @return The computed result of running the method. {@code Optional.empty()} if the method fails to run, either in
+     * the allotted time.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     @Override
     public Object getMethodOutput() throws ExecutionException, InterruptedException {
         try {

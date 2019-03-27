@@ -17,7 +17,7 @@ class InMemoryFileManager extends ForwardingJavaFileManager<StandardJavaFileMana
     private SolutionCompiler.CompilableSolution solution;
 
     /**
-     * Creates a new instance of InMemoryFileManager.
+     * Creates a new instance of {@link InMemoryFileManager}.
      *
      * @param fileManager delegate to this file manager
      * @param solution    solution that this memory manager relates to.
@@ -27,12 +27,28 @@ class InMemoryFileManager extends ForwardingJavaFileManager<StandardJavaFileMana
         this.solution = solution;
     }
 
+    /**
+     * @inheritDoc
+     * @param location
+     * @param packageName
+     * @param relativeName
+     * @return
+     * @throws IOException
+     */
     @Override
     public FileObject getFileForInput(Location location, String packageName, String relativeName) throws IOException {
         // LOGGER.debug("getFileForInput called with ({}, {}, {})", location, packageName, relativeName);
         return super.getFileForInput(location, packageName, relativeName);
     }
 
+    /**
+     * Create a new {@code InMemoryClassFile}.
+     * @param location
+     * @param className
+     * @param kind
+     * @param sibling
+     * @return a new {@link InMemoryClassFile} with the {@code className} and {@code solution}.
+     */
     @Override
     public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind, FileObject sibling) {
         // LOGGER.debug("getJavaFileForOutput called with ({}, {}, {}, {})",

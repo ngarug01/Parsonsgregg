@@ -19,7 +19,7 @@ class InMemoryClassFile extends SimpleJavaFileObject {
     /**
      * Construct a SimpleJavaFileObject of the given kind and with the
      * given URI.
-     *
+     * @inheritDoc
      */
     InMemoryClassFile(String name, SolutionCompiler.CompilableSolution solution) {
         super(nameToUri(name), Kind.CLASS);
@@ -27,8 +27,7 @@ class InMemoryClassFile extends SimpleJavaFileObject {
     }
 
     /**
-     * 
-     * @return
+     * @inheritDoc
      */
     @Override
     public OutputStream openOutputStream() {

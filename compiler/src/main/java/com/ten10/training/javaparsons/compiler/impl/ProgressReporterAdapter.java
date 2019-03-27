@@ -24,7 +24,6 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
      * Report diagnoses the code and logs compiler errors to an array
      * @param diagnostic an imported tool for checking code and finding compiler/runner errors
      */
-
     @Override
     public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
         LOGGER.debug("Received diagnostic: {}", diagnostic);
