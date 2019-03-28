@@ -21,7 +21,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
         PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1);
         PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2);
-        CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Methods Statements Hello World", 3);
+        CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Complete the code - Hello World!", 3);
         this.compiler = compiler;
         exercises = Arrays.asList(helloWorld, cruelWorld, methodStatementsHelloWorld);
 

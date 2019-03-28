@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exercise2;
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exersise1;
+import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exercise1;
 import com.ten10.training.javaparsons.webapp.Application;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class GoodbyeWorld {
     private static DriverFactory driverFactory = new DriverFactory();
     private static WebDriver driver = driverFactory.getDriver();
-    private Exersise1 exersise1 = new Exersise1(driver);
+    private Exercise1 exercise1 = new Exercise1(driver);
     private Exercise2 exercise2 = new Exercise2(driver);
     private static ConfigurableApplicationContext ctx;
     private String result;
@@ -27,7 +27,7 @@ public class GoodbyeWorld {
 
     @BeforeEach
     void beforeEveryTest() {
-        exersise1.goToHomepage();
+        exercise1.goToHomepage();
     }
 
     @Test
