@@ -6,11 +6,13 @@ import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.CompleteTheCodeExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import javax.tools.ToolProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -62,5 +64,27 @@ class CompleteTheCodeExerciseSolutionTest {
         CompleteTheCodeExerciseSolution printOutExerciseSolution = new CompleteTheCodeExerciseSolution(compiler, runner, userInput, "Pie", "public class Main { public static void main (String[] args) { ", " }}", progressReporter);
         assertTrue(printOutExerciseSolution.evaluate());
 
+    }
+
+    @Test
+    void compilerErrorTranslation() throws Exception {
+        // Arrange - Get hold of the Progress Reporter that gets passed to the compiler
+        ProgressReporter outsideProgressReporter = mock(ProgressReporter.class);
+        String codePrefix = "line1\nline2\nline3\n";
+        ProgressReporter insideProgressReporter = getLineNumberTranslatingProgressReporter(outsideProgressReporter, codePrefix);
+        // Act
+        insideProgressReporter.reportCompilerError(4, "It went wrong!");
+        // Assert
+        verify(outsideProgressReporter).reportCompilerError(1, "It went wrong!");
+    }
+
+    private ProgressReporter getLineNumberTranslatingProgressReporter(ProgressReporter outsideProgressReporter, String codePrefix) throws Exception {
+        SolutionCompiler solutionCompiler = mock(SolutionCompiler.class);
+        ArgumentCaptor<ProgressReporter> insideProgressReporterCaptor = ArgumentCaptor.forClass(ProgressReporter.class);
+        CompleteTheCodeExerciseSolution completeTheCodeExerciseSolution = new CompleteTheCodeExerciseSolution(
+            solutionCompiler, null, "", "", codePrefix, "Main", outsideProgressReporter);
+        completeTheCodeExerciseSolution.evaluate();
+        verify(solutionCompiler).compile(any(SolutionCompiler.CompilableSolution.class), insideProgressReporterCaptor.capture());
+        return insideProgressReporterCaptor.getValue();
     }
 }

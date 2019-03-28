@@ -6,8 +6,10 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import org.apache.commons.lang3.StringUtils;
 
 public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
@@ -43,6 +45,7 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
+    private int precedingLineNumber;
 
     /**
      * Creates a new CompleteTheCodeExerciseSolution. This constructor sets the local fields.
@@ -64,10 +67,24 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
         this.runner = runner;
         this.userInput = userInput;
         this.answer = answer;
-        this.progressReporter = progressReporter;
-        this.precedingCode = precedingCode.replace("<br/>", "");
-        this.followingCode = followingCode.replace("<br/>", "");
+        this.progressReporter = new LineNumberTranslationProgressReporter(progressReporter);
+        this.precedingCode = precedingCode.trim()+"\n";
+        this.followingCode = followingCode;
+        this.precedingLineNumber = StringUtils.countMatches(this.precedingCode, "\n");
     }
+
+    private class LineNumberTranslationProgressReporter extends AbstractProgressReporterDecorator {
+
+        protected LineNumberTranslationProgressReporter(ProgressReporter wrapped) {
+            super(wrapped);
+        }
+
+        @Override
+        public void reportCompilerError(long lineNumber, String message) {
+            super.reportCompilerError(lineNumber - precedingLineNumber, message);
+        }
+    }
+
 
     /**
      * Compile and Run the stored user input then compares the output to the expected output.

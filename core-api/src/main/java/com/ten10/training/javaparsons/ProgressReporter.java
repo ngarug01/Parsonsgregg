@@ -15,10 +15,4 @@ public interface ProgressReporter {
 
     void reportRunnerError(String message);
 
-    List<?> getCompilerErrors();
-
-    List<?> getCompilerInfo();
-
-    List<?> getRunnerErrors();
-
 }
