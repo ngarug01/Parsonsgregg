@@ -18,8 +18,7 @@ class MethodsStatementsExerciseSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", "code", "code", progressReporter);
-
+    private final MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, "userInput string inputted into solution", "Hello World!", "code", "code", progressReporter);
 
 
     @Test
@@ -30,7 +29,7 @@ class MethodsStatementsExerciseSolutionTest {
 
     @Test
     void checkGetFullClassText() {
-        assertEquals("code"+"userInput string inputted into solution"+"code", methodsStatementsExerciseSolution.getFullClassText());
+        assertEquals("code" + "userInput string inputted into solution" + "code", methodsStatementsExerciseSolution.getFullClassText());
     }
 
     @Test
@@ -39,44 +38,29 @@ class MethodsStatementsExerciseSolutionTest {
     }
 
     @Test
-    void evaluateFailsOnCompileClassNameIncorrect(){
+    void evaluateFailsOnCompileClassNameIncorrect() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
-        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "code", "code", progressReporter);
-
-        try {
-            printOutExerciseSolution.evaluate();
-            verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "", "", progressReporter);
+        printOutExerciseSolution.evaluate();
+        verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
     }
 
     @Test
-    void evaluateFailsOnIncorrectAnswer(){
+    void evaluateFailsOnIncorrectAnswer() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "System.out.println(\"Pie\");";
         MethodsStatementsExerciseSolution methodsStatementsExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Potato", "public class Main { public static void Main {", "}}", progressReporter);
-
-        try {
-            methodsStatementsExerciseSolution.evaluate();
-            verify(progressReporter).setSuccessfulSolution(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        methodsStatementsExerciseSolution.evaluate();
+        verify(progressReporter).setSuccessfulSolution(false);
     }
 
     @Test
-    void evaluatePasses(){
+    void evaluatePasses() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "System.out.println(\"Pie\");";
         MethodsStatementsExerciseSolution printOutExerciseSolution = new MethodsStatementsExerciseSolution(compiler, runner, userInput, "Pie", "public class Main { public static void main (String[] args) { ", " }}", progressReporter);
+        assertTrue(printOutExerciseSolution.evaluate());
 
-        try {
-            assertTrue(printOutExerciseSolution.evaluate());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
