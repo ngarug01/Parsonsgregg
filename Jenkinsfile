@@ -87,8 +87,10 @@ pipeline {
                                     
                                     unstash 'fatJar'
                                     def customImage = docker.build("java-parsons:${env.BUILD_ID}")
-                                    customImage.inside{
-                                        sh 'mvn -version'
+                                    customImage { c ->
+                                        customImage.inside{
+                                            sh 'while ! alpine ping -h0.0.0.0:8080 --silent; do sleep 1; done'
+                                        }
                                     }
                                 }
                                 stage('Deploy Container') {
