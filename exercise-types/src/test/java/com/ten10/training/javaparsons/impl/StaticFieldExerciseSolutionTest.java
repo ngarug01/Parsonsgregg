@@ -22,16 +22,12 @@ class StaticFieldExerciseSolutionTest {
     private final StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
     @Test
-    void evaluate() {
+    void evaluate() throws Exception {
         JavaSolutionCompiler jsc = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         ProgressReporter pr = mock(ProgressReporter.class);
 
         StaticFieldExerciseSolution sFES = new StaticFieldExerciseSolution(jsc, new ThreadSolutionRunner(), userInput, "", pr);
-        try {
-            sFES.evaluate();
-        } catch (Exception e) {
-            System.out.println("FAIL");
-        }
+        sFES.evaluate();
     }
 
     @Test
@@ -56,42 +52,30 @@ class StaticFieldExerciseSolutionTest {
     }
 
     @Test
-    void evaluateFailsOnClassNameIncorrect(){
+    void evaluateFailsOnClassNameIncorrect() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic static int i = 42;\npublic static void main(String[] args){}}";
         StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
-        try{
-            staticFieldExerciseSolution.evaluate();
-            verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        staticFieldExerciseSolution.evaluate();
+        verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
     }
 
     @Test
-    void evaluateFailsOnIncorrectAnswer(){
+    void evaluateFailsOnIncorrectAnswer() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static int i = 4;\npublic static void main(String[] args){}}";
         StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
-        try{
-            staticFieldExerciseSolution.evaluate();
-            verify(progressReporter).setSuccessfulSolution(false);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        staticFieldExerciseSolution.evaluate();
+        verify(progressReporter).setSuccessfulSolution(false);
     }
 
     @Test
-    void evaluatePasses(){
+    void evaluatePasses() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
-        try{
-            assertTrue(staticFieldExerciseSolution.evaluate());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        assertTrue(staticFieldExerciseSolution.evaluate());
     }
 }
