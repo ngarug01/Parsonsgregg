@@ -81,7 +81,7 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
         }
         boolean correctOutput = output.trim().equals(answer);
         progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
-        return ranToCompletion;
+        return true;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
