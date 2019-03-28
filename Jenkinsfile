@@ -88,6 +88,7 @@ pipeline {
                                     unstash 'fatJar'
                                     def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                     customImage.inside{
+                                        sh 'mvn -version'
                                     }
                                 }
                                 stage('Deploy Container') {
@@ -98,7 +99,6 @@ pipeline {
                                 }
                                 stage('Acceptance tests') {
                                     echo "Running Acceptance Tests"
-                                    sh 'mvn -version'
                                 }
                             }
                         }
