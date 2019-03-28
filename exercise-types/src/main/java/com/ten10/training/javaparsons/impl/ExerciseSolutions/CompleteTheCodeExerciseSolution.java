@@ -73,9 +73,9 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
         this.precedingLineNumber = StringUtils.countMatches(this.precedingCode, "\n");
     }
 
-    private class LineNumberTranslationProgressReporter extends AbstractProgressReporterDecorator {
+    public class LineNumberTranslationProgressReporter extends AbstractProgressReporterDecorator {
 
-        protected LineNumberTranslationProgressReporter(ProgressReporter wrapped) {
+        public LineNumberTranslationProgressReporter(ProgressReporter wrapped) {
             super(wrapped);
         }
 

@@ -13,25 +13,26 @@ import javax.tools.ToolProvider;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 class CompleteTheCodeExerciseSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
-    private ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private  ProgressReporter progressReporter = mock(ProgressReporter.class);
     private final CompleteTheCodeExerciseSolution completeTheCodeExerciseSolution = new CompleteTheCodeExerciseSolution(compiler, runner, "userInput string inputted into solution", "Hello World!", "code", "code", progressReporter);
 
 
     @Test
     void checkEvaluate() throws Exception {
         completeTheCodeExerciseSolution.evaluate();
-        verify(compiler).compile(completeTheCodeExerciseSolution, progressReporter);
+        verify(compiler).compile(isA(CompleteTheCodeExerciseSolution.class), isA(CompleteTheCodeExerciseSolution.LineNumberTranslationProgressReporter.class));
     }
 
     @Test
     void checkGetFullClassText() {
-        assertEquals("code" + "userInput string inputted into solution" + "code", completeTheCodeExerciseSolution.getFullClassText());
+        assertEquals("code\n" + "userInput string inputted into solution" + "code", completeTheCodeExerciseSolution.getFullClassText());
     }
 
     @Test
