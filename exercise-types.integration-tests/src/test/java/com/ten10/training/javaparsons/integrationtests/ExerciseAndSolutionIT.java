@@ -7,6 +7,8 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import javax.tools.ToolProvider;
@@ -36,7 +38,8 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void helloWorldCompilerBuild() throws Exception {
         final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        SolutionRunner runner = new ThreadSolutionRunner();
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(SUCCESSFUL_BUILD, progressReporter);
         assertTrue(solution.evaluate());
@@ -45,7 +48,8 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void helloWorldCompilerFailBuild() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        SolutionRunner runner = new ThreadSolutionRunner();
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         assertFalse(solution.evaluate());
@@ -57,7 +61,8 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void helloWorldCompilerLogsCompilationError() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        SolutionRunner runner = new ThreadSolutionRunner();
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         solution.evaluate();

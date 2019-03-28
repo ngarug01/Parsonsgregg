@@ -4,6 +4,8 @@ import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -59,8 +61,13 @@ public class Application {
      * @return a new {@link ExerciseRepository}.
      */
     @Bean
-    public ExerciseRepository exerciseRepository(SolutionCompiler compiler) {
-        return new ExerciseRepositoryImpl(compiler);
+    public SolutionRunner solutionRunner() {
+        return new ThreadSolutionRunner();
+    }
+
+    @Bean
+    public ExerciseRepository exerciseRepository(SolutionCompiler compiler, SolutionRunner runner) {
+        return new ExerciseRepositoryImpl(compiler, runner);
     }
 
     /** Runs the {@link SpringBootApplication} with this {@code class} as a parameter.
