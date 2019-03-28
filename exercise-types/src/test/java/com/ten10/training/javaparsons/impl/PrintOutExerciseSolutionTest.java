@@ -39,8 +39,11 @@ class PrintOutExerciseSolutionTest {
 
     @Test
     void earlyReturnWhenCompileFails() throws Exception {
+        //Arrange
         when(compiler.compile(compilableSolution, progressReporter)).thenReturn(false);
+        //Act
         printOutExerciseSolution.evaluate();
+        //Assert
         verify(mockRunner, never()).run(classLoader, entryPoint, progressReporter);
     }
 
@@ -50,9 +53,10 @@ class PrintOutExerciseSolutionTest {
        when(compiler.compile(compilableSolution, progressReporter)).thenReturn(true);
        doReturn(Optional.empty()).when(mockRunner).run(classLoader, entryPoint, progressReporter);
        //Act
-       printOutExerciseSolution.evaluate();
+       boolean result = printOutExerciseSolution.evaluate();
        //Assert
-       verify(progressReporter, never()).setSuccessfulSolution(true);
+        assertFalse(result);
+        verify(progressReporter, never()).setSuccessfulSolution(false);
     }
 
     @Test
