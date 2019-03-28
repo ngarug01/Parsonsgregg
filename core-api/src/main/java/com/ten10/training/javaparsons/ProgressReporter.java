@@ -30,12 +30,6 @@ public interface ProgressReporter {
     void reportCompilerInfo(long lineNumber, String message);
 
     /**
-     * Set whether the provided solution was correct or not.
-     * @param answer {@code True} if successful, {@code False} if unsuccessful.
-     */
-    void setSuccessfulSolution(boolean answer);
-
-    /**
      * Stores any runtime errors within the results object
      * @param message description of the error
      */

@@ -72,6 +72,10 @@ public class Results implements ProgressReporter {
         compilerInfo.add(new Information(lineNumber, message));
     }
 
+    /**
+     * Set whether the provided solution was correct or not.
+     * @param answer {@code True} if successful, {@code False} if unsuccessful.
+     */
     public void setSuccessfulSolution(boolean answer) {
         succesfulSolution = answer;
     }

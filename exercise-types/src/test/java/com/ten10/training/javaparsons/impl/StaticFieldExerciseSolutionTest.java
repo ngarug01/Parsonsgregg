@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.StaticFieldExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
@@ -18,21 +19,16 @@ class StaticFieldExerciseSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private String userInput = "public class Main{\npublic static int i = 42;\npublic static void main(String[] args){}}";
-    private final StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
-
-    @Test
-    void evaluate() throws Exception {
-        JavaSolutionCompiler jsc = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ProgressReporter pr = mock(ProgressReporter.class);
-
-        StaticFieldExerciseSolution sFES = new StaticFieldExerciseSolution(jsc, new ThreadSolutionRunner(), userInput, "", pr);
-        sFES.evaluate();
-    }
+    private String userInput =
+        "public class Main{\npublic static int i = 42;\npublic static void main(String[] args){}}";
+    private final StaticFieldExerciseSolution staticFieldExerciseSolution =
+        new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
     @Test
     void checkEvaluate() throws Exception {
+        //ACT
         staticFieldExerciseSolution.evaluate();
+        //ASSERT
         verify(compiler).compile(staticFieldExerciseSolution, progressReporter);
     }
 
@@ -47,35 +43,100 @@ class StaticFieldExerciseSolutionTest {
     }
 
     @Test
-    void recordCompiledClass() {
-
-    }
-
-    @Test
     void evaluateFailsOnClassNameIncorrect() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        String userInput = "public class ain{\npublic static int i = 42;\npublic static void main(String[] args){}}";
-        StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+        //ARRANGE
+        SolutionCompiler compiler =
+            new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class ain{\npublic static int i = 42;\npublic static void main(String[] args){}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
-        staticFieldExerciseSolution.evaluate();
-        verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        verify(progressReporter).reportCompilerError(1,
+            "class ain is public, should be declared in a file named ain.java");
+        assertFalse(evaluateResult, "Compiler error should return false.");
     }
 
     @Test
     void evaluateFailsOnIncorrectAnswer() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        String userInput = "public class Main{\npublic static int i = 4;\npublic static void main(String[] args){}}";
-        StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+        //ARRANGE
+        SolutionCompiler compiler =
+            new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{\npublic static int i = 4;\npublic static void main(String[] args){}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
-        staticFieldExerciseSolution.evaluate();
-        verify(progressReporter).setSuccessfulSolution(false);
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Incorrect answer returns false.");
     }
 
     @Test
     void evaluatePasses() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        StaticFieldExerciseSolution staticFieldExerciseSolution = new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+        //ARRANGE
+        SolutionCompiler compiler =
+            new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
-        assertTrue(staticFieldExerciseSolution.evaluate());
+        //ASSERT
+        assertTrue(staticFieldExerciseSolution.evaluate(), "Test should compile, run, and have correct output");
+    }
+
+    //When updated to deal with multiple Objects this test needs to be updated
+    @Test
+    void moreThan1FieldShouldFail() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler =
+            new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{\npublic static int i = 42;\npublic static String str = \"string\";\npublic static void main(String[] args){}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Multiple fields should fail, for now.");
+    }
+
+    @Test
+    void nonStaticFieldNotRead() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{\npublic int i = 42;\npublic static void main(String[] args){}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Non static fields should fail the evaluation.");
+    }
+
+    @Test
+    void stringInsteadOfIntFails() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Answer expects an int but receives a String");
     }
 }

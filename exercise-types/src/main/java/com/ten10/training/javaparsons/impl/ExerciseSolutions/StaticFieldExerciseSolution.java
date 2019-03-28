@@ -8,6 +8,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -44,7 +45,20 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
     private byte[] byteCode;
     private Field[] klassFields;
 
-    public StaticFieldExerciseSolution(SolutionCompiler compiler, ThreadSolutionRunner runner, String userInput, Object answer, ProgressReporter progressReporter) {
+    /**
+     * Create a new StaticFieldExerciseSolution.
+     *
+     * @param compiler         SolutionCompiler to compile the user input.
+     * @param runner           ThreadSolutionRunner to run the compiled code.
+     * @param userInput        The user input as a String.
+     * @param answer           Expected result of running the user input.
+     * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
+     */
+    public StaticFieldExerciseSolution(SolutionCompiler compiler,
+                                       ThreadSolutionRunner runner,
+                                       String userInput,
+                                       Object answer,
+                                       ProgressReporter progressReporter) {
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
@@ -55,17 +69,14 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
 
     @Override
     public boolean evaluate() throws Exception {
-        boolean canCompile = canCompile();
-        boolean canRun = canRun();
-        boolean ranToCompletion = canCompile && canRun;
-        boolean correctOutput = false;
-        if(ranToCompletion){
-            if(getClassFields(getClassLoader())){
-                correctOutput = evaluateFields();
+        if (canCompile()) {
+            if(canRun()) {
+                if (getClassFields(getClassLoader())) {
+                    return evaluateFields();
+                }
             }
         }
-        progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
-        return ranToCompletion;
+        return false;
     }
 
     @Override
@@ -87,7 +98,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
 
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if(byteCode != null) {
+        if (byteCode != null) {
             if (run() != Optional.empty()) {
                 return true;
             }
@@ -118,14 +129,12 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
         };
     }
 
-    private String output = "";
-
     private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        captureConsoleOutput.start();
+        //captureConsoleOutput.start();
         try {
             return runner.run(getClassLoader(), entryPoint, progressReporter);
         } finally {
-            this.output = captureConsoleOutput.stop();
+            //captureConsoleOutput.stop();
         }
     }
 
@@ -133,22 +142,29 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
         try {
             Class<?> klass = classLoader.loadClass(entryPoint.getEntryPointClass());
             klassFields = klass.getFields();
-            if(klassFields.length != 0){ return true; }
+            if (klassFields.length != 0) {
+                return true;
+            }
         } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("No such class "+entryPoint.getEntryPointClass());
+            progressReporter.reportRunnerError("No such class " + entryPoint.getEntryPointClass());
         }
 
         return false;
     }
 
-    private boolean evaluateFields(){
-        if(klassFields.length > 1){
+    //TODO this method is messy, should clean it up.
+    private boolean evaluateFields() {
+        if (!(klassFields.length == 1)) { //In this iteration of the Static Field exercise we only expect 1 field.
+            progressReporter.reportRunnerError("Incorrect number of fields");
             return false;
-        }else{
+        } else if (!(Modifier.isStatic(klassFields[0].getModifiers()))) {
+            progressReporter.reportRunnerError("Field no static");
+            return false;
+        } else {
             Field field = klassFields[0];
             field.setAccessible(true);
             try {
-                if(field.get(field).equals(answer)){
+                if (field.get(field).equals(answer)) {
                     progressReporter.storeCapturedOutput(field.get(field).toString());
                     return true;
                 }

@@ -1,8 +1,9 @@
-package com.ten10.training.javaparsons.impl.ExerciseList;
+package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.StaticFieldExerciseSolution;
 import org.junit.jupiter.api.Test;
 
