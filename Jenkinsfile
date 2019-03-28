@@ -86,10 +86,12 @@ pipeline {
                                     */
                                     
                                     unstash 'fatJar'
+                                    // Build an image
                                     def customImage = docker.build("java-parsons:${env.BUILD_ID}")
-                                    customImage { c ->
-                                        customImage.inside{
-                                            sh 'while ! alpine ping -h0.0.0.0:8080 --silent; do sleep 1; done'
+                                    // Validate that running the image starts a TCP listener on 8080
+                                    customImage.withRun { c ->
+                                        docker.image('alpine').inside("--link ${c.id}:app") {
+                                            sh 'while ! nc -vz app 8080; do sleep 2; done'
                                         }
                                     }
                                 }
