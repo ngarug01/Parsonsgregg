@@ -68,45 +68,37 @@ pipeline {
                         script{
                             node{
                                 stage("Build and Smoke Test Docker Container"){
-                                    steps{
-                                        // Build fails when unstash is not inside a node.
+                                    // Build fails when unstash is not inside a node.
 
-                                        /*
-                                        [Pipeline] unstash
-                                        Fetching changes from the remote Git repository
-                                            > git config remote.origin.url git@src.thetestpeople.com:development-academy/java-parsons # timeout=10
-                                        Fetching without tags
-                                        Fetching upstream changes from git@src.thetestpeople.com:development-academy/java-parsons
-                                            > git --version # timeout=10
-                                        Required context class hudson.FilePath is missing
-                                        using GIT_SSH to set credentials java-parsons@ci.ten10.com
-                                            > git fetch --no-tags --progress git@src.thetestpeople.com:development-academy/java-parsons +refs/heads/*:refs/remotes/origin/*
+                                    /*
+                                    [Pipeline] unstash
+                                    Fetching changes from the remote Git repository
+                                        > git config remote.origin.url git@src.thetestpeople.com:development-academy/java-parsons # timeout=10
+                                    Fetching without tags
+                                    Fetching upstream changes from git@src.thetestpeople.com:development-academy/java-parsons
+                                        > git --version # timeout=10
+                                    Required context class hudson.FilePath is missing
+                                    using GIT_SSH to set credentials java-parsons@ci.ten10.com
+                                        > git fetch --no-tags --progress git@src.thetestpeople.com:development-academy/java-parsons +refs/heads/*:refs/remotes/origin/*
 
-                                        Perhaps you forgot to surround the code with a step that provides this, such as: node,dockerNode
-                                        [Pipeline] error
-                                        */
-                                        
-                                        unstash 'fatJar'
-                                        def customImage = docker.build("java-parsons:${env.BUILD_ID}")
-                                        customImage.inside{
-                                        }
+                                    Perhaps you forgot to surround the code with a step that provides this, such as: node,dockerNode
+                                    [Pipeline] error
+                                    */
+                                    
+                                    unstash 'fatJar'
+                                    def customImage = docker.build("java-parsons:${env.BUILD_ID}")
+                                    customImage.inside{
                                     }
                                 }
                                 stage('Deploy Container') {
-                                    steps {
-                                        echo "Deploying..."
-                                    }
+                                    echo "Deploying..."
                                 }
                                 stage('Restart Container') {
-                                    steps {
-                                        echo "Restarting..."
-                                    }
+                                    echo "Restarting..."
                                 }
                                 stage('Acceptance tests') {
-                                    steps {
-                                        echo "Running Acceptance Tests"
-                                        sh 'mvn -version'
-                                    }
+                                    echo "Running Acceptance Tests"
+                                    sh 'mvn -version'
                                 }
                             }
                         }
