@@ -26,7 +26,6 @@ class PrintOutExerciseSolutionTest {
     private ThreadSolutionRunner mockRunner = mock(ThreadSolutionRunner.class);
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
     private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner,"userInput string inputted into solution","Hello World!", progressReporter);
-    private SolutionCompiler.CompilableSolution compilableSolution = mock(SolutionCompiler.CompilableSolution.class);
     private ClassLoader classLoader = mock(ClassLoader.class);
     private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
 
@@ -38,26 +37,11 @@ class PrintOutExerciseSolutionTest {
     }
 
     @Test
-    void earlyReturnWhenCompileFails() throws Exception {
-        //Arrange
-        when(compiler.compile(compilableSolution, progressReporter)).thenReturn(false);
-        //Act
-        printOutExerciseSolution.evaluate();
-        //Assert
+    void doesNotRunWhenCompileFails() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        when(compiler.compile(printOutExerciseSolution, progressReporter)).thenReturn(false);
         verify(mockRunner, never()).run(classLoader, entryPoint, progressReporter);
     }
 
-    @Test
-    void earlyReturnWhenRunFails() throws Exception {
-       //Arrange
-       when(compiler.compile(compilableSolution, progressReporter)).thenReturn(true);
-       doReturn(Optional.empty()).when(mockRunner).run(classLoader, entryPoint, progressReporter);
-       //Act
-       boolean result = printOutExerciseSolution.evaluate();
-       //Assert
-        assertFalse(result);
-        verify(progressReporter, never()).setSuccessfulSolution(false);
-    }
 
     @Test
     void checkGetFullClassText() {
@@ -76,7 +60,6 @@ class PrintOutExerciseSolutionTest {
         PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
         printOutExerciseSolution.evaluate();
         verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
-
     }
 
     @Test
@@ -84,8 +67,7 @@ class PrintOutExerciseSolutionTest {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
         PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Potato", progressReporter);
-        printOutExerciseSolution.evaluate();
-        verify(progressReporter).setSuccessfulSolution(false);
+        assertFalse(printOutExerciseSolution.evaluate());
     }
 
     @Test

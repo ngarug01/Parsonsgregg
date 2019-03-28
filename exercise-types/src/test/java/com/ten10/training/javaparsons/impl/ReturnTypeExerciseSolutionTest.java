@@ -13,6 +13,7 @@ import javax.tools.ToolProvider;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -41,17 +42,6 @@ class ReturnTypeExerciseSolutionTest {
     }
 
     @Test
-    void earlyReturnWhenRunFails() throws Exception {
-        //Arrange
-        when(compiler.compile(compilableSolution, progressReporter)).thenReturn(true);
-        doReturn(Optional.empty()).when(mockRunner).run(classLoader, entryPoint, progressReporter);
-        //Act
-        returnTypeExerciseSolution.evaluate();
-        //Assert
-        verify(progressReporter, never()).setSuccessfulSolution(true);
-    }
-
-    @Test
     void checkGetFullClassText() {
         assertEquals("userInput string inputted into solution", returnTypeExerciseSolution.getFullClassText());
     }
@@ -75,8 +65,7 @@ class ReturnTypeExerciseSolutionTest {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic Integer main(String[] args){return 10;}}";
         ReturnTypeExerciseSolution returnTypeExerciseSolution = new ReturnTypeExerciseSolution(compiler, runner, userInput, 12, progressReporter);
-        returnTypeExerciseSolution.evaluate();
-        verify(progressReporter).setSuccessfulSolution(false);
+        assertFalse(returnTypeExerciseSolution.evaluate());
     }
 
     @Test

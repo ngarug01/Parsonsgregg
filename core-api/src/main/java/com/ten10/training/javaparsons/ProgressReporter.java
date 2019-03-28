@@ -11,8 +11,6 @@ public interface ProgressReporter {
 
     void reportCompilerInfo(long lineNumber, String message);
 
-    void setSuccessfulSolution(boolean answer);
-
     void reportRunnerError(String message);
 
     List<?> getCompilerErrors();

@@ -78,12 +78,8 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         }
         boolean canRun = canRun();
         boolean ranToCompletion = canCompile && canRun;
-        if (!ranToCompletion){
-            return false;
-        }
         boolean correctOutput = output.equals(answer);
-        progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
-        return true;
+        return ranToCompletion && correctOutput;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {

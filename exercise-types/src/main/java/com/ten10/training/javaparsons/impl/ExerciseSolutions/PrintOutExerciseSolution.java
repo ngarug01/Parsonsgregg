@@ -76,12 +76,8 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
         }
         boolean canRun = canRun();
         boolean ranToCompletion = canCompile && canRun;
-        if (!ranToCompletion){
-            return false;
-        }
         boolean correctOutput = output.trim().equals(answer);
-        progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
-        return true;
+        return ranToCompletion && correctOutput;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {

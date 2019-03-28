@@ -64,7 +64,7 @@ public class ExerciseController {
         @RequestBody SubmittedSolution submittedSolution) throws Exception {
         Results results = new Results();
         Solution solution = exercise.getSolutionFromUserInput(submittedSolution.getInput(), results);
-        solution.evaluate();
+        results.setSuccessfulSolution(solution.evaluate());
         return results;
     }
 }
