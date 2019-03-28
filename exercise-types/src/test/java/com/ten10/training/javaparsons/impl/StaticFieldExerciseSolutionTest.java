@@ -139,4 +139,36 @@ class StaticFieldExerciseSolutionTest {
         //ASSERT
         assertFalse(evaluateResult, "Answer expects an int but receives a String");
     }
+
+    @Test
+    void noFieldsFailsTest() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{\npublic static void main(String[] args){}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Having no fields should cause a failure.");
+    }
+
+    @Test
+    void runTimeFailure() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){while(true){}}}";
+        StaticFieldExerciseSolution staticFieldExerciseSolution =
+            new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
+
+        //ACT
+        boolean evaluateResult = staticFieldExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Infinite Loop should cause runtime error.");
+    }
 }
