@@ -35,25 +35,4 @@ public interface ProgressReporter {
      */
     void reportRunnerError(String message);
 
-    /**
-     * @return any compiler errors logged from submitted code
-     */
-    List<?> getCompilerErrors();
-
-    /**
-     * @return any Compiler information the diagnostic logged
-     */
-    List<?> getCompilerInfo();
-
-    /**
-     * @return any runtime errors the diagnostic logged
-     */
-    List<?> getRunnerErrors();
-
-    /**
-     * stores whether the solution was correct within the results object
-     * @return true if solution is successful
-     */
-    boolean isSuccesfulSolution();
-
 }
