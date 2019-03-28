@@ -13,7 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class StaticFieldExerciseTests {
+public class StaticFieldExercise {
 
     private static DriverFactory driverFactory = new DriverFactory();
     private static WebDriver driver = driverFactory.getDriver();
