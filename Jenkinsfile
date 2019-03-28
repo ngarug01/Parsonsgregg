@@ -12,6 +12,8 @@ pipeline {
                 stage('Build & Stash') {
                     steps {
                         sh 'mvn -B -DskipTests clean package'
+
+                        // Must use stash now because agent none.
                         stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar', name: 'fatJar'
                     }
                 }
@@ -86,7 +88,6 @@ pipeline {
                                         unstash 'fatJar'
                                         def customImage = docker.build("java-parsons:${env.BUILD_ID}")
                                         customImage.inside{
-                                            sh "while ! nc -vz localhost 8080; do sleep 1; done"
                                         }
                                     }
                                 }
