@@ -12,9 +12,9 @@
 <br>
 <h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
 <div id="input">
-    <textarea name = "Preceding Code" id = "preceding-code-box" class = "codebox" rows=5 cols="90"></textarea>
+    <textarea name = "Preceding Code" id = "preceding-code-box" class = "codebox"  cols="90"></textarea>
     <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
-    <textarea name = "Following Code" id = "following-code-box" class = "codebox" rows=5 cols="90"></textarea>
+    <textarea name = "Following Code" id = "following-code-box" class = "codebox"  cols="90"></textarea>
     <button id="enter-answer">Submit</button>
 </div>
 <div name = "Correct Answer" id = "correct-answer" class="output"></div>
@@ -55,9 +55,8 @@
         }
         .codebox {
         visibility: hidden;
-           margin-left: 3%;
-           margin-right: 3%;
            background-color: rgb(200, 200, 200);
+           pointer-events: none;
         }
        .output {
            display: none;

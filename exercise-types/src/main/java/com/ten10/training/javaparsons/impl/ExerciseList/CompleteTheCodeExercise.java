@@ -4,10 +4,10 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.MethodsStatementsExerciseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.CompleteTheCodeExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
-public class MethodsStatementsExercise implements Exercise {
+public class CompleteTheCodeExercise implements Exercise {
 
     private final String exerciseName;
     private SolutionCompiler compiler;
@@ -17,7 +17,7 @@ public class MethodsStatementsExercise implements Exercise {
     private final String precedingCode;
     private final String followingCode;
 
-    public MethodsStatementsExercise(SolutionCompiler compiler, String precedingCode, String followingCode, String answer, String exerciseName, int id) {
+    public CompleteTheCodeExercise(SolutionCompiler compiler, String precedingCode, String followingCode, String answer, String exerciseName, int id) {
         this.compiler = compiler;
         this.answer =answer;
         this.exerciseName = exerciseName;
@@ -38,7 +38,7 @@ public class MethodsStatementsExercise implements Exercise {
 
     @Override
     public String getDescription() {
-        return "Complete the code so the method runs";
+        return "Complete the Java code so that when run it will produce a string which reads " + answer;
     }
 
     public String getPrecedingCode() {
@@ -50,8 +50,8 @@ public class MethodsStatementsExercise implements Exercise {
     }
 
     @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws Exception {
-        return new MethodsStatementsExerciseSolution(compiler, runner, userInput, answer, precedingCode, followingCode,  progressReporter);
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter)  {
+        return new CompleteTheCodeExerciseSolution(compiler, runner, userInput, answer, precedingCode, followingCode,  progressReporter);
     }
 
     @Override

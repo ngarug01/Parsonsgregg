@@ -9,7 +9,7 @@ import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-public class MethodsStatementsExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -45,20 +45,20 @@ public class MethodsStatementsExerciseSolution implements Solution, SolutionComp
     private byte[] byteCode;
 
     /**
-     * Creates a new MethodsStatementsExerciseSolution. This constructor sets the local fields.
+     * Creates a new CompleteTheCodeExerciseSolution. This constructor sets the local fields.
      * @param compiler SolutionCompiler to compile the user input.
      * @param runner ThreadSolutionRunner to run the compiled code.
      * @param userInput The user input as a String.
      * @param answer Expected result of running the user input.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-    public MethodsStatementsExerciseSolution(SolutionCompiler compiler,
-                                             ThreadSolutionRunner runner,
-                                             String userInput,
-                                             String answer,
-                                             String precedingCode,
-                                             String followingCode,
-                                             ProgressReporter progressReporter) {
+    public CompleteTheCodeExerciseSolution(SolutionCompiler compiler,
+                                           ThreadSolutionRunner runner,
+                                           String userInput,
+                                           String answer,
+                                           String precedingCode,
+                                           String followingCode,
+                                           ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
