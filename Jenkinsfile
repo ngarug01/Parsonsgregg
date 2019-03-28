@@ -59,57 +59,60 @@ pipeline {
                         publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: false, reportDir: 'target/site/apidocs/', reportFiles: 'overview-summary.html', reportName: 'Javadoc', reportTitles: ''])
                     }
                 }
-                node{
 
+                
                     stage('Build and Deploy') {
+                        
                         // when {
                         //     branch 'master'
                         //  }
-                        stages{
-                            stage("Build and Smoke Test Docker Container"){
-                                steps{
-                                    script{
-                                        // Build fails when unstash is not inside a node.
+                        node{
+                            stages{
+                                stage("Build and Smoke Test Docker Container"){
+                                    steps{
+                                        script{
+                                            // Build fails when unstash is not inside a node.
 
-                                        /*
-                                        [Pipeline] unstash
-                                        Fetching changes from the remote Git repository
-                                            > git config remote.origin.url git@src.thetestpeople.com:development-academy/java-parsons # timeout=10
-                                        Fetching without tags
-                                        Fetching upstream changes from git@src.thetestpeople.com:development-academy/java-parsons
-                                            > git --version # timeout=10
-                                        Required context class hudson.FilePath is missing
-                                        using GIT_SSH to set credentials java-parsons@ci.ten10.com
-                                            > git fetch --no-tags --progress git@src.thetestpeople.com:development-academy/java-parsons +refs/heads/*:refs/remotes/origin/*
+                                            /*
+                                            [Pipeline] unstash
+                                            Fetching changes from the remote Git repository
+                                                > git config remote.origin.url git@src.thetestpeople.com:development-academy/java-parsons # timeout=10
+                                            Fetching without tags
+                                            Fetching upstream changes from git@src.thetestpeople.com:development-academy/java-parsons
+                                                > git --version # timeout=10
+                                            Required context class hudson.FilePath is missing
+                                            using GIT_SSH to set credentials java-parsons@ci.ten10.com
+                                                > git fetch --no-tags --progress git@src.thetestpeople.com:development-academy/java-parsons +refs/heads/*:refs/remotes/origin/*
 
-                                        Perhaps you forgot to surround the code with a step that provides this, such as: node,dockerNode
-                                        [Pipeline] error
-                                        */
-                                   
-                                        unstash 'fatJar'
-                                        def customImage = docker.build("java-parsons:${env.BUILD_ID}")
-                                        customImage.inside{
-                                        }
-                                    }   
+                                            Perhaps you forgot to surround the code with a step that provides this, such as: node,dockerNode
+                                            [Pipeline] error
+                                            */
+                                    
+                                            unstash 'fatJar'
+                                            def customImage = docker.build("java-parsons:${env.BUILD_ID}")
+                                            customImage.inside{
+                                            }
+                                        }   
+                                    }
                                 }
-                            }
 
-                            stage('Deploy Container') {
-                                steps {
-                                    echo "Deploying..."
+                                stage('Deploy Container') {
+                                    steps {
+                                        echo "Deploying..."
+                                    }
                                 }
-                            }
 
-                            stage('Restart Container') {
-                                steps {
-                                    echo "Restarting..."
+                                stage('Restart Container') {
+                                    steps {
+                                        echo "Restarting..."
+                                    }
                                 }
-                            }
 
-                            stage('Acceptance tests') {
-                                steps {
-                                    echo "Running Acceptance Tests"
-                                    sh 'mvn -version'
+                                stage('Acceptance tests') {
+                                    steps {
+                                        echo "Running Acceptance Tests"
+                                        sh 'mvn -version'
+                                    }
                                 }
                             }
                         }
