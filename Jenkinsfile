@@ -8,18 +8,19 @@ pipeline {
     stages {
         stage('Check') {
             stages {
-                stage('Build') {
+                stage('Quick Check') {
                     steps {
-                        sh 'mvn -B -DskipTests clean package'
+                        sh 'mvn -B clean test-compile'
                     }
                 }
-                stage('Test') {
+                stage('Build and Test') {
                     steps {
-                        sh 'mvn -B test'
+                        sh 'mvn -B verify'
                     }
                     post {
                         always {
-                            junit '*/target/surefire-reports/*.xml'
+                            junit '**/target/surefire-reports/*.xml'
+                            junit '**/target/failsafe-reports/*.xml'
                         }
                     }
                 }
@@ -27,7 +28,7 @@ pipeline {
         }
         stage('Parallel Steps') {
             parallel {
-                stage('Coverage') {
+                stage('Unit-Test Coverage') {
                     steps {
                         sh 'mvn -B test -Djacoco.skip=false'
                     }
