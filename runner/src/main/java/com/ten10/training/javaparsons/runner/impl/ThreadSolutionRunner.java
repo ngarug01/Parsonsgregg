@@ -10,10 +10,23 @@ import java.util.concurrent.*;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
-    private long timeoutMillis = 0;
+    private long timeoutMillis = 500;
     private ExecutorService executor;
     private Future<Object> future;
 
+    /**
+     * Takes a compiled solution and runs this from an expected {@link EntryPoint}. Fails if the user solution does not have
+     * matching {@link EntryPoint} to what is expected.
+     * The {@link EntryPoint} is required so the runner knows where to look to begin execution.
+     * All Runtime exceptions and information is stored in the {@link ProgressReporter}.
+     * @param classLoader       Used to load the class from the expected {@link EntryPoint}.
+     * @param solution          An {@link EntryPoint}, the name of the class and method(with its params) from where to run the code.
+     * @param progressReporter  Stores any runtime exceptions.
+     * @return The result of running the given compiled code. {@link Optional#empty()} if the code fails to run.
+     * @throws ReflectiveOperationException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     @Override
     public Optional<Object> run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
         // Pull data out of the entry point object
@@ -71,6 +84,13 @@ public class ThreadSolutionRunner implements SolutionRunner {
         timeoutMillis = timeUnit.toMillis(count);
     }
 
+    /**
+     * Gets the output of the method provided from the {@link com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint}. From the user solution.
+     * @return The computed result of running the method. {@link Optional#empty()} if the method fails to run, either in
+     * the allotted time, there's a run time exception, or an {@link InterruptedException}.
+     * @throws ExecutionException throws when a run time exception occurs.
+     * @throws InterruptedException if the {@code Thread} is interrupted unexpectedly.
+     */
     @Override
     public Object getMethodOutput() throws ExecutionException, InterruptedException {
         try {
@@ -79,7 +99,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
             } else {
                 return future.get();
             }
-        } catch (TimeoutException e) {
+        } catch (TimeoutException | CancellationException e) {
             future.cancel(true);
             return Optional.empty();
         } finally {

@@ -5,25 +5,29 @@ import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.CompleteTheCodeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
+import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
+import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     private final List<? extends Exercise> exercises;
-    private SolutionCompiler compiler;
 
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
      * @param compiler Prepares an user input to be run.
      */
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
-        PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1);
-        PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2);
-        CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Complete the code - Hello World!", 3);
-        this.compiler = compiler;
-        exercises = Arrays.asList(helloWorld, cruelWorld, methodStatementsHelloWorld);
+        PrintOutExercise helloWorld = new PrintOutExercise(compiler, "Hello World!", "Hello World!", 1, "Write a Java code which when run will produce a string which reads");
+        PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2, "Write a Java code which when run will produce a string which reads");
+        StaticFieldExercise staticField = new StaticFieldExercise(compiler, 42, "42", 3, "Write a class which contains a static field with the value ");
+        ReturnTypeExercise returnSquareNumber = new ReturnTypeExercise(compiler, 4, "Two Squared", 4, "Write a Java method which when run will return");
+        ReturnTypeExercise returnChar = new ReturnTypeExercise(compiler, 'A', "Return Char A", 5, "Write a Java Method which will");
+        CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Complete the code - Hello World!", 6);
+        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, methodStatementsHelloWorld);
 
     }
 

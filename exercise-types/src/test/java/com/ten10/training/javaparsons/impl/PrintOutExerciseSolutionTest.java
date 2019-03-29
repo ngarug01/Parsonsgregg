@@ -4,29 +4,48 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;
+
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 class PrintOutExerciseSolutionTest {
     private SolutionCompiler compiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private ThreadSolutionRunner mockRunner = mock(ThreadSolutionRunner.class);
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
     private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, "userInput string inputted into solution", "Hello World!", progressReporter);
 
+    private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, "userInput string inputted into solution", "Hello World!", progressReporter);
+    private ClassLoader classLoader = mock(ClassLoader.class);
+    private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
 
-    @Test
+
+   @Test
     void checkEvaluate() throws Exception {
         printOutExerciseSolution.evaluate();
         verify(compiler).compile(printOutExerciseSolution, progressReporter);
     }
+
+    @Test
+    void doesNotRunWhenCompileFails() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        when(compiler.compile(printOutExerciseSolution, progressReporter)).thenReturn(false);
+        verify(mockRunner, never()).run(classLoader, entryPoint, progressReporter);
+    }
+
 
     @Test
     void checkGetFullClassText() {
@@ -52,8 +71,8 @@ class PrintOutExerciseSolutionTest {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class Main{\npublic static void main(String[] args){\nSystem.out.println(\"Pie\");}}";
         PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Potato", progressReporter);
-        printOutExerciseSolution.evaluate();
-        verify(progressReporter).setSuccessfulSolution(false);
+
+        assertFalse(printOutExerciseSolution.evaluate());
 
     }
 

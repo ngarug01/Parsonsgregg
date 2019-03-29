@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 class PrintOutExerciseTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final PrintOutExercise printOutExercise = new PrintOutExercise(compiler, "Answer","MY NAME",1);
+    private final PrintOutExercise printOutExercise = new PrintOutExercise(compiler, "Answer","MY NAME",1, "Write a Java code which when run will produce a string which reads");
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void helloWorldExerciseIdentifierIs1() {
@@ -32,6 +32,6 @@ class PrintOutExerciseTest {
     }
     @Test
     void getDescription(){
-        assertEquals(printOutExercise.getDescription(),"Write a Java code which when run will produce a string which reads \"MY NAME\"");
+        assertEquals(printOutExercise.getDescription(),"Write a Java code which when run will produce a string which reads MY NAME");
     }
 }
