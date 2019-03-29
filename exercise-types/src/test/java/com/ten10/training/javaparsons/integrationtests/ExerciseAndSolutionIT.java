@@ -33,6 +33,32 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
             "  System.out.println(\"Hello World!\");" +
             " }";
 
+    private static final String SUCCESSFUL_BUILD_RETURN_TYPE=
+        "public class Main {" +
+            " public static Integer main(String[] args) {" +
+            "  return 4;" +
+            " }" +
+            "}";
+    private static final String UNSUCCESSFUL_BUILD_RETURN_TYPE =
+        "public class Main {" +
+            " public static Integer main(String[] args) {" +
+            "  return 4;" +
+            " }";
+
+    private static final String SUCCESSFUL_BUILD_STATIC_FIELD=
+        "public class Main {" +
+            "public static int i=42;"+
+            " public static void main(String[] args) {" +
+            " } "+
+            " }";
+    private static final String UNSUCCESSFUL_BUILD_STATIC_FIELD=
+        "public class Main {" +
+            "public static int i=42;"+
+            " public static void main(String[] args) {" +
+            " } ";
+
+
+
     @Test
     void helloWorldCompilerBuild() throws Exception {
         final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
@@ -62,5 +88,63 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         solution.evaluate();
         Mockito.verify(progressReporter, atLeastOnce()).reportCompilerError(anyLong(), anyString());
+    }
+
+    @Test
+    void  returnTypeCompilerBuild() throws Exception {
+        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        Exercise exercise = repository.getExerciseByIdentifier(4);
+        Solution solution = exercise.getSolutionFromUserInput(SUCCESSFUL_BUILD_RETURN_TYPE, progressReporter);
+        assertTrue(solution.evaluate());
+
+    }
+
+    @Test
+    void returnTypeCompilerFailsBuild() throws Exception {
+    final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+    final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+    Exercise exercise = repository.getExerciseByIdentifier(4);
+    Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_RETURN_TYPE, progressReporter);
+    assertFalse(solution.evaluate());
+    }
+
+    @Test
+    void returnTypeCompilerLogsCompilationError() throws Exception {
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        Exercise exercise = repository.getExerciseByIdentifier(4);
+        Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_RETURN_TYPE, progressReporter);
+        solution.evaluate();
+        Mockito.verify(progressReporter,atLeastOnce()).reportCompilerError(anyLong(),anyString());
+    }
+
+    @Test
+    void  staticFieldCompilerBuild() throws Exception {
+        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        Exercise exercise = repository.getExerciseByIdentifier(3);
+        Solution solution = exercise.getSolutionFromUserInput(SUCCESSFUL_BUILD_STATIC_FIELD, progressReporter);
+        assertTrue(solution.evaluate());
+
+    }
+
+    @Test
+    void staticFieldCompilerFailsBuild() throws Exception {
+        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        Exercise exercise = repository.getExerciseByIdentifier(3);
+        Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_STATIC_FIELD, progressReporter);
+        assertFalse(solution.evaluate());
+    }
+
+    @Test
+    void staticFieldCompilerLogsCompilationError() throws Exception {
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        Exercise exercise = repository.getExerciseByIdentifier(3);
+        Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_STATIC_FIELD, progressReporter);
+        solution.evaluate();
+        Mockito.verify(progressReporter,atLeastOnce()).reportCompilerError(anyLong(),anyString());
     }
 }

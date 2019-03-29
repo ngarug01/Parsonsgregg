@@ -71,7 +71,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
     public boolean evaluate() throws Exception {
         if (canCompile()) {
             if(canRun()) {
-                if (getClassFields(getClassLoader())) {
+                if (getClassFields(getClassLoader())) {//collect all the static fields in the user input
                     return evaluateFields();
                 }
             }
@@ -157,16 +157,19 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
         if (!(klassFields.length == 1)) { //In this iteration of the Static Field exercise we only expect 1 field.
             progressReporter.reportRunnerError("Incorrect number of fields");
             return false;
-        } else if (!(Modifier.isStatic(klassFields[0].getModifiers()))) {
+        } else if (!(Modifier.isStatic(klassFields[0].getModifiers()))) { //We cannot access the field's value if it is not static
             progressReporter.reportRunnerError("Field no static");
             return false;
         } else {
             Field field = klassFields[0];
             field.setAccessible(true);
             try {
-                if (field.get(field).equals(answer)) {
-                    progressReporter.storeCapturedOutput(field.get(field).toString());
+                Object output = field.get(field);
+                if (output.equals(answer)) {
+                    progressReporter.storeCapturedOutput(output.toString());
                     return true;
+                }else{
+                    progressReporter.reportRunnerError("Expected: " + answer.toString() + ". Received: " + output.toString());
                 }
             } catch (IllegalAccessException e) {
                 progressReporter.reportRunnerError("No access to field: " + field.getName());
