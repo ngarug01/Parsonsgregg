@@ -4,6 +4,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.StaticFieldExerciseSolution;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
@@ -81,6 +82,26 @@ class PrintOutExerciseSolutionTest {
         PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
         assertTrue(printOutExerciseSolution.evaluate());
 
+    }
+
+    @Test
+    void infiniteLoop() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{" +
+                " public static void main(String[] args){" +
+                "  while(true){}" +
+                " }" +
+                "}";
+        PrintOutExerciseSolution printOutExerciseSolution =
+            new PrintOutExerciseSolution(compiler, runner, userInput, "Hello World!", progressReporter);
+
+        //ACT
+        boolean evaluateResult = printOutExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Infinite Loop should cause runtime error.");
     }
 }
 
