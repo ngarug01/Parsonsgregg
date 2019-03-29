@@ -9,21 +9,22 @@ pipeline {
                 }
             }
             stages {
-                stage('Build & Stash') {
+                stage('Quick Check') {
                     steps {
-                        sh 'mvn -B -DskipTests clean package'
-
-                        // Must use stash now because agent none.
-                        stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar', name: 'fatJar'
+                        sh 'mvn -B clean test-compile'
                     }
                 }
-                stage('Test') {
+                stage('Build and Test') {
                     steps {
-                        sh 'mvn -B test'
+                        sh 'mvn -B verify'
+                        // Must use stash now because future steps use agent none.
+                        stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar', name: 'fatJar'
+
                     }
                     post {
                         always {
-                            junit '*/target/surefire-reports/*.xml'
+                            junit '**/target/surefire-reports/*.xml'
+                            junit '**/target/failsafe-reports/*.xml'
                         }
                     }
                 }
@@ -31,7 +32,7 @@ pipeline {
         }
         stage('Parallel Steps') {
             parallel {
-                stage('Coverage') {
+                stage('Unit-Test Coverage') {
                     agent {
                         docker {
                             image 'maven:3-jdk-10'
@@ -61,9 +62,9 @@ pipeline {
                 }
 
                 stage('Build and Deploy') {
-                   // when {
-                   //     branch 'master'
-                   //  }
+                   when {
+                       branch 'master'
+                    }
                     steps{
                         script{
                             node{
