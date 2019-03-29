@@ -7,6 +7,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.util.Optional;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
@@ -37,10 +38,10 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private final SolutionCompiler compiler;
     private final ThreadSolutionRunner runner;
     private final String userInput;
-    private final Integer answer;
+    private final Object answer;
     private final ProgressReporter progressReporter;
     private byte[] byteCode;
-    private Integer output;
+    private Object output;
 
     /**
      * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
@@ -54,7 +55,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     public ReturnTypeExerciseSolution(SolutionCompiler compiler,
                                       ThreadSolutionRunner runner,
                                       String userInput,
-                                      Integer answer,
+                                      Object answer,
                                       ProgressReporter progressReporter) {
 
         this.compiler = compiler;
@@ -72,14 +73,13 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
      */
     @Override
     public boolean evaluate() throws Exception {
-        boolean canCompile = compile();
-        if (!canCompile){
-            return false;
+        if(compile()){
+            if(canRun()){
+                //System.out.println(output + " " + Optional.ofNullable(answer).toString());
+                return output.equals(answer);
+            }
         }
-        boolean canRun = canRun();
-        boolean ranToCompletion = canCompile && canRun;
-        boolean correctOutput = output.equals(answer);
-        return ranToCompletion && correctOutput;
+        return false;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
@@ -143,9 +143,12 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         try{
             runner.run(getClassLoader(),entryPoint,progressReporter);
-            return Optional.ofNullable(runner.getMethodOutput());
-        }finally {
-            this.output = (Integer) runner.getMethodOutput();
+            Object result = runner.getMethodOutput();
+            return Optional.ofNullable(result);
+        } catch(CancellationException e){
+            return Optional.empty();
+        } finally {
+            this.output = Optional.ofNullable(runner.getMethodOutput()).get();
             progressReporter.storeCapturedOutput(output.toString());
         }
     }

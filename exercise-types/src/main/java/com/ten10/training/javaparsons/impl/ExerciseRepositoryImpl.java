@@ -24,7 +24,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         PrintOutExercise cruelWorld = new PrintOutExercise(compiler, "Goodbye Cruel World!", "Goodbye Cruel World!", 2, "Write a Java code which when run will produce a string which reads");
         StaticFieldExercise staticField = new StaticFieldExercise(compiler, 42, "42", 3, "Write a class which contains a static field with the value ");
         ReturnTypeExercise returnSquareNumber = new ReturnTypeExercise(compiler, 4, "Two Squared", 4, "Write a Java method which when run will return");
-        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber);
+        ReturnTypeExercise returnChar = new ReturnTypeExercise(compiler, 'A', "Return Char A", 5, "Write a Java Method which will");
+        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar);
 
     }
 

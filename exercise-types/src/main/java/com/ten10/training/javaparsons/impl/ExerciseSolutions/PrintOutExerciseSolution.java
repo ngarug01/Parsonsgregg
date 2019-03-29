@@ -70,14 +70,12 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
      */
     @Override
     public boolean evaluate() throws Exception {
-        boolean canCompile = compile();
-        if (!canCompile){
-            return false;
+        if(compile()){
+            if(canRun()){
+                return output.trim().equals(answer);
+            }
         }
-        boolean canRun = canRun();
-        boolean ranToCompletion = canCompile && canRun;
-        boolean correctOutput = output.trim().equals(answer);
-        return ranToCompletion && correctOutput;
+        return false;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {

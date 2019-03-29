@@ -99,7 +99,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
             } else {
                 return future.get();
             }
-        } catch (TimeoutException e) {
+        } catch (TimeoutException | CancellationException e) {
             future.cancel(true);
             return Optional.empty();
         } finally {

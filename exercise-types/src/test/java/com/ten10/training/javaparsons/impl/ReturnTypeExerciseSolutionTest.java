@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;
 
-import java.util.Optional;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -74,6 +74,14 @@ class ReturnTypeExerciseSolutionTest {
         String userInput = "public class Main{\npublic Integer main(String[] args){return 12;}}";
         ReturnTypeExerciseSolution returnTypeExerciseSolution = new ReturnTypeExerciseSolution(compiler, runner, userInput, 12, progressReporter);
         assertTrue(returnTypeExerciseSolution.evaluate());
+    }
+
+    @Test
+    void infiniteLoop() throws Exception {
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput = "public class Main{\npublic Integer main(String[] args){\nwhile(true){}}}";
+        ReturnTypeExerciseSolution returnTypeExerciseSolution = new ReturnTypeExerciseSolution(compiler, runner, userInput, 12, progressReporter);
+        assertFalse(returnTypeExerciseSolution.evaluate());
     }
 }
 

@@ -11,7 +11,7 @@ public class ReturnTypeExercise implements Exercise {
     private final String exerciseName;
     private SolutionCompiler compiler;
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
-    private final Integer answer;
+    private final Object answer;
     private final int id;
     private final String description;
 
@@ -24,7 +24,7 @@ public class ReturnTypeExercise implements Exercise {
      * @param id The unique identifier of an exercise.
      * @param description
      */
-    public ReturnTypeExercise(SolutionCompiler compiler, Integer answer, String exerciseName, int id, String description) {
+    public ReturnTypeExercise(SolutionCompiler compiler, Object answer, String exerciseName, int id, String description) {
         this.compiler = compiler;
         this.answer =answer;
         this.exerciseName = exerciseName;

@@ -25,7 +25,7 @@ class StaticFieldExerciseSolutionTest {
         new StaticFieldExerciseSolution(compiler, runner, userInput, 42, progressReporter);
 
     @Test
-    void checkEvaluate() throws Exception {
+    void compilerIsCalled() throws Exception {
         //ACT
         staticFieldExerciseSolution.evaluate();
         //ASSERT
