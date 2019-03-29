@@ -94,6 +94,9 @@ pipeline {
                                             sh 'while ! nc -vz app 8080; do sleep 2; done'
                                         }
                                     }
+
+                                   // sh "docker save ${customImage.id} | ssh ksjdflskdjd docker import - "
+ 
                                 }
                                 stage('Deploy Container') {
                                     echo "Deploying..."
