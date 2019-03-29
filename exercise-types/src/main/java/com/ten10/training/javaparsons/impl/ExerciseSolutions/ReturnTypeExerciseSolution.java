@@ -4,7 +4,6 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
@@ -36,7 +35,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     };
 
     private final SolutionCompiler compiler;
-    private final ThreadSolutionRunner runner;
+    private final SolutionRunner runner;
     private final String userInput;
     private final Object answer;
     private final ProgressReporter progressReporter;
@@ -53,7 +52,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
     public ReturnTypeExerciseSolution(SolutionCompiler compiler,
-                                      ThreadSolutionRunner runner,
+                                      SolutionRunner runner,
                                       String userInput,
                                       Object answer,
                                       ProgressReporter progressReporter) {

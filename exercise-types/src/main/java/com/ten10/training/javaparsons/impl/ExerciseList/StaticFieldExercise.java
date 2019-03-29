@@ -5,7 +5,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.StaticFieldExerciseSolution;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 public class StaticFieldExercise implements Exercise {
 
@@ -14,11 +14,12 @@ public class StaticFieldExercise implements Exercise {
     private final int id;
     private final String description;
     private SolutionCompiler compiler;
-    private ThreadSolutionRunner runner = new ThreadSolutionRunner(); //TODO ThreadSolutionRunner dependency should be passed in
+    private SolutionRunner runner; //TODO ThreadSolutionRunner dependency should be passed in
 
     //TODO this should eventually check for many fields and not just a single one.
-    public StaticFieldExercise(SolutionCompiler compiler, Object answer, String exerciseName, int id, String description) {
+    public StaticFieldExercise(SolutionCompiler compiler, SolutionRunner runner, Object answer, String exerciseName, int id, String description) {
         this.exerciseName = exerciseName;
+        this.runner = runner;
         this.answer = answer;
         this.id = id;
         this.description = description;

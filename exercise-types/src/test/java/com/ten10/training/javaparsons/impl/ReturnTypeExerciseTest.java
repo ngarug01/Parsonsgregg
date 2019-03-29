@@ -4,6 +4,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.ReturnTypeExerciseSolution;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,7 +16,8 @@ import static org.mockito.Mockito.mock;
 class ReturnTypeExerciseTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final ReturnTypeExercise returnTypeExercise = new ReturnTypeExercise(compiler, 12,"Twelve",3, "Write a Java method which when run will return");
+    private final SolutionRunner runner = mock(SolutionRunner.class);
+    private final ReturnTypeExercise returnTypeExercise = new ReturnTypeExercise(compiler, runner, 12,"Twelve",3, "Write a Java method which when run will return");
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void exerciseIdentifierIs3() {

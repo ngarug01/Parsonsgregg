@@ -4,6 +4,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,8 +16,10 @@ import static org.mockito.Mockito.mock;
 class PrintOutExerciseTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final PrintOutExercise printOutExercise = new PrintOutExercise(compiler, "Answer","MY NAME",1, "Write a Java code which when run will produce a string which reads");
+    private final SolutionRunner runner = mock(SolutionRunner.class);
+    private final PrintOutExercise printOutExercise = new PrintOutExercise(compiler, runner, "Answer", "MY NAME", 1, "Write a Java code which when run will produce a string which reads");
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
+
     @Test
     void helloWorldExerciseIdentifierIs1() {
         assertEquals(1, printOutExercise.getIdentifier());
@@ -26,12 +29,14 @@ class PrintOutExerciseTest {
     void getSolutionFromUserInputReturnsHelloWorldSolution() {
         assertThat(printOutExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(PrintOutExerciseSolution.class)));
     }
+
     @Test
-    void getTitleOfExercise(){
-        assertEquals(printOutExercise.getTitle(),"Exercise 1: MY NAME");
+    void getTitleOfExercise() {
+        assertEquals(printOutExercise.getTitle(), "Exercise 1: MY NAME");
     }
+
     @Test
-    void getDescription(){
-        assertEquals(printOutExercise.getDescription(),"Write a Java code which when run will produce a string which reads MY NAME");
+    void getDescription() {
+        assertEquals(printOutExercise.getDescription(), "Write a Java code which when run will produce a string which reads MY NAME");
     }
 }

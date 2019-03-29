@@ -7,6 +7,8 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import javax.tools.ToolProvider;
@@ -18,7 +20,9 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 
 class ExerciseAndSolutionIT {
-private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private final ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+    private final SolutionRunner runner = new ThreadSolutionRunner();
 
     private static final String SUCCESSFUL_BUILD =
         "public class Main {" +
@@ -61,8 +65,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void helloWorldCompilerBuild() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(SUCCESSFUL_BUILD, progressReporter);
         assertTrue(solution.evaluate());
@@ -70,8 +73,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void helloWorldCompilerFailBuild() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         assertFalse(solution.evaluate());
@@ -82,8 +84,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void helloWorldCompilerLogsCompilationError() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(1);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD, progressReporter);
         solution.evaluate();
@@ -92,8 +93,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void  returnTypeCompilerBuild() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(4);
         Solution solution = exercise.getSolutionFromUserInput(SUCCESSFUL_BUILD_RETURN_TYPE, progressReporter);
         assertTrue(solution.evaluate());
@@ -102,8 +102,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void returnTypeCompilerFailsBuild() throws Exception {
-    final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-    final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+    final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
     Exercise exercise = repository.getExerciseByIdentifier(4);
     Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_RETURN_TYPE, progressReporter);
     assertFalse(solution.evaluate());
@@ -111,8 +110,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void returnTypeCompilerLogsCompilationError() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(4);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_RETURN_TYPE, progressReporter);
         solution.evaluate();
@@ -121,8 +119,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void  staticFieldCompilerBuild() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(3);
         Solution solution = exercise.getSolutionFromUserInput(SUCCESSFUL_BUILD_STATIC_FIELD, progressReporter);
         assertTrue(solution.evaluate());
@@ -131,8 +128,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void staticFieldCompilerFailsBuild() throws Exception {
-        final SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        final ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(3);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_STATIC_FIELD, progressReporter);
         assertFalse(solution.evaluate());
@@ -140,8 +136,7 @@ private  final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void staticFieldCompilerLogsCompilationError() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
-        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler);
+        ExerciseRepository repository = new ExerciseRepositoryImpl(compiler, runner);
         Exercise exercise = repository.getExerciseByIdentifier(3);
         Solution solution = exercise.getSolutionFromUserInput(UNSUCCESSFUL_BUILD_STATIC_FIELD, progressReporter);
         solution.evaluate();

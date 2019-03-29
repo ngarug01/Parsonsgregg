@@ -5,7 +5,6 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -37,7 +36,7 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
     };
 
     private final SolutionCompiler compiler;
-    private final ThreadSolutionRunner runner;
+    private final SolutionRunner runner;
     private final String userInput;
     private final String answer;
     private final String precedingCode;
@@ -56,7 +55,7 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
     public CompleteTheCodeExerciseSolution(SolutionCompiler compiler,
-                                           ThreadSolutionRunner runner,
+                                           SolutionRunner runner,
                                            String userInput,
                                            String answer,
                                            String precedingCode,

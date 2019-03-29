@@ -5,20 +5,21 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.CompleteTheCodeExerciseSolution;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 public class CompleteTheCodeExercise implements Exercise {
 
     private final String exerciseName;
     private SolutionCompiler compiler;
-    private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private SolutionRunner runner;
     private final String answer;
     private final int id;
     private final String precedingCode;
     private final String followingCode;
 
-    public CompleteTheCodeExercise(SolutionCompiler compiler, String precedingCode, String followingCode, String answer, String exerciseName, int id) {
+    public CompleteTheCodeExercise(SolutionCompiler compiler, SolutionRunner runner, String precedingCode, String followingCode, String answer, String exerciseName, int id) {
         this.compiler = compiler;
+        this.runner = runner;
         this.answer = answer;
         this.exerciseName = exerciseName;
         this.id = id;

@@ -5,6 +5,7 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.CompleteTheCodeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.CompleteTheCodeExerciseSolution;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,7 +16,8 @@ import static org.mockito.Mockito.mock;
 
 class CompleteTheCodeExerciseTest {
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final CompleteTheCodeExercise completeTheCodeExercise = new CompleteTheCodeExercise(compiler, "preceding code", "following code", "Answer","MY NAME",3);
+    private final SolutionRunner runner = mock(SolutionRunner.class);
+    private final CompleteTheCodeExercise completeTheCodeExercise = new CompleteTheCodeExercise(compiler, runner, "preceding code", "following code", "Answer","MY NAME",3);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void methodsStatementsHelloWorldExerciseIdentifierIs3() {
