@@ -20,7 +20,6 @@ class AbstractProgressReporterDecoratorTest {
     private static final List<Consumer<ProgressReporter>> METHOD_CALLS = Arrays.asList(
         progressReporter -> progressReporter.reportCompilerInfo(1, "message"),
         progressReporter -> progressReporter.reportRunnerError("message"),
-        progressReporter -> progressReporter.setSuccessfulSolution(true),
         progressReporter -> progressReporter.reportCompilerError(1, "Message"),
         progressReporter -> progressReporter.storeCapturedOutput("output")
     );

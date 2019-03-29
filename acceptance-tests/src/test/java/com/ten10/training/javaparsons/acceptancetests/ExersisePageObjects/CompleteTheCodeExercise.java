@@ -4,8 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Exercise3 extends BasePage {
-    public Exercise3(WebDriver driver) {
+public class CompleteTheCodeExercise extends BasePage {
+    public CompleteTheCodeExercise(WebDriver driver) {
         super(driver);
     }
 
@@ -17,7 +17,7 @@ public class Exercise3 extends BasePage {
     private static final By PRECEDING_CODE_BOX = By.cssSelector("#preceding-code-box");
     private static final By FOLLOWING_CODE_BOX = By.cssSelector("#following-code-box");
     private static final By CORRECT_OUTPUT_BOX = By.cssSelector("#correct-answer");
-    private static final By COMPLETE_THE_CODE_HELLO_WORLD = By.cssSelector("#ExerciseList > option:nth-child(3)");
+    private static final By COMPLETE_THE_CODE_HELLO_WORLD = By.cssSelector("#ExerciseList > option:nth-child(6)");
     private static final By DESCRIPTION = By.cssSelector("#Description");
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
 

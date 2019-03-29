@@ -26,11 +26,6 @@ abstract class AbstractProgressReporterDecorator implements ProgressReporter {
     }
 
     @Override
-    public void setSuccessfulSolution(boolean answer) {
-        this.wrapped.setSuccessfulSolution(answer);
-    }
-
-    @Override
     public void reportRunnerError(String message) {
         this.wrapped.reportRunnerError(message);
     }

@@ -19,7 +19,7 @@ public class CompleteTheCodeExercise implements Exercise {
 
     public CompleteTheCodeExercise(SolutionCompiler compiler, String precedingCode, String followingCode, String answer, String exerciseName, int id) {
         this.compiler = compiler;
-        this.answer =answer;
+        this.answer = answer;
         this.exerciseName = exerciseName;
         this.id = id;
         this.precedingCode = precedingCode;
@@ -33,7 +33,7 @@ public class CompleteTheCodeExercise implements Exercise {
 
     @Override
     public String getTitle() {
-        return "Exercise "+getIdentifier()+": "+exerciseName;
+        return "Exercise " + getIdentifier() + ": " + exerciseName;
     }
 
     @Override
@@ -41,17 +41,19 @@ public class CompleteTheCodeExercise implements Exercise {
         return "Complete the Java code so that when run it will produce a string which reads " + answer;
     }
 
+    @Override
     public String getPrecedingCode() {
         return precedingCode;
     }
 
+    @Override
     public String getFollowingCode() {
         return followingCode;
     }
 
     @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter)  {
-        return new CompleteTheCodeExerciseSolution(compiler, runner, userInput, answer, precedingCode, followingCode,  progressReporter);
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
+        return new CompleteTheCodeExerciseSolution(compiler, runner, userInput, answer, precedingCode, followingCode, progressReporter);
     }
 
     @Override

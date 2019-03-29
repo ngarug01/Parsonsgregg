@@ -93,12 +93,12 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
      */
     @Override
     public boolean evaluate() throws Exception {
-        boolean cancompile = compile();
-        boolean canrun = canRun();
-        boolean ranToCompletion = cancompile && canrun;
-        boolean correctOutput = output.trim().equals(answer);
-        progressReporter.setSuccessfulSolution(ranToCompletion && correctOutput);
-        return ranToCompletion;
+        if(compile()){
+            if(canRun()){
+                return output.trim().equals(answer);
+            }
+        }
+        return false;
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {

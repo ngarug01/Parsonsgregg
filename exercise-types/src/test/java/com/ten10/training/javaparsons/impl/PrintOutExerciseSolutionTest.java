@@ -28,8 +28,6 @@ class PrintOutExerciseSolutionTest {
     private ThreadSolutionRunner mockRunner = mock(ThreadSolutionRunner.class);
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
     private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, "userInput string inputted into solution", "Hello World!", progressReporter);
-
-    private final PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, "userInput string inputted into solution", "Hello World!", progressReporter);
     private ClassLoader classLoader = mock(ClassLoader.class);
     private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
 

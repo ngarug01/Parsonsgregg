@@ -11,6 +11,7 @@ import org.mockito.ArgumentCaptor;
 import javax.tools.ToolProvider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isA;
@@ -55,7 +56,7 @@ class CompleteTheCodeExerciseSolutionTest {
         String userInput = "System.out.println(\"Pie\");";
         CompleteTheCodeExerciseSolution completeTheCodeExerciseSolution = new CompleteTheCodeExerciseSolution(compiler, runner, userInput, "Potato", "public class Main { public static void Main {", "}}", progressReporter);
         completeTheCodeExerciseSolution.evaluate();
-        verify(progressReporter).setSuccessfulSolution(false);
+        assertFalse(completeTheCodeExerciseSolution.evaluate());
     }
 
     @Test
