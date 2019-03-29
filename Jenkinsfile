@@ -95,15 +95,16 @@ pipeline {
                                         }
                                     }
                                     sshagent (credentials: ['dockeruser']) {
-                                    sh "docker save ${customImage.id} | ssh -o StrictHostKeyChecking=no dockeruser@169.254.83.5 docker load"
+                                        stage('Deploy Image') {
+                                            sh "docker save ${customImage.id} | ssh -o StrictHostKeyChecking=no dockeruser@169.254.83.5 docker load"
+                                        }
+                                        stage('Stopping any existing container') {
+                                            sh "ssh dockeruser@169.254.83.5 sh -c 'docker stop java-parsons && docker rm java-parsons || true'"
+                                        }
+                                        stage('Restart Container') {
                                            sh "ssh dockeruser@169.254.83.5 docker run -d -p 8080:8080 --name java-parsons java-parsons:${env.BUILD_ID}"
+                                        }
                                     }
-                                }
-                                stage('Deploy Container') {
-                                    echo "Deploying..."
-                                }
-                                stage('Restart Container') {
-                                    echo "Restarting..."
                                 }
                                 stage('Acceptance tests') {
                                     echo "Running Acceptance Tests"
