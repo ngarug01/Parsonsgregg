@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exercise4;
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exersise1;
+import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exercise1;
 import com.ten10.training.javaparsons.webapp.Application;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TwoSquared {
     private static DriverFactory driverFactory = new DriverFactory();
     private static WebDriver driver = driverFactory.getDriver();
-    private Exersise1 exersise1 = new Exersise1(driver);
+    private Exercise1 exersise1 = new Exercise1(driver);
     private Exercise4 exercise4 = new Exercise4(driver);
     private static ConfigurableApplicationContext ctx;
     private String result;

@@ -5,11 +5,6 @@ import java.util.List;
 public interface ProgressReporter {
 
     /**
-     * @return the output of the submitted code after compilation and running.
-     */
-    String getOutput();
-
-    /**
      * Stores the output of the submitted code.
      * @param output of the submitted code.
      */

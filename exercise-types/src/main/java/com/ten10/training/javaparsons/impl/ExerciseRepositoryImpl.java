@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.impl;
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseList.CompleteTheCodeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
 import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
@@ -16,7 +17,6 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
-     *
      * @param compiler Prepares an user input to be run.
      */
     public ExerciseRepositoryImpl(SolutionCompiler compiler) {
@@ -25,7 +25,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         StaticFieldExercise staticField = new StaticFieldExercise(compiler, 42, "42", 3, "Write a class which contains a static field with the value ");
         ReturnTypeExercise returnSquareNumber = new ReturnTypeExercise(compiler, 4, "Two Squared", 4, "Write a Java method which when run will return");
         ReturnTypeExercise returnChar = new ReturnTypeExercise(compiler, 'A', "Return Char A", 5, "Write a Java Method which will");
-        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar);
+        CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Complete the code - Hello World!", 6);
+        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, methodStatementsHelloWorld);
 
     }
 
