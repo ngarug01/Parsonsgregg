@@ -4,6 +4,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.CompleteTheCodeExerciseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.StaticFieldExerciseSolution;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -89,4 +90,22 @@ class CompleteTheCodeExerciseSolutionTest {
         verify(solutionCompiler).compile(any(SolutionCompiler.CompilableSolution.class), insideProgressReporterCaptor.capture());
         return insideProgressReporterCaptor.getValue();
     }
+    @Test
+    void runTimeFailure() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "System.out.println(\"Hello World!\");\nwhile(true){}";
+        CompleteTheCodeExerciseSolution completeTheCodeExerciseSolution =
+            new CompleteTheCodeExerciseSolution(compiler, runner, userInput, "Hello World!",
+                "public class Main { \npublic static void main (String[] args) {", "}\n}",
+                progressReporter);
+
+        //ACT
+        boolean evaluateResult = completeTheCodeExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Infinite Loop should cause runtime error.");
+    }
+
 }
