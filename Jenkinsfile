@@ -94,10 +94,10 @@ pipeline {
                                             sh 'while ! nc -vz app 8080; do sleep 2; done'
                                         }
                                     }
-
-                                   sh "docker save ${customImage.id} | ssh -o StrictHostKeyChecking=no dockeruser@169.254.83.5 docker load"
+                                    sshagent (credentials: ['dockeruser']) {
+                                    sh "docker save ${customImage.id} | ssh -o StrictHostKeyChecking=no dockeruser@169.254.83.5 docker load"
                                            sh 'ssh dockeruser@169.254.83.5 docker run --rm -t java-parsons:${env.BUILD_ID}'
- 
+                                    }
                                 }
                                 stage('Deploy Container') {
                                     echo "Deploying..."
