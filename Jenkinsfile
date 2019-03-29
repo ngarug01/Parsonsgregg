@@ -96,7 +96,7 @@ pipeline {
                                     }
                                     sshagent (credentials: ['dockeruser']) {
                                     sh "docker save ${customImage.id} | ssh -o StrictHostKeyChecking=no dockeruser@169.254.83.5 docker load"
-                                           sh "ssh dockeruser@169.254.83.5 docker run --rm -t java-parsons:${env.BUILD_ID}"
+                                           sh "ssh dockeruser@169.254.83.5 docker run -d -p 8080:8080 --name java-parsons java-parsons:${env.BUILD_ID}"
                                     }
                                 }
                                 stage('Deploy Container') {
