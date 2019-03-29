@@ -95,7 +95,8 @@ pipeline {
                                         }
                                     }
 
-                                   // sh "docker save ${customImage.id} | ssh ksjdflskdjd docker import - "
+                                   sh "docker save customImage | ssh -o StrictHostKeyChecking=no dockeruser@169.254.83.5 docker load"
+                                           sh 'ssh dockeruser@169.254.83.5 docker run --rm -t java-parsons:${env.BUILD_ID}'
  
                                 }
                                 stage('Deploy Container') {
