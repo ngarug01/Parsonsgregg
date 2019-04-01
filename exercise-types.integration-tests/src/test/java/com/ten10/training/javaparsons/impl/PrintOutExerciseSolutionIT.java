@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.tools.ToolProvider;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -35,7 +36,6 @@ class PrintOutExerciseSolutionIT {
         PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Potato", progressReporter);
 
         printOutExerciseSolution.evaluate();
-        verify(progressReporter).setSuccessfulSolution(false);
     }
 
     @Test
@@ -44,6 +44,26 @@ class PrintOutExerciseSolutionIT {
         PrintOutExerciseSolution printOutExerciseSolution = new PrintOutExerciseSolution(compiler, runner, userInput, "Pie", progressReporter);
 
         assertTrue(printOutExerciseSolution.evaluate());
+    }
+
+    @Test
+    void infiniteLoop() throws Exception {
+        //ARRANGE
+        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+        String userInput =
+            "public class Main{" +
+                " public static void main(String[] args){" +
+                "  while(true){}" +
+                " }" +
+                "}";
+        PrintOutExerciseSolution printOutExerciseSolution =
+            new PrintOutExerciseSolution(compiler, runner, userInput, "Hello World!", progressReporter);
+
+        //ACT
+        boolean evaluateResult = printOutExerciseSolution.evaluate();
+
+        //ASSERT
+        assertFalse(evaluateResult, "Infinite Loop should cause runtime error.");
     }
 }
 

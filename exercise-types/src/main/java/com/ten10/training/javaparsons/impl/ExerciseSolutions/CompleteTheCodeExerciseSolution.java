@@ -5,10 +5,12 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import org.apache.commons.lang3.StringUtils;
 
-public class PrintOutExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -37,30 +39,51 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
     private final SolutionRunner runner;
     private final String userInput;
     private final String answer;
+    private final String precedingCode;
+    private final String followingCode;
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
+    private int precedingLineNumber;
 
     /**
-     * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
+     * Creates a new CompleteTheCodeExerciseSolution. This constructor sets the local fields.
      * @param compiler SolutionCompiler to compile the user input.
      * @param runner ThreadSolutionRunner to run the compiled code.
      * @param userInput The user input as a String.
      * @param answer Expected result of running the user input.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-    public PrintOutExerciseSolution(SolutionCompiler compiler,
-                                    SolutionRunner runner,
-                                    String userInput,
-                                    String answer,
-                                    ProgressReporter progressReporter) {
+    public CompleteTheCodeExerciseSolution(SolutionCompiler compiler,
+                                           SolutionRunner runner,
+                                           String userInput,
+                                           String answer,
+                                           String precedingCode,
+                                           String followingCode,
+                                           ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
         this.answer = answer;
-        this.progressReporter = progressReporter;
+        this.progressReporter = new LineNumberTranslationProgressReporter(progressReporter);
+        this.precedingCode = precedingCode.trim()+"\n";
+        this.followingCode = followingCode;
+        this.precedingLineNumber = StringUtils.countMatches(this.precedingCode, "\n");
     }
+
+    public class LineNumberTranslationProgressReporter extends AbstractProgressReporterDecorator {
+
+        public LineNumberTranslationProgressReporter(ProgressReporter wrapped) {
+            super(wrapped);
+        }
+
+        @Override
+        public void reportCompilerError(long lineNumber, String message) {
+            super.reportCompilerError(lineNumber - precedingLineNumber, message);
+        }
+    }
+
 
     /**
      * Compile and Run the stored user input then compares the output to the expected output.
@@ -95,7 +118,7 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
      */
     @Override
     public CharSequence getFullClassText() {
-        return userInput;
+        return precedingCode + userInput + followingCode;
     }
 
     /**

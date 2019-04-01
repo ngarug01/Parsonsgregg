@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exersise1;
+import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exercise1;
 import com.ten10.training.javaparsons.webapp.Application;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +15,7 @@ class HelloWorld {
 
     private static DriverFactory driverFactory = new DriverFactory();
     private static WebDriver driver = driverFactory.getDriver();
-    private Exersise1 exersise1 = new Exersise1(driver);
+    private Exercise1 exercise1 = new Exercise1(driver);
     private static ConfigurableApplicationContext ctx;
     private String result;
 
@@ -27,55 +27,55 @@ class HelloWorld {
 
     @BeforeEach
     void beforeEveryTest() {
-        exersise1.goToHomepage();
+        exercise1.goToHomepage();
     }
 
     @Test
     void helloWorldInputted() {
-        exersise1.enterHelloWorldToInput();
-        exersise1.clickSubmit();
-        result = exersise1.readFromCorrectAnswerBox();
+        exercise1.enterHelloWorldToInput();
+        exercise1.clickSubmit();
+        result = exercise1.readFromCorrectAnswerBox();
         assertTrue(result.contains("Hello World!"));
     }
 
     @Test
     void semiColonIsMissed () {
-        exersise1.enterIncorrectHelloWorldToInput();
-        exersise1.clickSubmit();
-        result = exersise1.readFromIncorrectAnswerBox();
+        exercise1.enterIncorrectHelloWorldToInput();
+        exercise1.clickSubmit();
+        result = exercise1.readFromIncorrectAnswerBox();
         assertTrue(result.contains("Incorrect answer"));
         assertTrue(result.contains("Error on line: 1\n"+"The compiler error description was: ';' expected"));
     }
 
     @Test
     void notHelloWorld () {
-        exersise1.enterNotHelloWorldToInput();
-        exersise1.clickSubmit();
-        result = exersise1.readFromIncorrectAnswerBox();
+        exercise1.enterNotHelloWorldToInput();
+        exercise1.clickSubmit();
+        result = exercise1.readFromIncorrectAnswerBox();
         assertTrue(result.contains("Telly Tubby!"));
     }
 
     @Test
     void notCalledClassMain () {
-        exersise1.enterNotMainClassToInput();
-        exersise1.clickSubmit();
-        result = exersise1.readFromIncorrectAnswerBox();
+        exercise1.enterNotMainClassToInput();
+        exercise1.clickSubmit();
+        result = exercise1.readFromIncorrectAnswerBox();
         assertTrue(result.contains("class ain is public, should be declared in a file named ain.java"));
     }
 
     @Test
     void notCalledMethodMain () {
-        exersise1.enterNotMainMethodToInput();
-        exersise1.clickSubmit();
-        result = exersise1.readFromIncorrectAnswerBox();
+        exercise1.enterNotMainMethodToInput();
+        exercise1.clickSubmit();
+        result = exercise1.readFromIncorrectAnswerBox();
         assertTrue(result.contains("No such method main"));
     }
 
     @Test
     void informationBoxDisplayed () {
-        exersise1.enterHelloWorldInformation();
-        exersise1.clickSubmit();
-        assertTrue(exersise1.informationBoxDisplayed());
+        exercise1.enterHelloWorldInformation();
+        exercise1.clickSubmit();
+        assertTrue(exercise1.informationBoxDisplayed());
     }
 
     @AfterAll

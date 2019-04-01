@@ -22,16 +22,19 @@ public class ExerciseController {
     @Autowired
     ExerciseRepository exerciseRepository;
 
-
     public static class ExerciseInformation {
         private final String url;
         private final String title;
         private final String description;
+        private final String precedingCode;
+        private final String followingCode;
 
-        ExerciseInformation(String URL, String title, String description) {
+        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode) {
             url = URL;
             this.title = title;
             this.description = description;
+            this.precedingCode = precedingCode;
+            this.followingCode = followingCode;
         }
 
         /**
@@ -47,13 +50,10 @@ public class ExerciseController {
         public String getUrl() {
             return url;
         }
+        public String getDescription() { return description;}
+        public String getPrecedingCode() { return precedingCode;}
+        public String getFollowingCode() { return followingCode;}
 
-        /**
-         * @return the description of this {@link Exercise}.
-         */
-        public String getDescription() {
-            return description;
-        }
     }
 
 
@@ -74,7 +74,11 @@ public class ExerciseController {
             Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
             combinedExerciseParameters.add(new ExerciseInformation("exercise/" + i
                 ,exercise.getTitle()
-                ,exercise.getDescription()));
+                ,exercise.getDescription()
+                ,exercise.getPrecedingCode()
+                ,exercise.getFollowingCode()
+            ));
+
         }
         return combinedExerciseParameters;
     }
@@ -102,7 +106,7 @@ public class ExerciseController {
         @RequestBody SubmittedSolution submittedSolution) throws Exception {
         Results results = new Results();
         Solution solution = exercise.getSolutionFromUserInput(submittedSolution.getInput(), results);
-        solution.evaluate();
+        results.setSuccessfulSolution(solution.evaluate());
         return results;
     }
 }

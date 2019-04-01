@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
-    private long timeoutMillis = 0;
+    private long timeoutMillis = 500;
     private ExecutorService executor;
     private Future<Object> future;
 
@@ -99,7 +99,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
             } else {
                 return future.get();
             }
-        } catch (TimeoutException e) {
+        } catch (TimeoutException | CancellationException e) {
             future.cancel(true);
             return Optional.empty();
         } finally {
