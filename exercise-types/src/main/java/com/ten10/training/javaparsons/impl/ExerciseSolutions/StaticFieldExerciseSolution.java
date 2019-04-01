@@ -43,6 +43,8 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput(); //TODO this dependency should be passed as a parameter in the constructor.
     private byte[] byteCode;
     private Field[] klassFields;
+    private ClassLoader classLoader = null;
+    private Class<?> klass = null;
 
     /**
      * Create a new StaticFieldExerciseSolution.
@@ -69,7 +71,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
     @Override
     public boolean evaluate() throws Exception {
         if (canCompile()) {
-            if(canRun()) {
+            if (canRun()) {
                 if (getClassFields(getClassLoader())) {//collect all the static fields in the user input
                     return evaluateFields();
                 }
@@ -98,9 +100,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if (byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
-            }
+            return run() != Optional.empty();
         }
         return false;
     }
@@ -110,18 +110,25 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
     }
 
     private ClassLoader getClassLoader() {
+        if (null != classLoader) {
+            return classLoader;
+        }
 
         ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
-        return new ClassLoader(contextClassLoader) {
+        return classLoader = new ClassLoader(contextClassLoader) {
             @Override
             protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+
                 if (name.equals(getClassName())) {
+                    if (null != klass) {
+                        return klass;
+                    }
                     Class<?> clazz = defineClass(name, byteCode, 0, byteCode.length);
                     if (resolve) {
                         resolveClass(clazz);
                     }
-                    return clazz;
+                    return klass = clazz;
                 }
                 return super.loadClass(name, resolve);
             }
@@ -167,7 +174,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
                 if (output.equals(answer)) {
                     progressReporter.storeCapturedOutput(output.toString());
                     return true;
-                }else{
+                } else {
                     progressReporter.reportRunnerError("Expected: " + answer.toString() + ". Received: " + output.toString());
                 }
             } catch (IllegalAccessException e) {
