@@ -6,12 +6,12 @@ import com.ten10.training.javaparsons.impl.ClassChecker;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-public class FieldValueChecker implements ClassChecker {
+public class StaticFieldValueChecker implements ClassChecker {
 
     private final String goal;
     private final Object answer;
 
-    public FieldValueChecker(String goal, Object answer) {
+    public StaticFieldValueChecker(String goal, Object answer) {
 
         this.goal = goal;
         this.answer = answer;

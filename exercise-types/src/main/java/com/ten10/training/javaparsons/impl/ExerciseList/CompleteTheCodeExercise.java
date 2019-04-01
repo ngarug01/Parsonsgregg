@@ -22,21 +22,21 @@ public class CompleteTheCodeExercise implements Exercise {
     private final int id;
     private final String prefixCode;
     private final String suffixCode;
-    private int precedingLineNumber;
+    private int prefixLinesNumber;
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
 
-    public CompleteTheCodeExercise(SolutionCompiler compiler, List<CapturedOutputChecker> capturedOutputCheckers, List<ClassChecker> classCheckers, List<MethodReturnValueChecker> methodReturnValueCheckers, String precedingCode, String followingCode, String exerciseName, int id) {
+    public CompleteTheCodeExercise(SolutionCompiler compiler, List<CapturedOutputChecker> capturedOutputCheckers, List<ClassChecker> classCheckers, List<MethodReturnValueChecker> methodReturnValueCheckers, String prefixCode, String suffixCode, String exerciseName, int id) {
         this.compiler = compiler;
         this.capturedOutputCheckers = capturedOutputCheckers;
         this.classCheckers = classCheckers;
         this.methodReturnValueCheckers = methodReturnValueCheckers;
         this.exerciseName = exerciseName;
         this.id = id;
-        this.prefixCode = precedingCode;
-        this.suffixCode = followingCode;
-        this.precedingLineNumber = StringUtils.countMatches(this.prefixCode, "\n");
+        this.prefixCode = prefixCode;
+        this.suffixCode = suffixCode;
+        this.prefixLinesNumber = StringUtils.countMatches(this.prefixCode, "\n");
     }
 
     public class LineNumberTranslationProgressReporter extends AbstractProgressReporterDecorator {
@@ -47,7 +47,7 @@ public class CompleteTheCodeExercise implements Exercise {
 
         @Override
         public void reportCompilerError(long lineNumber, String message) {
-            super.reportCompilerError(lineNumber - precedingLineNumber, message);
+            super.reportCompilerError(lineNumber - prefixLinesNumber, message);
         }
     }
 
@@ -68,7 +68,7 @@ public class CompleteTheCodeExercise implements Exercise {
     @Override
     public String getDescription() {
         StringBuilder goals = new StringBuilder();
-        goals.append("Complete the Java code so that it; \n");
+        goals.append("Complete the Java code so that it: \n");
         for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
             goals.append(checker.getGoal());
         }

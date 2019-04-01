@@ -16,7 +16,7 @@ public class ReturnTypeChecker implements MethodReturnValueChecker {
 
     @Override
     public String getGoal() {
-        return null;
+        return "The returned value is " + answer.toString();
     }
 
     @Override
