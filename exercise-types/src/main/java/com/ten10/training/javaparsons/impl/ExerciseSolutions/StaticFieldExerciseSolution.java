@@ -36,14 +36,16 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
         }
     };
 
-    private final SolutionCompiler compiler;
-    private final ThreadSolutionRunner runner;
-    private final String userInput;
-    private final Object answer;
-    private final ProgressReporter progressReporter;
+    private SolutionCompiler compiler;
+    private ThreadSolutionRunner runner;
+    private String userInput;
+    private Object answer;
+    private ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput(); //TODO this dependency should be passed as a parameter in the constructor.
     private byte[] byteCode;
     private Field[] klassFields;
+
+    public StaticFieldExerciseSolution(){}
 
     /**
      * Create a new StaticFieldExerciseSolution.
@@ -54,7 +56,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
      * @param answer           Expected result of running the user input.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-    public StaticFieldExerciseSolution(SolutionCompiler compiler,
+    public Solution setSolution(SolutionCompiler compiler,
                                        ThreadSolutionRunner runner,
                                        String userInput,
                                        Object answer,
@@ -64,6 +66,8 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
         this.userInput = userInput;
         this.answer = answer;
         this.progressReporter = progressReporter;
+
+        return this;
     }
 
 

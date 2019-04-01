@@ -1,4 +1,4 @@
-package com.ten10.training.javaparsons.impl.ExerciseSolutions;
+package com.ten10.training.javaparsons.impl.ExerciseList;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 

@@ -2,7 +2,6 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.ReturnTypeExerciseSolution;
 import org.junit.jupiter.api.Test;
 

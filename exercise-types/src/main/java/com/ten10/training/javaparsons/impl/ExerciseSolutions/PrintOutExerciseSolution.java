@@ -34,11 +34,11 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
         }
     };
 
-    private final SolutionCompiler compiler;
-    private final ThreadSolutionRunner runner;
-    private final String userInput;
-    private final String answer;
-    private final ProgressReporter progressReporter;
+    private SolutionCompiler compiler;
+    private ThreadSolutionRunner runner;
+    private String userInput;
+    private String answer;
+    private ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
 
@@ -50,17 +50,19 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
      * @param answer Expected result of running the user input.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
+
     public PrintOutExerciseSolution(SolutionCompiler compiler,
                                     ThreadSolutionRunner runner,
                                     String userInput,
-                                    String answer,
+                                    Object answer,
                                     ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
-        this.answer = answer;
+        this.answer = answer.toString();
         this.progressReporter = progressReporter;
+
     }
 
     /**

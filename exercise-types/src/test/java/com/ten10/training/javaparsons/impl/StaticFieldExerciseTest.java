@@ -1,16 +1,13 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.StaticFieldExerciseSolution;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 class StaticFieldExerciseTest {

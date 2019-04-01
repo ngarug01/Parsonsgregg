@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
+import com.ten10.training.javaparsons.impl.ExerciseList.WholeClassExercise;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -17,7 +17,7 @@ class ExerciseRepositoryImplTest {
     @Test
     void exercise1IsAHelloWorldExercise() {
         ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler);
-        assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(PrintOutExercise.class)));
+        assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(WholeClassExercise.class)));
     }
     @Test
     void getNumberOfElementsInExercisesArray(){

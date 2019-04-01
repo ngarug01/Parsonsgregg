@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
 import com.ten10.training.javaparsons.ProgressReporter;
+import com.ten10.training.javaparsons.impl.ExerciseList.AbstractProgressReporterDecorator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -35,7 +36,7 @@ class AbstractProgressReporterDecoratorTest {
         }
 
         private void makeDescription(Consumer<ProgressReporter> methodCall) {
-            ProgressReporter proxy = (ProgressReporter) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{ProgressReporter.class}, new InvocationHandler() {
+            ProgressReporter proxy = (ProgressReporter) Proxy.newProxyInstance(getClass().getClassLoader(), new Class<?>[]{ProgressReporter.class}, new InvocationHandler() {
                 @Override
                 public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                     Iterable<String> paramStrs = Arrays.stream(args).map(Object::toString).collect(Collectors.toList());

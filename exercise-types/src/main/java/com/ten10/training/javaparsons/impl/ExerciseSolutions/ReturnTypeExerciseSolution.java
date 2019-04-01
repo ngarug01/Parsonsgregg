@@ -35,13 +35,15 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         }
     };
 
-    private final SolutionCompiler compiler;
-    private final ThreadSolutionRunner runner;
-    private final String userInput;
-    private final Object answer;
-    private final ProgressReporter progressReporter;
+    private SolutionCompiler compiler;
+    private ThreadSolutionRunner runner;
+    private String userInput;
+    private Object answer;
+    private ProgressReporter progressReporter;
     private byte[] byteCode;
     private Object output;
+
+    public ReturnTypeExerciseSolution(){}
 
     /**
      * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
@@ -52,7 +54,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
      * @param answer           Expected result of running the user input.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-    public ReturnTypeExerciseSolution(SolutionCompiler compiler,
+    public Solution setSolution(SolutionCompiler compiler,
                                       ThreadSolutionRunner runner,
                                       String userInput,
                                       Object answer,
@@ -63,6 +65,8 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         this.userInput = userInput;
         this.answer = answer;
         this.progressReporter = progressReporter;
+
+        return this;
     }
 
     /**
