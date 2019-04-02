@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Exercise4 extends BasePage{
+public class TwoSquared extends BasePage{
     private static final By TWO_SQUARED_OPTION = By.cssSelector("#ExerciseList > option:nth-child(4)");
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String TWO_SQUARED_CORRECT = "public class Main {public Integer main(String[] args) {return 2*2;}}";
@@ -12,7 +12,7 @@ public class Exercise4 extends BasePage{
     private static final By CORRECT_OUTPUT_BOX = By.cssSelector("#correct-answer");
     private static final By DESCRIPTION = By.cssSelector("#Description");
 
-    public Exercise4(WebDriver driver) {
+    public TwoSquared(WebDriver driver) {
         super(driver);
     }
 

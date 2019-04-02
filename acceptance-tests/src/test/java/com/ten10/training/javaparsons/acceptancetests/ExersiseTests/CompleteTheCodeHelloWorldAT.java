@@ -1,35 +1,25 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.Exercise1;
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.CompleteTheCodeExercise;
-import com.ten10.training.javaparsons.webapp.Application;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Tests for feature 3: writing just part of the code.")
-class CompleteTheCodeHelloWorld {
+class CompleteTheCodeHelloWorldAT {
 
     private static DriverFactory driverFactory = new DriverFactory();
     private static WebDriver driver = driverFactory.getDriver();
-    private Exercise1 exercise1 = new Exercise1(driver);
     private CompleteTheCodeExercise completeTheCodeExercise = new CompleteTheCodeExercise(driver);
-    private static ConfigurableApplicationContext ctx;
     private String result;
-
-//    @BeforeAll
-//    static void beforAllTests() {
-//        ctx = SpringApplication.run(Application.class);
-//    }
-
 
     @BeforeEach
     void beforeEveryTest() {
-        exercise1.goToHomepage();
+        completeTheCodeExercise.goToHomepage();
     }
 
     @Test
@@ -74,7 +64,6 @@ class CompleteTheCodeHelloWorld {
 
     @AfterAll
     static void afterAllTests() {
-        ctx.close();
         driver.quit();
     }
 }

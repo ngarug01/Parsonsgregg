@@ -4,12 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Exercise1 extends BasePage {
-    public Exercise1(WebDriver driver) {
+public class HelloWorld extends BasePage {
+    public HelloWorld(WebDriver driver) {
         super(driver);
     }
 
-    private static String URL = "localhost:"+System.getProperty("test.server.port");
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String HELLO_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
     private static final String HELLO_WORLD_INCORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
@@ -32,10 +31,6 @@ public class Exercise1 extends BasePage {
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
     private static final By INFORMATION_BOX = By.cssSelector("#information");
 
-
-    public void goToHomepage() {
-        driver.get(URL);
-    }
 
     public void enterHelloWorldToInput() {
         findAndType(INPUT_BOX, HELLO_WORLD_CORRECT);
