@@ -10,7 +10,6 @@ public class StaticFieldExercises extends BasePage {
         super(driver);
     }
 
-    private static String URL = "localhost:8080";
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final By SELECT_STATIC_FIELD_EXERCISE = By.cssSelector("#ExerciseList > option:nth-child(3)");
     private static final String CORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int i = 42; \npublic static void main(String[] args){\n}\n}";
@@ -20,9 +19,6 @@ public class StaticFieldExercises extends BasePage {
     private static final By CORRECT_ANSWER_BOX = By.cssSelector("#correct-answer");
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
 
-    public void goToHomepage() {
-        driver.get(URL);
-    }
 
     public void selectStaticFieldExercise() {
         waitAndClick(SELECT_STATIC_FIELD_EXERCISE);

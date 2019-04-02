@@ -4,8 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class Exercise2 extends BasePage {
-    public Exercise2(WebDriver driver) {
+public class GoodbyeWorld extends BasePage {
+    public GoodbyeWorld(WebDriver driver) {
         super(driver);
     }
 

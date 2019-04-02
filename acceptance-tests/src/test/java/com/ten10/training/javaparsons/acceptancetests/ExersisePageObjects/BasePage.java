@@ -14,6 +14,9 @@ public abstract class BasePage {
 
     WebDriver driver;
     private WebDriverWait wait;
+    private String HOST = "localhost:";
+    private String PORT;
+    private String URL;
 
     BasePage(WebDriver driver) {
         this.driver = driver;
@@ -41,6 +44,38 @@ public abstract class BasePage {
 
     void waitForDivToBeVisible(By selector){
         wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
+    }
+
+    /*
+    This code is written to enable the dynamic setting of the host in the URL
+    Once a system property is able to be set dynamically then this can be implemented
+    as for PORT below
+     */
+    void setHost() {
+//        String host = System.getProperty("YOUR_PROPERTY_NAME");
+//        if (host.equals("")){
+            HOST = "localhost:";
+//        } else
+//            HOST = host;
+    }
+
+    void setPort() {
+        String port = System.getProperty("test.server.port");
+        if (port.equals("")){
+            PORT = "8080";
+        } else
+            PORT = port;
+    }
+
+    void setURL() {
+        setHost();
+        setPort();
+        URL = HOST + PORT;
+    }
+
+    public void goToHomepage() {
+        setURL();
+        driver.get(URL);
     }
 
     void waitForTextToAppearAtributeValue(By selector) {
