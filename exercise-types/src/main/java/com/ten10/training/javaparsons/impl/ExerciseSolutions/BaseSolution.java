@@ -110,10 +110,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     }
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if (byteCode != null) {
             return run();
-        }
-        return false;
     }
 
     private boolean compile() {
