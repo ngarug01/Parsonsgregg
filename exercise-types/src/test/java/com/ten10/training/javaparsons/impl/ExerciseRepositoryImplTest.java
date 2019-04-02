@@ -15,7 +15,7 @@ class ExerciseRepositoryImplTest {
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
 
     @Test
-    void exercise1IsAHelloWorldExercise() {
+    void exercise1IsAWholeClassExercise() {
         ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler);
         assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(WholeClassExercise.class)));
     }

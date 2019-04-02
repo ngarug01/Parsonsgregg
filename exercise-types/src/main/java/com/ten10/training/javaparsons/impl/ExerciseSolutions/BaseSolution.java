@@ -111,9 +111,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if (byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
-            }
+            return run();
         }
         return false;
     }
@@ -169,16 +167,20 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private Boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
+        Object result;
         try {
             runner.run(getClassLoader(), entryPoint, progressReporter);
-            Object result = runner.getMethodOutput();
-            return Optional.ofNullable(result);
         } finally {
             this.output = captureConsoleOutput.stop();
-            this.result = Optional.ofNullable(runner.getMethodOutput()).get();
         }
+        try {
+            result = runner.getMethodOutput();
+        } finally {
+            Optional.ofNullable(runner.getMethodOutput()).ifPresent(o -> this.result = o);
+        }
+        return ((!output.isEmpty())||(result!=null));
     }
 
     private boolean getClassFields(ClassLoader classLoader) {

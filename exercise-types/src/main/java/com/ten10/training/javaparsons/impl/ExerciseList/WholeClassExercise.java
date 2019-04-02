@@ -7,7 +7,6 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.PrintOutExerciseSolution;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 

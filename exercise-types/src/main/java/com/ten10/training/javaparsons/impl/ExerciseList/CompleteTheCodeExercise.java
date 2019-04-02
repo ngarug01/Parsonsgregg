@@ -51,7 +51,11 @@ public class CompleteTheCodeExercise implements Exercise {
         }
     }
 
-    String appendCodeToUserInput(String userInput) {
+    public ProgressReporter wrapProgressReporter(ProgressReporter progressReporter){
+        return new LineNumberTranslationProgressReporter(progressReporter);
+    }
+
+    public String appendCodeToUserInput(String userInput) {
         return prefixCode + userInput + suffixCode;
     }
 
@@ -94,7 +98,7 @@ public class CompleteTheCodeExercise implements Exercise {
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
 
-        return new BaseSolution(compiler, runner, appendCodeToUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, new LineNumberTranslationProgressReporter(progressReporter));
+        return new BaseSolution(compiler, runner, appendCodeToUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, wrapProgressReporter(progressReporter));
     }
 
     @Override
