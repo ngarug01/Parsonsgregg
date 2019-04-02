@@ -71,7 +71,6 @@ public abstract class BasePage {
         setHost();
         setPort();
         URL = HOST + PORT;
-        System.out.println(URL);
     }
 
     public void goToHomepage() {
