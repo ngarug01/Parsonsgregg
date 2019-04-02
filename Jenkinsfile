@@ -14,9 +14,9 @@ pipeline {
                         sh 'mvn -B clean test-compile'
                     }
                 }
-                stage('Build and Test') {
+                stage('Build and Unit Test') {
                     steps {
-                        sh 'mvn -B verify -DskipITs'
+                        sh 'mvn -B verify -Dgroups=!acceptance-tests'
                         // Must use stash now because future steps use agent none.
                         stash includes: 'webapp/target/webapp-1.0-SNAPSHOT-exec.jar', name: 'fatJar'
 

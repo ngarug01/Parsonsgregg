@@ -1,10 +1,7 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.CompleteTheCodeExercise;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,6 +20,7 @@ class CompleteTheCodeHelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void helloWorldInputted() {
         completeTheCodeExercise.chooseExercise3();
         completeTheCodeExercise.enterHelloWorldMethodToInput();
@@ -32,12 +30,14 @@ class CompleteTheCodeHelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void descriptionChanges() {
         completeTheCodeExercise.chooseExercise3();
         assertTrue(completeTheCodeExercise.readFromDescription().contains("Complete the Java code"));
     }
 
     @Test
+    @Tag("acceptance-tests")
     void precedingCodeIsDisplayed() {
         completeTheCodeExercise.chooseExercise3();
         result = completeTheCodeExercise.readFromPrecedingCodeBox();
@@ -45,6 +45,7 @@ class CompleteTheCodeHelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void followingCodeIsDisplayed() {
         completeTheCodeExercise.chooseExercise3();
         result = completeTheCodeExercise.readFromFollowingCodeBox();
@@ -52,6 +53,7 @@ class CompleteTheCodeHelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void lineNumbersAreTranslated() {
         completeTheCodeExercise.chooseExercise3();
         completeTheCodeExercise.enterIncorrectHelloWorldMethodToInput();

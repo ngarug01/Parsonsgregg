@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.GoodbyeWorld;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
@@ -20,6 +21,7 @@ public class GoodbyeWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void goodbyeCruelWorldInputted() {
         goodbyeWorld.chooseExercise2();
         goodbyeWorld.enterGoodbyeWorldToInput();
@@ -29,6 +31,7 @@ public class GoodbyeWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void descriptionChanges() {
         goodbyeWorld.chooseExercise2();
         assertTrue(goodbyeWorld.readFromDescription().contains("Goodbye Cruel World!"));

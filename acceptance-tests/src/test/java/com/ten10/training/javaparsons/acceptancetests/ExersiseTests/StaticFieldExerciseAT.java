@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.StaticFieldExercises;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 
@@ -23,6 +24,7 @@ public class StaticFieldExerciseAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void containsCorrectAnswer() {
         staticFieldExercises.selectStaticFieldExercise();
         staticFieldExercises.correctAnswer();
@@ -32,6 +34,7 @@ public class StaticFieldExerciseAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void doesNotContainCorrectAnswer() {
         staticFieldExercises.selectStaticFieldExercise();
         staticFieldExercises.incorrectAnswer();
@@ -41,6 +44,7 @@ public class StaticFieldExerciseAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void incorrectTypeAnswer() {
         staticFieldExercises.selectStaticFieldExercise();
         staticFieldExercises.incorrectTypeStaticFieldAnswer();

@@ -2,10 +2,7 @@ package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.HelloWorld;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,6 +22,7 @@ class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void helloWorldInputted() {
         helloWorld.enterHelloWorldToInput();
         helloWorld.clickSubmit();
@@ -33,6 +31,7 @@ class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void semiColonIsMissed () {
         helloWorld.enterIncorrectHelloWorldToInput();
         helloWorld.clickSubmit();
@@ -42,6 +41,7 @@ class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notHelloWorld () {
         helloWorld.enterNotHelloWorldToInput();
         helloWorld.clickSubmit();
@@ -50,6 +50,7 @@ class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notCalledClassMain () {
         helloWorld.enterNotMainClassToInput();
         helloWorld.clickSubmit();
@@ -58,6 +59,7 @@ class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notCalledMethodMain () {
         helloWorld.enterNotMainMethodToInput();
         helloWorld.clickSubmit();
@@ -66,6 +68,7 @@ class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void informationBoxDisplayed () {
         helloWorld.enterHelloWorldInformation();
         helloWorld.clickSubmit();
