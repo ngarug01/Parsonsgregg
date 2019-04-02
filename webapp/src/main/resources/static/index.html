@@ -69,7 +69,7 @@
 
         window.onload = function () {
          var XHR = new XMLHttpRequest();
-               urlGetE = "http://localhost:8080/exercise/getExercises";
+               urlGetE = "/exercise/getExercises";
                XHR.addEventListener("load", handleResponseGet);
                XHR.open("GET" , urlGetE ,true);
                XHR.send(null);
