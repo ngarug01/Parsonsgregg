@@ -19,10 +19,10 @@ class HelloWorld {
     private static ConfigurableApplicationContext ctx;
     private String result;
 
-    @BeforeAll
-    static void beforAllTests() {
-        ctx = SpringApplication.run(Application.class);
-    }
+//    @BeforeAll
+//    static void beforAllTests() {
+//        ctx = SpringApplication.run(Application.class);
+//    }
 
 
     @BeforeEach
@@ -81,7 +81,7 @@ class HelloWorld {
     @AfterAll
     static void afterAllTests() {
         driver.quit();
-        ctx.close();
+//        ctx.close();
     }
 }
 

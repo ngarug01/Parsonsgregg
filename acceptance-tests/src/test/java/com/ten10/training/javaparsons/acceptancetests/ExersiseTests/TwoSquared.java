@@ -21,10 +21,10 @@ public class TwoSquared {
     private static ConfigurableApplicationContext ctx;
     private String result;
 
-    @BeforeAll
-    static void beforeAllTests() {
-        ctx = SpringApplication.run(Application.class);
-    }
+//    @BeforeAll
+//    static void beforeAllTests() {
+//        ctx = SpringApplication.run(Application.class);
+//    }
 
 
     @BeforeEach

@@ -22,10 +22,10 @@ public class StaticFieldExercise {
     private String result;
 
 
-    @BeforeAll
-    static void beforeAllTests() {
-        ctx = SpringApplication.run(Application.class);
-    }
+//    @BeforeAll
+//    static void beforeAllTests() {
+//        ctx = SpringApplication.run(Application.class);
+//    }
 
     @BeforeEach
     void goToHomepage() {

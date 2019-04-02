@@ -9,7 +9,7 @@ public class Exercise1 extends BasePage {
         super(driver);
     }
 
-    private static String URL = "localhost:8080";
+    private static String URL = "localhost:"+System.getProperty("test.server.port");
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String HELLO_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
     private static final String HELLO_WORLD_INCORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
