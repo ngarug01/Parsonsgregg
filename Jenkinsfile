@@ -99,7 +99,7 @@ pipeline {
                                             sh "docker save ${customImage.id} | ssh -o StrictHostKeyChecking=no dockeruser@172.18.200.63 docker load"
                                         }
                                         stage('Stopping any existing container') {
-                                            sh 'ssh dockeruser@172.18.200.63 docker stop java-parsons && ssh dockeruser@172.18.200.63 docker rm java-parsons || true'''
+                                            sh 'ssh dockeruser@172.18.200.63 docker stop java-parsons && ssh dockeruser@172.18.200.63 docker rm java-parsons || true'
                                         }
                                         stage('Restart Container') {
                                            sh "ssh dockeruser@172.18.200.63 docker run -d -p 8080:8080 --name java-parsons java-parsons:${env.BUILD_ID}"
