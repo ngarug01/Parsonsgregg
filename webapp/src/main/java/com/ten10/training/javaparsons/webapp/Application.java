@@ -28,7 +28,7 @@ public class Application {
         }
 
         /** if Exercise convert is called the user types a string in to get the exercise they require
-         * @param identifier is for the id of the exercise
+         * @param //identifier is for the id of the exercise
          * the exercise identifier is stored as an integer
          * @return the exercise that has been requested
          */
@@ -47,7 +47,7 @@ public class Application {
     }
 
     /** When {@link SpringBootApplication} requires a new {@link SolutionCompiler} this method is called to create it.
-     * @param compiler will compile the solution.
+     * @param //compiler will compile the solution.
      * @return a new {@link SolutionCompiler}.
      */
     @Bean
@@ -57,7 +57,7 @@ public class Application {
 
     /**
      * When {@link SpringBootApplication} requires a new {@link ExerciseRepository} this method is called to create it.
-     * @param compiler will compile the solution.
+     * @param //compiler will compile the solution.
      * @return a new {@link ExerciseRepository}.
      */
     @Bean

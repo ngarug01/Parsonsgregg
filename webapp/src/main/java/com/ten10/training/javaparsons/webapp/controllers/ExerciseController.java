@@ -101,7 +101,7 @@ public class ExerciseController {
      */
     @RequestMapping(value ="{identifier}", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public Results postRequestExercise(
+    public Results markUserInput(
         @PathVariable("identifier") Exercise exercise,
         @RequestBody SubmittedSolution submittedSolution) throws Exception {
         Results results = new Results();

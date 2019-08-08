@@ -21,8 +21,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
-     * @param compiler Prepares an user input to be run.
-     * @param runner
+     * @param //compiler Prepares an user input to be run.
+     * @param //runner
      */
     public ExerciseRepositoryImpl(SolutionCompiler compiler, SolutionRunner runner) {
         PrintOutExercise helloWorld = new PrintOutExercise(compiler, runner, "Hello World!", "Hello World!", 1, "Write a Java code which when run will produce a string which reads");
@@ -36,7 +36,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     }
 
     /**
-     * @param identifier The unique identifier for an exercise
+     * @param //identifier The unique identifier for an exercise
      * @return The exercise with a given id.
      */
     @Override
