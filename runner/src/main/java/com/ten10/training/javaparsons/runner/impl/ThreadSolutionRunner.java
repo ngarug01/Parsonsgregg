@@ -63,9 +63,9 @@ public class ThreadSolutionRunner implements SolutionRunner {
         future = executor.submit(() -> method.invoke(finalInstance, parameters));
         try {
             if (timeoutMillis != 0) {
-                future.get(timeoutMillis, TimeUnit.MILLISECONDS);
+                return Optional.ofNullable(future.get(timeoutMillis, TimeUnit.MILLISECONDS));
             } else {
-                future.get();
+                return Optional.ofNullable(future.get());
             }
         } catch (TimeoutException e) {
             future.cancel(true);
@@ -74,7 +74,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
         } finally {
             executor.shutdownNow();
         }
-        return Optional.ofNullable(method.getReturnType());
     }
 
     private boolean isStatic(Method method) {
@@ -83,29 +82,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
     void setTimeout(long count, TimeUnit timeUnit) {
         timeoutMillis = timeUnit.toMillis(count);
-    }
-
-    /**
-     * Gets the output of the method provided from the {@link com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint}. From the user solution.
-     * @return The computed result of running the method. {@link Optional#empty()} if the method fails to run, either in
-     * the allotted time, there's a run time exception, or an {@link InterruptedException}.
-     * @throws ExecutionException throws when a run time exception occurs.
-     * @throws InterruptedException if the {@code Thread} is interrupted unexpectedly.
-     */
-    @Override
-    public Object getMethodOutput() throws ExecutionException, InterruptedException {
-        try {
-            if (timeoutMillis != 0) {
-                return future.get(timeoutMillis, TimeUnit.MILLISECONDS);
-            } else {
-                return future.get();
-            }
-        } catch (TimeoutException | CancellationException e) {
-            future.cancel(true);
-            return Optional.empty();
-        } finally {
-            executor.shutdownNow();
-        }
     }
 
 }

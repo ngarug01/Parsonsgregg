@@ -72,8 +72,8 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
      */
     @Override
     public boolean evaluate() throws Exception {
-        if(compile()){
-            if(canRun()){
+        if (compile()) {
+            if (run()) {
                 //System.out.println(output + " " + Optional.ofNullable(answer).toString());
                 return output.equals(answer);
             }
@@ -81,17 +81,10 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         return false;
     }
 
-    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if (byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean compile() {
-        return compiler.compile(this, progressReporter);
+        boolean result = compiler.compile(this, progressReporter);
+        assert !result || byteCode != null;
+        return result;
     }
 
     /**
@@ -139,13 +132,19 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         };
     }
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        try{
-            return runner.run(getClassLoader(),entryPoint,progressReporter);
-        } catch(CancellationException e){
-            return Optional.empty();
-        } finally {
-            this.output = runner.run(getClassLoader(),entryPoint,progressReporter).toString();
+    // Returns True if the code ran to completion, and returned a non-null value.
+    // Sets output to the value returned.
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        Optional<Object> result;
+        try {
+            result = runner.run(getClassLoader(), entryPoint, progressReporter);
+        } catch (CancellationException e) {
+            return false;
         }
+        if (result.isPresent()) {
+            this.output = result.get();
+            return true;
+        }
+        return false;
     }
 }
