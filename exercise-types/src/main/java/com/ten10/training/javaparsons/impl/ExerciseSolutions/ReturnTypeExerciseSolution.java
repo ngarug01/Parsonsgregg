@@ -141,14 +141,11 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
 
     private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         try{
-            runner.run(getClassLoader(),entryPoint,progressReporter);
-            Object result = runner.getMethodOutput();
-            return Optional.ofNullable(result);
+            return runner.run(getClassLoader(),entryPoint,progressReporter);
         } catch(CancellationException e){
             return Optional.empty();
         } finally {
-            this.output = Optional.ofNullable(runner.getMethodOutput()).get();
-            progressReporter.storeCapturedOutput(output.toString());
+            this.output = runner.run(getClassLoader(),entryPoint,progressReporter).toString();
         }
     }
 }
