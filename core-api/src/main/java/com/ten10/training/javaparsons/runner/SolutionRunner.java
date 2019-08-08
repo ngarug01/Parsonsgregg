@@ -18,6 +18,5 @@ public interface SolutionRunner {
     }
 
     Optional<Object> run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException;
-    Object getMethodOutput() throws ExecutionException, InterruptedException;
 }
 
