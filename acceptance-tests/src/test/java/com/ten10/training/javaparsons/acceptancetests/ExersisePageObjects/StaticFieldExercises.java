@@ -6,10 +6,6 @@ import org.openqa.selenium.WebElement;
 
 public class StaticFieldExercises extends BasePage {
 
-    public StaticFieldExercises(WebDriver driver) {
-        super(driver);
-    }
-
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final By SELECT_STATIC_FIELD_EXERCISE = By.cssSelector("#ExerciseList > option:nth-child(3)");
     private static final String CORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int i = 42; \npublic static void main(String[] args){\n}\n}";
@@ -19,6 +15,9 @@ public class StaticFieldExercises extends BasePage {
     private static final By CORRECT_ANSWER_BOX = By.cssSelector("#correct-answer");
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
 
+    public StaticFieldExercises(WebDriver driver) {
+        super(driver);
+    }
 
     public void selectStaticFieldExercise() {
         waitAndClick(SELECT_STATIC_FIELD_EXERCISE);

@@ -1,18 +1,31 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.CompleteTheCodeExercise;
-import org.junit.jupiter.api.*;
+import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SingleSession;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Tests for feature 3: writing just part of the code.")
+@ExtendWith(SeleniumExtension.class)
+@SingleSession
 class CompleteTheCodeHelloWorldAT {
 
-    private static DriverFactory driverFactory = new DriverFactory();
-    private static WebDriver driver = driverFactory.getDriver();
-    private CompleteTheCodeExercise completeTheCodeExercise = new CompleteTheCodeExercise(driver);
+    private final WebDriver driver;
+    private final CompleteTheCodeExercise completeTheCodeExercise;
     private String result;
+
+    CompleteTheCodeHelloWorldAT(ChromeDriver driver) {
+        this.driver = driver;
+        completeTheCodeExercise = new CompleteTheCodeExercise(driver);
+    }
 
     @BeforeEach
     void beforeEveryTest() {
@@ -62,11 +75,6 @@ class CompleteTheCodeHelloWorldAT {
         System.out.print(result);
         assertTrue(result.contains("Error on line: 1"));
 
-    }
-
-    @AfterAll
-    static void afterAllTests() {
-        driver.quit();
     }
 }
 

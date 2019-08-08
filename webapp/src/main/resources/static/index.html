@@ -73,6 +73,17 @@
 
         let exercises = null;
 
+        function setLoading() {
+            const elem = document.createElement('DIV');
+            elem.id = 'loading';
+            document.body.appendChild(elem);
+        }
+
+        function setNotLoading() {
+            const elem = document.getElementById('loading');
+            elem.parentElement.removeChild(elem);
+        }
+
         function loadExercises() {
             const xhr = new XMLHttpRequest();
             const exercisesPath = "/exercise/getExercises";
@@ -85,10 +96,12 @@
             }
             xhr.addEventListener("load", onExercisesLoaded);
             xhr.open("GET", url, true);
+            setLoading();
             xhr.send(null);
         };
 
         function onExercisesLoaded() {
+            setNotLoading();
             if ((this.readyState !== 4 || this.status !== 200)) {
                 // TODO: Actual error handling
                 console.error(xhr.status);
@@ -154,9 +167,11 @@
             xhr.open("POST", url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(exercise);
+            setLoading();
         }
 
         function onResultLoaded() {
+            setNotLoading();
             if (this.readyState !== 4 || this.status !== 200) {
                 // TODO: Actual error handling
                 console.error(xhr.status);
@@ -184,7 +199,7 @@
                     });
                 }
                 if (response.runnerErrors && response.runnerErrors.length) {
-                    runnerErrors.forEach(error => {
+                    response.runnerErrors.forEach(error => {
                         incorrectAnswer.innerHTML += ("<br>The runner error description was: " + error.message + "<br>");
                     });
                 }
@@ -214,6 +229,7 @@
         function onLoad() {
             document.getElementById("ExerciseList").onchange = onSelectedExerciseChange;
             document.getElementById("enter-answer").onclick = postAnswer;
+            setNotLoading();
             loadExercises();
         }
         window.onload = onLoad;
@@ -221,6 +237,7 @@
 </head>
 
 <body>
+    <div id="loading"></div>
     <h1>Java Parsons Problems</h1>
     <section id="ExerciseSelection">
         <select id="ExerciseList">

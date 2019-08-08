@@ -1,83 +1,101 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.HelloWorld;
-import org.junit.jupiter.api.*;
+import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.ExercisePage;
+import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SingleSession;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith(SeleniumExtension.class)
+@SingleSession
 @DisplayName("Tests for feature 1: Running a very simple Program.")
 class HelloWorldAT {
 
-    private static DriverFactory driverFactory = new DriverFactory();
-    private static WebDriver driver = driverFactory.getDriver();
-    private HelloWorld helloWorld = new HelloWorld(driver);
-    private String result;
+    private static final String CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
+    private static final String INCORRECT_PROGRAM = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
+    private static final String CORRECT_PROGRAM_THAT_DOESNT_PRINT_HELLO_WORLD = "public class Main {public static void main (String [] args) {System.out.println(\"Telly Tubby!\");}}";
+    private static final String CORRECT_PROGRAM_WHERE_CLASS_NAME_DOESNT_MATCH_EXPECTATION = "public class ain {public static void main (String [] args) {System.out.println(\"Hello World!\");}}";
+    private static final String NOT_MAIN_METHOD = "public class Main {public static void ain (String [] args) {System.out.println(\"Hello World!\");}}";
+    private static final String CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS =
+        "import java.util.List;\n" +
+            "import java.util.ArrayList;\n" +
+            "\n" +
+            "public class Main {\n" +
+            "    public static void main(String[] args) {\n" +
+            "        List<?> l = new ArrayList<>();\n" +
+            "        List<String> l2 = (List<String>) l;\n" +
+            "        System.out.println(\"Hello World!\");\n" +
+            "    }\n" +
+            "}";
+
+
+    private final WebDriver driver;
+    private final ExercisePage page;
+
+    HelloWorldAT(ChromeDriver driver) {
+        this.driver = driver;
+        page = new ExercisePage(this.driver);
+    }
 
 
     @BeforeEach
     void beforeEveryTest() {
-        helloWorld.goToHomepage();
+        page.goToHomepage();
+        page.chooseExcercise(1, "Hello World!");
     }
 
     @Test
-    @Tag("acceptance-tests")
     void helloWorldInputted() {
-        helloWorld.enterHelloWorldToInput();
-        helloWorld.clickSubmit();
-        result = helloWorld.readFromCorrectAnswerBox();
-        assertTrue(result.contains("Hello World!"));
+        page.trySolution(CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD);
+        assertThat(page.getOutput(), is("Hello World!"));
+        assertTrue(page.isSuccessful());
     }
 
     @Test
-    @Tag("acceptance-tests")
-    void semiColonIsMissed () {
-        helloWorld.enterIncorrectHelloWorldToInput();
-        helloWorld.clickSubmit();
-        result = helloWorld.readFromIncorrectAnswerBox();
-        assertTrue(result.contains("Incorrect answer"));
-        assertTrue(result.contains("Error on line: 1\n"+"The compiler error description was: ';' expected"));
+    void semiColonIsMissed() {
+        page.trySolution(INCORRECT_PROGRAM);
+        assertFalse(page.isSuccessful());
+        assertThat(page.getErrors(),
+            contains("The compiler error description was: ';' expected"));
     }
 
     @Test
-    @Tag("acceptance-tests")
-    void notHelloWorld () {
-        helloWorld.enterNotHelloWorldToInput();
-        helloWorld.clickSubmit();
-        result = helloWorld.readFromIncorrectAnswerBox();
-        assertTrue(result.contains("Telly Tubby!"));
+    void notHelloWorld() {
+        page.trySolution(CORRECT_PROGRAM_THAT_DOESNT_PRINT_HELLO_WORLD);
+        assertThat(page.getOutput(), is("Telly Tubby!"));
+        assertFalse(page.isSuccessful());
     }
 
     @Test
-    @Tag("acceptance-tests")
-    void notCalledClassMain () {
-        helloWorld.enterNotMainClassToInput();
-        helloWorld.clickSubmit();
-        result = helloWorld.readFromIncorrectAnswerBox();
-        assertTrue(result.contains("class ain is public, should be declared in a file named ain.java"));
+    void notCalledClassMain() {
+        page.trySolution(CORRECT_PROGRAM_WHERE_CLASS_NAME_DOESNT_MATCH_EXPECTATION);
+        assertThat(page.getErrors(),
+            hasItem(containsString("class ain is public, should be declared in a file named ain.java")));
+        assertFalse(page.isSuccessful());
     }
 
     @Test
-    @Tag("acceptance-tests")
-    void notCalledMethodMain () {
-        helloWorld.enterNotMainMethodToInput();
-        helloWorld.clickSubmit();
-        result = helloWorld.readFromIncorrectAnswerBox();
-        assertTrue(result.contains("No such method main"));
+    void notCalledMethodMain() {
+        page.trySolution(NOT_MAIN_METHOD);
+        assertThat(page.getErrors(), hasItem(containsString("No such method main")));
     }
 
     @Test
-    @Tag("acceptance-tests")
-    void informationBoxDisplayed () {
-        helloWorld.enterHelloWorldInformation();
-        helloWorld.clickSubmit();
-        assertTrue(helloWorld.informationBoxDisplayed());
-    }
-
-    @AfterAll
-    static void afterAllTests() {
-        driver.quit();
+    void informationBoxDisplayed() {
+        page.trySolution(CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS);
+        assertThat(page.getInfo(), not(isEmptyString()));
+        assertTrue(page.isSuccessful());
     }
 }
 

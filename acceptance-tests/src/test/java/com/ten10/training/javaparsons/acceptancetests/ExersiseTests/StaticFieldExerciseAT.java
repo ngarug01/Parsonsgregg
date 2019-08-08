@@ -1,21 +1,30 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
 import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.StaticFieldExercises;
-import org.junit.jupiter.api.AfterAll;
+import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@ExtendWith(SeleniumExtension.class)
+@SingleSession
 public class StaticFieldExerciseAT {
 
-    private static DriverFactory driverFactory = new DriverFactory();
-    private static WebDriver driver = driverFactory.getDriver();
-    private StaticFieldExercises staticFieldExercises = new StaticFieldExercises(driver);
+    private final WebDriver driver;
+    private final StaticFieldExercises staticFieldExercises;
     private String result;
+
+    public StaticFieldExerciseAT(ChromeDriver driver) {
+        this.driver = driver;
+        staticFieldExercises = new StaticFieldExercises(this.driver);
+    }
 
 
     @BeforeEach
@@ -52,10 +61,5 @@ public class StaticFieldExerciseAT {
         result = staticFieldExercises.readFromIncorrectAnswerBox();
         assertFalse(result.contains("int"));
         assertTrue(result.contains("Incorrect answer"));
-    }
-
-    @AfterAll
-    static void afterAllTests() {
-        driver.quit();
     }
 }

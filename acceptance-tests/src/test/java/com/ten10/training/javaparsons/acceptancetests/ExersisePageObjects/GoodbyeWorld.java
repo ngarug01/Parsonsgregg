@@ -5,17 +5,17 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class GoodbyeWorld extends BasePage {
-    public GoodbyeWorld(WebDriver driver) {
-        super(driver);
-    }
-
-    private static String URL = "http://localhost:8080/";
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String GOODBYE_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Goodbye Cruel World!\");}}";
     private static final By ENTER_BUTTON = By.cssSelector("#enter-answer");
     private static final By CORRECT_OUTPUT_BOX = By.cssSelector("#correct-answer");
     private static final By GOODBYE_WORLD_OPTION = By.cssSelector("#ExerciseList > option:nth-child(2)");
     private static final By DESCRIPTION = By.cssSelector("#Description");
+    private static String URL = "http://localhost:8080/";
+
+    public GoodbyeWorld(WebDriver driver) {
+        super(driver);
+    }
 
     public void enterGoodbyeWorldToInput() {
         findAndType(INPUT_BOX, GOODBYE_WORLD_CORRECT);

@@ -5,11 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class CompleteTheCodeExercise extends BasePage {
-    public CompleteTheCodeExercise(WebDriver driver) {
-        super(driver);
-    }
-
-    private static String URL = "http://localhost:8080/";
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String HELLO_WORLD_METHOD_CORRECT = "System.out.println(\"Hello World!\");";
     private static final String HELLO_WORLD_METHOD_INCORRECT = "System.out.println(\"Hello World!\")";
@@ -20,6 +15,10 @@ public class CompleteTheCodeExercise extends BasePage {
     private static final By COMPLETE_THE_CODE_HELLO_WORLD = By.cssSelector("#ExerciseList > option:nth-child(6)");
     private static final By DESCRIPTION = By.cssSelector("#Description");
     private static final By INCORRECT_ANSWER_BOX = By.cssSelector("#incorrect-answer");
+
+    public CompleteTheCodeExercise(WebDriver driver) {
+        super(driver);
+    }
 
     public void enterHelloWorldMethodToInput() {
         findAndType(INPUT_BOX, HELLO_WORLD_METHOD_CORRECT);
