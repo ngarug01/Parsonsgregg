@@ -52,6 +52,7 @@ public class ReturnCharAAT {
     void charAInputted() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRINTS_CHAR_A);
         assertThat(page.getOutput(), is("A"));
+        assertThat(page.getOutput(), is("A"));
         assertTrue(page.isSuccessful());
     }
 

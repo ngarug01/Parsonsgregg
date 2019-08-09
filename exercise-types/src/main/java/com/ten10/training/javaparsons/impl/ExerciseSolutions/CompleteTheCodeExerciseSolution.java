@@ -6,7 +6,6 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -74,7 +73,7 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
 
     public class LineNumberTranslationProgressReporter extends AbstractProgressReporterDecorator {
 
-        public LineNumberTranslationProgressReporter(ProgressReporter wrapped) {
+        LineNumberTranslationProgressReporter(ProgressReporter wrapped) {
             super(wrapped);
         }
 
@@ -93,17 +92,9 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
     @Override
     public boolean evaluate() throws Exception {
         if(compile()){
-            if(canRun()){
+            assert (byteCode != null);
+            if(run()){
                 return output.trim().equals(answer);
-            }
-        }
-        return false;
-    }
-
-    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if(byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
             }
         }
         return false;
@@ -159,10 +150,11 @@ public class CompleteTheCodeExerciseSolution implements Solution, SolutionCompil
 
     private String output = "";
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter);
+            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
+
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);
