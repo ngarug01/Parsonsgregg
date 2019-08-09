@@ -64,6 +64,18 @@ class CompleteTheCodeHelloWorldAT {
 
     }
 
+    @Test
+    @Tag("acceptance-tests")
+    void timeoutErrorMessageDisplays() {
+        completeTheCodeExercise.chooseExercise3();
+        completeTheCodeExercise.enterWhileTrueLoop();
+        completeTheCodeExercise.clickEnterAnswer();
+        result = completeTheCodeExercise.readFromIncorrectAnswerBox();
+        System.out.print(result);
+        assertTrue(result.contains("Incorrect answer"));
+
+    }
+
     @AfterAll
     static void afterAllTests() {
         driver.quit();

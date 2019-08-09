@@ -13,6 +13,7 @@ public class CompleteTheCodeExercise extends BasePage {
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final String HELLO_WORLD_METHOD_CORRECT = "System.out.println(\"Hello World!\");";
     private static final String HELLO_WORLD_METHOD_INCORRECT = "System.out.println(\"Hello World!\")";
+    private static final String HELLO_WORLD_METHOD_INFLOOP = "while(true){}";
     private static final By ENTER_BUTTON = By.cssSelector("#enter-answer");
     private static final By PRECEDING_CODE_BOX = By.cssSelector("#preceding-code-box");
     private static final By FOLLOWING_CODE_BOX = By.cssSelector("#following-code-box");
@@ -27,6 +28,10 @@ public class CompleteTheCodeExercise extends BasePage {
 
     public void enterIncorrectHelloWorldMethodToInput() {
         findAndType(INPUT_BOX, HELLO_WORLD_METHOD_INCORRECT);
+    }
+
+    public void enterWhileTrueLoop() {
+        findAndType(INPUT_BOX, HELLO_WORLD_METHOD_INFLOOP);
     }
 
     public void clickEnterAnswer() {
