@@ -5,7 +5,7 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import java.util.Optional;
+
 import java.util.concurrent.ExecutionException;
 
 public class PrintOutExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
@@ -70,17 +70,13 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
     @Override
     public boolean evaluate() throws Exception {
         if(compile()){
-            if(canRun()){
-                return output.trim().equals(answer);
+            boolean result;
+            assert (byteCode != null);
+            {
+                result = run();
             }
-        }
-        return false;
-    }
-
-    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if(byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
+            if(result){
+                return output.trim().equals(answer);
             }
         }
         return false;
@@ -136,10 +132,10 @@ public class PrintOutExerciseSolution implements Solution, SolutionCompiler.Comp
 
     private String output = "";
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter);
+            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

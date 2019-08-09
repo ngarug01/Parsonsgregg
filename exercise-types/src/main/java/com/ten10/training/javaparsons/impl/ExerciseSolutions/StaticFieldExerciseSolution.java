@@ -8,7 +8,6 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
@@ -100,7 +99,7 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if (byteCode != null) {
-            return run() != Optional.empty();
+            return run();
         }
         return false;
     }
@@ -135,13 +134,9 @@ public class StaticFieldExerciseSolution implements Solution, SolutionCompiler.C
         };
     }
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         //captureConsoleOutput.start();
-        try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter);
-        } finally {
-            //captureConsoleOutput.stop();
-        }
+        return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
     }
 
     private boolean getClassFields(ClassLoader classLoader) {

@@ -10,25 +10,29 @@ import java.util.concurrent.*;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
+    private static final RunResult FAILURE = new RunResult() {
+        @Override
+        public boolean isSuccess() {
+            return false;
+        }
+
+        @Override
+        public boolean hasReturnValue() {
+            return false;
+        }
+
+        @Override
+        public Object getReturnValue() {
+            throw new IllegalStateException();
+        }
+    };
     private long timeoutMillis = 500;
     private ExecutorService executor;
     private Future<Object> future;
 
-    /**
-     * Takes a compiled solution and runs this from an expected {@link EntryPoint}. Fails if the user solution does not have
-     * matching {@link EntryPoint} to what is expected.
-     * The {@link EntryPoint} is required so the runner knows where to look to begin execution.
-     * All Runtime exceptions and information is stored in the {@link ProgressReporter}.
-     * @param classLoader       Used to load the class from the expected {@link EntryPoint}.
-     * @param solution          An {@link EntryPoint}, the name of the class and method(with its params) from where to run the code.
-     * @param progressReporter  Stores any runtime exceptions.
-     * @return The result of running the given compiled code. {@link Optional#empty()} if the code fails to run.
-     * @throws ReflectiveOperationException
-     * @throws ExecutionException
-     * @throws InterruptedException
-     */
+
     @Override
-    public Optional<Object> run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
+    public RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
         // Pull data out of the entry point object
         String entryPointClassName = solution.getEntryPointClass();
         String entryPointMethodName = solution.getEntryPointMethod();
@@ -46,7 +50,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
             method = klass.getMethod(entryPointMethodName, parameterTypes);
         } catch (NoSuchMethodException e) {
             progressReporter.reportRunnerError("No such method " + entryPointMethodName);
-            return Optional.empty();
+            return FAILURE;
         }
 
         Object instance = null;
@@ -55,21 +59,34 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
         final Object finalInstance = instance;
 
-        return runMethod(parameters, method, finalInstance);
-    }
-
-    private Optional<Object> runMethod(Object[] parameters, Method method, Object finalInstance) throws InterruptedException, ExecutionException {
         executor = Executors.newSingleThreadExecutor();
         future = executor.submit(() -> method.invoke(finalInstance, parameters));
         try {
+            Object returnValue;
             if (timeoutMillis != 0) {
-                return Optional.ofNullable(future.get(timeoutMillis, TimeUnit.MILLISECONDS));
+                returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
             } else {
-                return Optional.ofNullable(future.get());
+                returnValue = future.get();
             }
+            return new RunResult() {
+                @Override
+                public boolean isSuccess() {
+                    return true;
+                }
+
+                @Override
+                public boolean hasReturnValue() {
+                    return !method.getReturnType().equals(Void.TYPE);
+                }
+
+                @Override
+                public Object getReturnValue() {
+                    return returnValue;
+                }
+            };
         } catch (TimeoutException e) {
             future.cancel(true);
-            return Optional.empty();
+            return FAILURE;
         } finally {
             executor.shutdownNow();
         }

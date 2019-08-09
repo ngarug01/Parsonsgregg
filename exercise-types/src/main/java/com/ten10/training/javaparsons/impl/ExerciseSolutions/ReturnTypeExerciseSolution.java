@@ -135,16 +135,18 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     // Returns True if the code ran to completion, and returned a non-null value.
     // Sets output to the value returned.
     private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        Optional<Object> result;
-        try {
-            result = runner.run(getClassLoader(), entryPoint, progressReporter);
-        } catch (CancellationException e) {
+        SolutionRunner.RunResult result;
+        result = runner.run(getClassLoader(), entryPoint, progressReporter);
+        if (!result.isSuccess()) {
             return false;
         }
-        if (result.isPresent()) {
-            this.output = result.get();
-            return true;
+        if (!result.hasReturnValue()) {
+            // If the method ran to completion, then this is true when the method wasn't void.
+            // For a return value exercise, we can treat void methods as failures.
+            // ToDo: Perhaps should be recorded in the progress reporter?
+            return false;
         }
-        return false;
+        output = result.getReturnValue();
+        return true;
     }
 }
