@@ -23,9 +23,9 @@ public class ThreadSolutionRunner implements SolutionRunner {
      * @param solution          An {@link EntryPoint}, the name of the class and method(with its params) from where to run the code.
      * @param progressReporter  Stores any runtime exceptions.
      * @return The result of running the given compiled code. {@link Optional#empty()} if the code fails to run.
-     * @throws ReflectiveOperationException
-     * @throws ExecutionException
-     * @throws InterruptedException
+     * @throws //ReflectiveOperationException
+     * @throws //ExecutionException
+     * @throws //InterruptedException
      */
     @Override
     public Optional<Object> run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
