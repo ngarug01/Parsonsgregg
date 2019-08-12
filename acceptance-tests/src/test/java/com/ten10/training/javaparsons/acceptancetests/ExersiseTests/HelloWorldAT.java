@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,10 +17,10 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DisplayName("Tests for feature 1: Hello World")
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
-@DisplayName("Tests for feature 1: Hello World")
-class HelloWorldAT {
+public class HelloWorldAT {
 
     private static final String CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
     private static final String INCORRECT_PROGRAM = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";

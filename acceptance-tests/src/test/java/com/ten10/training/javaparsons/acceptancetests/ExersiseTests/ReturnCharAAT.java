@@ -16,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
 @DisplayName("Tests for feature 5: Return Char A")
-class ReturnCharAAT {
+public class ReturnCharAAT {
+
 
     private final String INCORRECT_PROGRAM = "public class Main{ \n" +
         "public static char main(String[] args){\n" +
@@ -24,7 +25,6 @@ class ReturnCharAAT {
         "   return (x[1]);\n" +
         "}\n" +
         "}";
-
     private final String CORRECT_PROGRAM_THAT_PRINTS_CHAR_A = "public class Main{ \n" +
         "public static char main(String[] args){\n" +
         "   char[] x = {'A'};\n" +
