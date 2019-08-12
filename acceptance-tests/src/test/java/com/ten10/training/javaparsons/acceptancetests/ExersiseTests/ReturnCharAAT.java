@@ -6,9 +6,11 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +48,7 @@ public class ReturnCharAAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void charAInputted() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRINTS_CHAR_A);
         assertThat(page.getOutput(), is("A"));
@@ -53,12 +56,11 @@ public class ReturnCharAAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notCharA() {
         page.trySolution(INCORRECT_PROGRAM);
         assertFalse(page.isSuccessful());
-        assertEquals(page.getOutput(),"B");
+        assertEquals(page.getOutput(), "B");
     }
 
 }
-
-

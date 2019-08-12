@@ -6,6 +6,7 @@ import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -53,6 +54,7 @@ public class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void helloWorldInputted() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD);
         assertThat(page.getOutput(), is("Hello World!"));
@@ -60,6 +62,7 @@ public class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void semiColonIsMissed() {
         page.trySolution(INCORRECT_PROGRAM);
         assertFalse(page.isSuccessful());
@@ -68,6 +71,7 @@ public class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notHelloWorld() {
         page.trySolution(CORRECT_PROGRAM_THAT_DOESNT_PRINT_HELLO_WORLD);
         assertThat(page.getOutput(), is("Telly Tubby!"));
@@ -75,6 +79,7 @@ public class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notCalledClassMain() {
         page.trySolution(CORRECT_PROGRAM_WHERE_CLASS_NAME_DOESNT_MATCH_EXPECTATION);
         assertThat(page.getErrors(),
@@ -83,12 +88,14 @@ public class HelloWorldAT {
     }
 
     @Test
+    @Tag("acceptance-tests")
     void notCalledMethodMain() {
         page.trySolution(NOT_MAIN_METHOD);
         assertThat(page.getErrors(), hasItem(containsString("No such method main")));
     }
 
     @Test
+    @Tag("acceptance-tests")
     void informationBoxDisplayed() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS);
         assertThat(page.getInfo(), not(isEmptyString()));
