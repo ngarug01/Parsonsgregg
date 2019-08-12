@@ -3,19 +3,20 @@ package com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public abstract class BasePage {
 
-    final WebDriver driver;
+    final ChromeDriver driver;
     protected final WebDriverWait wait;
     private String host = "localhost:";
     private String port;
     private String url;
 
-    BasePage(WebDriver driver) {
+    BasePage(ChromeDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, 20);
         setURL();
