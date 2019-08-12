@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
-@DisplayName("Tests for feature 1: Running a very simple Program.")
+@DisplayName("Tests for feature 1: Hello World")
 class HelloWorldAT {
 
     private static final String CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
@@ -40,19 +40,16 @@ class HelloWorldAT {
             "}";
 
 
-    private final WebDriver driver;
     private final ExercisePage page;
 
     HelloWorldAT(ChromeDriver driver) {
-        this.driver = driver;
-        page = new ExercisePage(this.driver);
+        page = new ExercisePage(driver);
     }
-
 
     @BeforeEach
     void beforeEveryTest() {
         page.goToHomepage();
-        page.chooseExcercise(1, "Hello World!");
+        page.chooseExercise(1, "Hello World!");
     }
 
     @Test

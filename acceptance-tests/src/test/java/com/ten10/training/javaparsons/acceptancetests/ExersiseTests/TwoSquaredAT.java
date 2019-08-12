@@ -1,49 +1,51 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.TwoSquared;
+import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
+@DisplayName("Tests for feature 4: Two Squared")
 public class TwoSquaredAT {
-    private final WebDriver driver;
-    private final TwoSquared twoSquared;
-    private String result;
+
+    private static final String TWO_SQUARED_CORRECT = "public class Main {public Integer main(String[] args) {return 2*2;}}";
+
+    private final ExercisePage page;
 
     public TwoSquaredAT(ChromeDriver driver) {
-        this.driver = driver;
-        twoSquared = new TwoSquared(this.driver);
+        this.page = new ExercisePage(driver);
     }
 
     @BeforeEach
     void beforeEveryTest() {
-        twoSquared.goToHomepage();
+        page.goToHomepage();
+        page.chooseExercise(4, "Two Squared");
     }
 
     @Test
     @Tag("acceptance-tests")
     void twoSquaredInputted() {
-        twoSquared.chooseExercise4();
-        twoSquared.enterTwoSquaredToInput();
-        twoSquared.clickEnterAnswer();
-        result = twoSquared.readFromCorrectOutputBox();
-        assertTrue(result.contains("Correct answer"));
+
+        page.trySolution(TWO_SQUARED_CORRECT);
+        assertThat(page.getOutput(),is("4"));
+        assertTrue(page.isSuccessful());
     }
 
     @Test
     @Tag("acceptance-tests")
     void descriptionChanges() {
-        twoSquared.chooseExercise4();
-        assertTrue(twoSquared.readFromDescription().contains("Two Squared"));
+        assertTrue(page.getDescription().contains("Two Squared"));
     }
 
 }

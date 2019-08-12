@@ -22,6 +22,8 @@ public class ExercisePage extends BasePage {
     private static final By INCORRECT_BOX = By.id("incorrect-answer");
     private static final By INFORMATION_BOX = By.id("information");
     private static final By DESCRIPTION = By.id("Description");
+    private static final By PREFIX_CODE_BOX = By.cssSelector("#preceding-code-box");
+    private static final By SUFFIX_CODE_BOX = By.cssSelector("#following-code-box");
 
 
     // Conditions
@@ -48,7 +50,7 @@ public class ExercisePage extends BasePage {
     }
 
 
-    public void chooseExcercise(int exerciseNumber, String exerciseTitle) {
+    public void chooseExercise(int exerciseNumber, String exerciseTitle) {
         String expectedText = "Exercise " + exerciseNumber + ": " + exerciseTitle;
         new Select(driver.findElement(EXERCISE_LIST)).selectByVisibleText(expectedText);
     }
@@ -99,13 +101,36 @@ public class ExercisePage extends BasePage {
         return result;
     }
 
+    public String getErrorLine(){
+        String text = wait.until(INCORRECT_BOX_IS_VISIBLE).getText();
+        final String prefix = "Incorrect answer\n";
+        assert text.startsWith(prefix);
+        text = text.substring(prefix.length());
+        String[] lines = text.split("\\R");
+        String result = "";
+        for (String line : lines) {
+            // Exclude lines that just state the line number of the following line
+            if (line.matches("^Error on line:\\s+\\d+$")) {
+                result+=line;
+            }
+        }
+        return result;
+    }
+
     public String getInfo() {
-        WebElement informationBox = wait.until(INFORMATION_BOX_IS_VISIBLE);
-        return informationBox.getText();
+        return wait.until(INFORMATION_BOX_IS_VISIBLE).getText();
     }
 
     public String getDescription() {
         return driver.findElement(DESCRIPTION).getText();
+    }
+
+    public String getPrefixCode() {
+        return driver.findElement(PREFIX_CODE_BOX).getText();
+    }
+
+    public String getSuffixCode() {
+        return driver.findElement(SUFFIX_CODE_BOX).getText();
     }
 
     @Override
