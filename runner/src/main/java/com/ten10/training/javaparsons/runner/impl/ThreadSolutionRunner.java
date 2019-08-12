@@ -55,10 +55,10 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
         final Object finalInstance = instance;
 
-        return runMethod(parameters, method, finalInstance);
+        return runMethod(parameters, method, finalInstance, progressReporter);
     }
 
-    private Optional<Object> runMethod(Object[] parameters, Method method, Object finalInstance) throws InterruptedException, ExecutionException {
+    private Optional<Object> runMethod(Object[] parameters, Method method, Object finalInstance, ProgressReporter progressReporter) throws InterruptedException, ExecutionException {
         executor = Executors.newSingleThreadExecutor();
         future = executor.submit(() -> method.invoke(finalInstance, parameters));
         try {
@@ -69,6 +69,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
             }
         } catch (TimeoutException e) {
             future.cancel(true);
+            progressReporter.reportRunnerError("timeout error");
             return Optional.empty();
         } finally {
             executor.shutdownNow();

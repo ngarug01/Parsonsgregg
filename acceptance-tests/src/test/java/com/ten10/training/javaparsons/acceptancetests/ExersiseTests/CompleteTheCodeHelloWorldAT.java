@@ -72,7 +72,7 @@ class CompleteTheCodeHelloWorldAT {
         completeTheCodeExercise.clickEnterAnswer();
         result = completeTheCodeExercise.readFromIncorrectAnswerBox();
         System.out.print(result);
-        assertTrue(result.contains("Incorrect answer"));
+        assertTrue(result.contains("timeout error"));
 
     }
 
