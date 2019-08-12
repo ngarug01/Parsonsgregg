@@ -1,15 +1,21 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
+
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.DiagnosticListener;
+import javax.tools.JavaFileObject;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution, DiagnosticListener<JavaFileObject> {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -41,6 +47,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private final ProgressReporter progressReporter;
     private byte[] byteCode;
     private Object output;
+    private long currentLineNumber;
 
     /**
      * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
@@ -55,13 +62,15 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
                                       SolutionRunner runner,
                                       String userInput,
                                       Object answer,
-                                      ProgressReporter progressReporter) {
+                                      ProgressReporter progressReporter)  {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
         this.answer = answer;
         this.progressReporter = progressReporter;
+
+
     }
 
     /**
@@ -137,16 +146,25 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         SolutionRunner.RunResult result;
         result = runner.run(getClassLoader(), entryPoint, progressReporter);
+
         if (!result.isSuccess()) {
             return false;
         }
         if (!result.hasReturnValue()) {
             // If the method ran to completion, then this is true when the method wasn't void.
             // For a return value exercise, we can treat void methods as failures.
-            // ToDo: Perhaps should be recorded in the progress reporter?
+
+        progressReporter.reportCompilerError(currentLineNumber, "No return type");
+
             return false;
         }
         output = result.getReturnValue();
         return true;
+    }
+
+    @Override
+    public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
+        currentLineNumber = diagnostic.getLineNumber();
+
     }
 }

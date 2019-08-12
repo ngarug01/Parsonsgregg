@@ -17,7 +17,13 @@ public interface SolutionRunner {
         Object[] getParameters();
     }
 
-    // TODO: Javadoc
+    /**
+     * If the application runs with no time outs, and there is a return value,
+     * the {@link RunResult} is stored in the form of an object.
+     * If the application does not run, then no object of {@link RunResult }is returned.
+     */
+
+
     interface RunResult {
         boolean isSuccess();
         boolean hasReturnValue();
