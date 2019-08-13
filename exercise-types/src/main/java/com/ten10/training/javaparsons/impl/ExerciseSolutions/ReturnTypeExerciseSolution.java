@@ -47,7 +47,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private final ProgressReporter progressReporter;
     private byte[] byteCode;
     private Object output;
-    private long currentLineNumber;
+    private long currentLineNumber = -1;
 
     /**
      * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
@@ -154,7 +154,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
             // If the method ran to completion, then this is true when the method wasn't void.
             // For a return value exercise, we can treat void methods as failures.
 
-        progressReporter.reportCompilerError(currentLineNumber, "No return type");
+        progressReporter.reportCompilerError(currentLineNumber, "Method Return Type Should Not Be Void");
 
             return false;
         }
