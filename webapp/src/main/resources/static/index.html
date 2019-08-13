@@ -1,195 +1,261 @@
 <!DOCTYPE html>
 <HTML>
+
 <head>
     <title>Java Parsons "Hello World!"</title>
-</head>
-<body>
-<h1>Java Parsons Problems</h1>
-<section id="ExerciseSelection">
-    <select id="ExerciseList">
-    </select>
-</section>
-<br>
-<h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message. </h3>
-<div id="input">
-    <textarea name = "Preceding Code" id = "preceding-code-box" class = "codebox"  cols="90"></textarea>
-    <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
-    <textarea name = "Following Code" id = "following-code-box" class = "codebox"  cols="90"></textarea>
-    <button id="enter-answer">Submit</button>
-</div>
-<div name = "Correct Answer" id = "correct-answer" class="output"></div>
-<div name = "Incorrect Answer" id = "incorrect-answer" class = "output"></div>
-<div name = "Information" id = "information" class  = "output"></div>
-</body>
 
-<style>
-       body {
-       background-color: #c0c0c0;
-       text-align: center;
-       }
-       h1 {
-       color: #6758a6;
-       }
-       h2 {
-       color:#6758a6;
-       }
-       h3 {
-       color:#6758a6;
-       }
-       div {
-           display: block;
-           background-color: #6758a6;
-           border: #c0c0c0;
-           padding: 20px;
-           margin-left: 20%;
-           margin-right: 20%;
+    <style>
+        body {
+            background-color: #c0c0c0;
+            text-align: center;
         }
-        #correct-answer{
+
+        h1 {
+            color: #6758a6;
+        }
+
+        h2 {
+            color: #6758a6;
+        }
+
+        h3 {
+            color: #6758a6;
+        }
+
+        div {
+            display: block;
+            background-color: #6758a6;
+            border: #c0c0c0;
+            padding: 20px;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+
+        #runner-output::before {
+            content: "Output:";
+            display: block;
+            position: relative;
+            top: 0;
+            left: 0;
+            width: fit-content;
+        }
+
+        #runner-output {
+            background-color: lightskyblue;
+        }
+
+        #correct-answer {
             background-color: rgb(135, 211, 100);
         }
-        #incorrect-answer{
+
+        #incorrect-answer {
             background-color: rgb(255, 61, 61);
         }
-        #information{
-            background-color:  rgb(255, 192, 55);
+
+        #information {
+            background-color: rgb(255, 192, 55);
         }
+
         .codebox {
-        visibility: hidden;
-           background-color: rgb(200, 200, 200);
-           pointer-events: none;
+            visibility: hidden;
+            background-color: rgb(200, 200, 200);
+            pointer-events: none;
         }
-       .output {
-           display: none;
-           margin: 20px;
-           margin-left: 20%;
-           margin-right: 20%;
-       }
-   </style>
-<script async>
 
-        window.onload = function () {
-         var XHR = new XMLHttpRequest();
-               urlGetE = "/exercise/getExercises";
-               XHR.addEventListener("load", handleResponseGet);
-               XHR.open("GET" , urlGetE ,true);
-               XHR.send(null);
+        .output {
+            display: none;
+            margin: 20px;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+    </style>
+    <script async>
 
-               function handleResponseGet() {
-                   let XHR = this;
-                   var responce = XHR.responseText;
-                   if (XHR.readyState === 4 && XHR.status === 200){
-                       var jsonData = JSON.parse(responce);
-                       // Populate Select Field
-                       var parent = document.getElementById("ExerciseList");
-                       for (const exerciseTrio of jsonData) {
-                           const elem = document.createElement("option");
-                           elem.setAttribute("value", exerciseTrio.url);
-                           elem.setAttribute("description",exerciseTrio.description);
-                           elem.setAttribute("precedingCode", exerciseTrio.precedingCode);
-                           elem.setAttribute("followingCode", exerciseTrio.followingCode);
-                           elem.text = exerciseTrio.title;
-                           parent.appendChild(elem);
-                        }
-                        console.log(responce,jsonData);
-                        var pdes = document.getElementById("Description");
-                        var list = document.getElementById("ExerciseList");
-                        var des=list.options[list.selectedIndex].getAttribute("description");
-                        pdes.textContent = des;
-                   }
-                   else
-                       console.log(XHR.status);
-                   }
+        let exercises = null;
 
-                   document.getElementById("ExerciseList").onchange = function descriptionChange(){
-                       var pdes = document.getElementById("Description");
-                       var list =document.getElementById("ExerciseList");
-                       var deschange = list.options[list.selectedIndex].getAttribute("description");
-                       pdes.textContent = deschange;
+        function setLoading() {
+            const elem = document.createElement('DIV');
+            elem.id = 'loading';
+            document.body.appendChild(elem);
+        }
 
-                        if(list.options[list.selectedIndex].getAttribute("precedingCode") != "null"){
-                        document.getElementById("preceding-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("precedingCode"));
-                        document.getElementById("preceding-code-box").style.visibility = "visible";
-                        }
-                        else {
-                        document.getElementById("preceding-code-box").style.visibility = "hidden"; }
+        function setNotLoading() {
+            const elem = document.getElementById('loading');
+            elem.parentElement.removeChild(elem);
+        }
 
-                        if(list.options[list.selectedIndex].getAttribute("followingCode") != "null"){
-                        document.getElementById("following-code-box").innerHTML = (list.options[list.selectedIndex].getAttribute("followingCode"));
-                        document.getElementById("following-code-box").style.visibility = "visible";
-                        }
-                        else {
-                        document.getElementById("following-code-box").style.visibility = "hidden"; }
-                   }
-
-
-            document.getElementById("enter-answer").onclick = function postAnswer() {
-                outputReset();
-                if(document.getElementById("input-box").value === ""){
-                    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-                } else {
-                var list = document.getElementById("ExerciseList");
-                   var url =list.options[list.selectedIndex].getAttribute("value");
-                   console.log(url);
-                XHR.addEventListener("load", handleResponsePost);
-                var exercise = JSON.stringify({ input: document.getElementById("input-box").value});
-                XHR.open("POST", url, true);
-                XHR.setRequestHeader('Content-Type', 'application/json');
-                XHR.send(exercise);
-                }
+        function loadExercises() {
+            const xhr = new XMLHttpRequest();
+            const exercisesPath = "/exercise/getExercises";
+            let url;
+            // If we're in local development, point at a local webserver.
+            if (document.location.href.startsWith("file:///")) {
+                url = "http://localhost:8080" + exercisesPath;
+            } else {
+                url = exercisesPath
             }
-            function handleResponsePost() {
-                let XHR = this;
-                var responce = XHR.responseText;
-                if (XHR.readyState === 4 && XHR.status === 200) {
-                    console.log("Status: OK");
-                    buildOutput(responce);
-                }
-                else {
-                    console.log(XHR.status);
-                }
+            xhr.addEventListener("load", onExercisesLoaded);
+            xhr.open("GET", url, true);
+            setLoading();
+            xhr.send(null);
+        };
 
+        function onExercisesLoaded() {
+            setNotLoading();
+            if ((this.readyState !== 4 || this.status !== 200)) {
+                // TODO: Actual error handling
+                console.error(xhr.status);
+                return;
             }
-            function buildOutput(responce) {
-                if (JSON.parse(responce).succesfulSolution === true) {
-                    document.getElementById("correct-answer").innerHTML += (JSON.parse(responce).output+"<br>Correct answer. Well done!");
-                    makeVisible("correct-answer");
-                } else {
-                    document.getElementById("incorrect-answer").innerHTML += ("Incorrect answer")
-                    if(JSON.parse(responce).output !== ""){
-                        document.getElementById("incorrect-answer").innerHTML += ("<br>Your output was: " + JSON.parse(responce).output);
-                    }
-                    compilerErrors = JSON.parse(responce).compilerErrors;
-                    if(compilerErrors.length !== 0){
-                        compilerErrors.forEach(error => {
-                            document.getElementById("incorrect-answer").innerHTML += ("<br>Error on line: "+error.lineNumber+"<br>The compiler error description was: "+error.message+"<br>");
-                        });
-                    }
-                    runnerErrors = JSON.parse(responce).runnerErrors;
-                    if(runnerErrors.length !== 0){
-                        runnerErrors.forEach(error => {
-                            document.getElementById("incorrect-answer").innerHTML += ("<br>The runner error description was: "+error.message+"<br>");
-                        });
-                    }
-                    makeVisible("incorrect-answer");
-                }
-                if(JSON.parse(responce).compilerInfo.length !== 0){
-                    information = JSON.parse(responce).compilerInfo;
-                    information.forEach(info => {
-                        document.getElementById("information").innerHTML += ("Information about line: "+info.lineNumber+"<br>this come from here: "+info.message+"<br>");
+            exercises = JSON.parse(this.responseText);
+            // Populate Select Field
+            const exerciseList = document.getElementById("ExerciseList");
+
+            for (const [index, details] of exercises.entries()) {
+                const elem = document.createElement("option");
+                elem.value = index;
+                elem.text = details.title;
+                exerciseList.appendChild(elem);
+            }
+            setExercise(0);
+        }
+
+        function setExercise(exerciseNumber) {
+            const selectedExerciseProperties = exercises[exerciseNumber];
+            document.getElementById("Description").textContent = selectedExerciseProperties.description;
+
+            const precedingCodeBox = document.getElementById("preceding-code-box");
+            if (selectedExerciseProperties.precedingCode) {
+                precedingCodeBox.innerHTML = selectedExerciseProperties.precedingCode;
+                precedingCodeBox.style.visibility = "visible";
+            } else {
+                precedingCodeBox.style.visibility = "hidden";
+            }
+
+            const followingCodeBox = document.getElementById("following-code-box");
+            if (selectedExerciseProperties.followingCode) {
+                followingCodeBox.innerHTML = selectedExerciseProperties.followingCode;
+                followingCodeBox.style.visibility = "visible";
+            } else {
+                followingCodeBox.style.visibility = "hidden";
+            }
+        }
+
+        function onSelectedExerciseChange() {
+            const list = document.getElementById("ExerciseList");
+            const exerciseNumber = parseInt(list.options[list.selectedIndex].value, 10);
+            setExercise(exerciseNumber);
+        }
+
+        function postAnswer() {
+            resetOutput();
+
+            if (document.getElementById("input-box").value === "") {
+                window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+                return;
+            }
+
+            const list = document.getElementById("ExerciseList");
+            const exerciseNumber = parseInt(list.options[list.selectedIndex].value, 10);
+            const path = exercises[exerciseNumber].url;
+            // If we're in local development, point at a local webserver.
+            const url = document.location.href.startsWith("file:///") ? "http://localhost:8080/" + path : path;
+            console.log(url);
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", onResultLoaded);
+            var exercise = JSON.stringify({ input: document.getElementById("input-box").value });
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(exercise);
+            setLoading();
+        }
+
+        function onResultLoaded() {
+            setNotLoading();
+            if (this.readyState !== 4 || this.status !== 200) {
+                // TODO: Actual error handling
+                console.error(xhr.status);
+                return;
+            }
+            const response = JSON.parse(this.responseText);
+            buildOutput(response);
+        }
+
+        function buildOutput(response) {
+            if (response.output) {
+                document.getElementById('runner-output').innerHTML = response.output;
+                makeVisible('runner-output');
+            }
+            if (response.succesfulSolution) {
+                document.getElementById("correct-answer").innerHTML = "Correct answer. Well done!";
+                makeVisible("correct-answer");
+            } else {
+                const incorrectAnswer = document.getElementById("incorrect-answer");
+                incorrectAnswer.innerHTML = ("Incorrect answer");
+
+                if (response.compilerErrors && response.compilerErrors.length) {
+                    response.compilerErrors.forEach(error => {
+                        incorrectAnswer.innerHTML += ("<br>Error on line: " + error.lineNumber + "<br>The compiler error description was: " + error.message + "<br>");
                     });
-                    makeVisible("information");
                 }
+                if (response.runnerErrors && response.runnerErrors.length) {
+                    response.runnerErrors.forEach(error => {
+                        incorrectAnswer.innerHTML += ("<br>The runner error description was: " + error.message + "<br>");
+                    });
+                }
+                makeVisible("incorrect-answer");
             }
-            function makeVisible(elementID){
-                document.getElementById(elementID).style = "display:block";
-            }
-            function outputReset(){
-                var elements = ["correct-answer","incorrect-answer","information"]
-                elements.forEach(element => {
-                    document.getElementById(element).style = "display:none";
-                    document.getElementById(element).innerHTML = "";
+
+            if (response.compilerInfo && response.compilerInfo.length) {
+                response.compilerInfo.forEach(info => {
+                    document.getElementById("information").innerHTML += ("Information about line: " + info.lineNumber + "<br>this come from here: " + info.message + "<br>");
                 });
+                makeVisible("information");
             }
         }
 
+        function makeVisible(elementID) {
+            document.getElementById(elementID).style = "display:block";
+        }
+
+        function resetOutput() {
+            const elements = ["runner-output", "correct-answer", "incorrect-answer", "information"]
+            elements.forEach(element => {
+                document.getElementById(element).style = "display:none";
+                document.getElementById(element).innerHTML = "";
+            });
+        }
+
+        function onLoad() {
+            document.getElementById("ExerciseList").onchange = onSelectedExerciseChange;
+            document.getElementById("enter-answer").onclick = postAnswer;
+            setNotLoading();
+            loadExercises();
+        }
+        window.onload = onLoad;
     </script>
+</head>
+
+<body>
+    <div id="loading"></div>
+    <h1>Java Parsons Problems</h1>
+    <section id="ExerciseSelection">
+        <select id="ExerciseList">
+        </select>
+    </section>
+    <br>
+    <h3 id="Description"> Write a Java code which when run will produce a string which reads "Hello World!" message.
+    </h3>
+    <div id="input">
+        <textarea name="Preceding Code" id="preceding-code-box" class="codebox" cols="90"></textarea>
+        <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
+        <textarea name="Following Code" id="following-code-box" class="codebox" cols="90"></textarea>
+        <button id="enter-answer">Submit</button>
+    </div>
+    <div id="runner-output" class="output"></div>
+    <div name="Correct Answer" id="correct-answer" class="output"></div>
+    <div name="Incorrect Answer" id="incorrect-answer" class="output"></div>
+    <div name="Information" id="information" class="output"></div>
+</body>
+
+</HTML>

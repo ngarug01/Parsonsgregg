@@ -1,72 +1,77 @@
 package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.CompleteTheCodeExercise;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.WebDriver;
+import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.ExercisePage;
+import io.github.bonigarcia.seljup.SeleniumExtension;
+import io.github.bonigarcia.seljup.SingleSession;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.chrome.ChromeDriver;
 
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.CoreMatchers.*;
 
-@DisplayName("Tests for feature 3: writing just part of the code.")
+@DisplayName("Tests for feature 6: writing just part of the code.")
+@ExtendWith(SeleniumExtension.class)
+@SingleSession
 class CompleteTheCodeHelloWorldAT {
 
-    private static DriverFactory driverFactory = new DriverFactory();
-    private static WebDriver driver = driverFactory.getDriver();
-    private CompleteTheCodeExercise completeTheCodeExercise = new CompleteTheCodeExercise(driver);
-    private String result;
+    private final ExercisePage page;
+    private final String COMPLETE_HELLO_WORLD_CORRECT = "System.out.println(\"Hello World!\");";
+    private final String COMPLETE_HELLO_WORLD_INCORRECT = "System.out.println(\"Hello World!\")";
+
+
+    CompleteTheCodeHelloWorldAT(ChromeDriver driver) {
+        page = new ExercisePage(driver);
+    }
 
     @BeforeEach
     void beforeEveryTest() {
-        completeTheCodeExercise.goToHomepage();
+        page.goToHomepage();
+        page.chooseExercise(6, "Complete the code - Hello World!");
     }
 
     @Test
     @Tag("acceptance-tests")
     void helloWorldInputted() {
-        completeTheCodeExercise.chooseExercise3();
-        completeTheCodeExercise.enterHelloWorldMethodToInput();
-        completeTheCodeExercise.clickEnterAnswer();
-        result = completeTheCodeExercise.readFromCorrectOutputBox();
-        assertTrue(result.contains("Hello World!"));
+        page.trySolution(COMPLETE_HELLO_WORLD_CORRECT);
+        assertTrue(page.getOutput().contains("Hello World!"));
+        assertTrue(page.isSuccessful());
     }
 
     @Test
     @Tag("acceptance-tests")
     void descriptionChanges() {
-        completeTheCodeExercise.chooseExercise3();
-        assertTrue(completeTheCodeExercise.readFromDescription().contains("Complete the Java code"));
+
+        assertTrue(page.getDescription().contains("Complete the Java code"));
     }
 
     @Test
     @Tag("acceptance-tests")
-    void precedingCodeIsDisplayed() {
-        completeTheCodeExercise.chooseExercise3();
-        result = completeTheCodeExercise.readFromPrecedingCodeBox();
-        assertTrue(result.contains("Main"));
+    void prefixCodeIsDisplayed() {
+
+        assertThat(page.getPrefixCode(), not(isEmptyString()));
+
     }
 
     @Test
     @Tag("acceptance-tests")
     void followingCodeIsDisplayed() {
-        completeTheCodeExercise.chooseExercise3();
-        result = completeTheCodeExercise.readFromFollowingCodeBox();
-        assertTrue(result.contains("}"));
+
+        assertThat(page.getSuffixCode(), not(isEmptyString()));
     }
 
     @Test
     @Tag("acceptance-tests")
     void lineNumbersAreTranslated() {
-        completeTheCodeExercise.chooseExercise3();
-        completeTheCodeExercise.enterIncorrectHelloWorldMethodToInput();
-        completeTheCodeExercise.clickEnterAnswer();
-        result = completeTheCodeExercise.readFromIncorrectAnswerBox();
-        System.out.print(result);
-        assertTrue(result.contains("Error on line: 1"));
-
-    }
-
-    @AfterAll
-    static void afterAllTests() {
-        driver.quit();
+        page.trySolution(COMPLETE_HELLO_WORLD_INCORRECT);
+        assertEquals(page.getErrorLine(), "Error on line: 1");
     }
 }
 
