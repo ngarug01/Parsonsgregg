@@ -14,17 +14,9 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <configuration>
-                    <includes>
-                        <include>**/*.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>reserve-tomcat-port</id>
@@ -74,6 +66,9 @@
                     <systemPropertyVariables>
                         <test.server.port>${tomcat.http.port}</test.server.port>
                     </systemPropertyVariables>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>
