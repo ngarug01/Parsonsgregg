@@ -24,6 +24,6 @@ class ExerciseRepositoryImplTest {
     @Test
     void getNumberOfElementsInExercisesArray(){
         int result = exerciseRepository.getExerciseArraySize();
-        assertEquals(6 , result);
+        assertEquals(7 , result);
     }
 }

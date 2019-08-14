@@ -3,11 +3,8 @@ package com.ten10.training.javaparsons.impl;
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseList.*;
 import com.ten10.training.javaparsons.impl.ExerciseList.CompleteTheCodeExercise;
-import com.ten10.training.javaparsons.impl.ExerciseList.CompleteTheCodeExercise;
-import com.ten10.training.javaparsons.impl.ExerciseList.PrintOutExercise;
-import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
-import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.impl.ExerciseList.ReturnTypeExercise;
 import com.ten10.training.javaparsons.impl.ExerciseList.StaticFieldExercise;
@@ -31,7 +28,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         ReturnTypeExercise returnSquareNumber = new ReturnTypeExercise(compiler, runner, 4, "Two Squared", 4, "Write a Java method which when run will return");
         ReturnTypeExercise returnChar = new ReturnTypeExercise(compiler, runner, 'A', "Return Char A", 5, "Write a Java Method which will");
         CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, runner, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Complete the code - Hello World!", 6);
-        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, methodStatementsHelloWorld);
+        ExercisePathsExercise pathExercise = new ExercisePathsExercise(compiler, runner, "Exercise Paths!" ,"Exercise Paths!",7,  "Arrange the statements below, so the answer is: ");
+        exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, methodStatementsHelloWorld, pathExercise);
 
     }
 
