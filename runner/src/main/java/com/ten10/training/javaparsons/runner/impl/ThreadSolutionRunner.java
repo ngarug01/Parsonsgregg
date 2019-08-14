@@ -23,9 +23,9 @@ public class ThreadSolutionRunner implements SolutionRunner {
      * @param solution          An {@link EntryPoint}, the name of the class and method(with its params) from where to run the code.
      * @param progressReporter  Stores any runtime exceptions.
      * @return The result of running the given compiled code. {@link Optional#empty()} if the code fails to run.
-     * @throws ReflectiveOperationException
-     * @throws ExecutionException
-     * @throws InterruptedException
+     * @throws //ReflectiveOperationException
+     * @throws //ExecutionException
+     * @throws //InterruptedException
      */
     @Override
     public Optional<Object> run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
@@ -55,10 +55,10 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
         final Object finalInstance = instance;
 
-        return runMethod(parameters, method, finalInstance);
+        return runMethod(parameters, method, finalInstance, progressReporter);
     }
 
-    private Optional<Object> runMethod(Object[] parameters, Method method, Object finalInstance) throws InterruptedException, ExecutionException {
+    private Optional<Object> runMethod(Object[] parameters, Method method, Object finalInstance, ProgressReporter progressReporter) throws InterruptedException, ExecutionException {
         executor = Executors.newSingleThreadExecutor();
         future = executor.submit(() -> method.invoke(finalInstance, parameters));
         try {
@@ -69,6 +69,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
             }
         } catch (TimeoutException e) {
             future.cancel(true);
+            progressReporter.reportRunnerError("timeout error");
             return Optional.empty();
         } finally {
             executor.shutdownNow();

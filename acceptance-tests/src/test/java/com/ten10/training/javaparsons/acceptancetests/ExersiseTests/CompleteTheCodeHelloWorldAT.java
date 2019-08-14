@@ -25,6 +25,7 @@ class CompleteTheCodeHelloWorldAT {
     private final ExercisePage page;
     private final String COMPLETE_HELLO_WORLD_CORRECT = "System.out.println(\"Hello World!\");";
     private final String COMPLETE_HELLO_WORLD_INCORRECT = "System.out.println(\"Hello World!\")";
+    private final String COMPLETE_HELLO_WORLD_INFLOOP = "while(true){}";
 
 
     CompleteTheCodeHelloWorldAT(ChromeDriver driver) {
@@ -73,6 +74,15 @@ class CompleteTheCodeHelloWorldAT {
         page.trySolution(COMPLETE_HELLO_WORLD_INCORRECT);
         assertEquals(page.getErrorLine(), "Error on line: 1");
     }
+
+    @Test
+    @Tag("acceptance-tests")
+    void timeoutError() {
+        page.trySolution(COMPLETE_HELLO_WORLD_INFLOOP);
+        System.out.println(page.getErrors());
+        assertEquals(page.getErrors().toString(), "[The runner error description was: timeout error]");
+    }
+
 }
 
 
