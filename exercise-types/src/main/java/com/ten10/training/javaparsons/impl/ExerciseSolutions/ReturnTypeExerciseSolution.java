@@ -1,21 +1,15 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
-
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import org.apache.commons.lang3.StringUtils;
 
-import javax.tools.Diagnostic;
-import javax.tools.DiagnosticCollector;
-import javax.tools.DiagnosticListener;
-import javax.tools.JavaFileObject;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution, DiagnosticListener<JavaFileObject> {
+public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -47,7 +41,6 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private final ProgressReporter progressReporter;
     private byte[] byteCode;
     private Object output;
-    private long currentLineNumber = -1;
 
     /**
      * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
@@ -62,15 +55,13 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
                                       SolutionRunner runner,
                                       String userInput,
                                       Object answer,
-                                      ProgressReporter progressReporter)  {
+                                      ProgressReporter progressReporter) {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
         this.answer = answer;
         this.progressReporter = progressReporter;
-
-
     }
 
     /**
@@ -154,18 +145,13 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
             // If the method ran to completion, then this is true when the method wasn't void.
             // For a return value exercise, we can treat void methods as failures.
 
-        progressReporter.reportCompilerError(currentLineNumber, "Method Return Type Should Not Be Void");
+        progressReporter.reportCompilerError(2, "Method Return Type Should Not Be Void");
 
             return false;
         }
         output = result.getReturnValue();
-        progressReporter.storeCapturedOutput(output.toString());
         return true;
     }
 
-    @Override
-    public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
-        currentLineNumber = diagnostic.getLineNumber();
 
-    }
 }
