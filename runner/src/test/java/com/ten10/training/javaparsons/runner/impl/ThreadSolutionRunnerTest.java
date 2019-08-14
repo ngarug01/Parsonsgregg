@@ -1,15 +1,11 @@
 package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.function.ThrowingSupplier;
 
-import javax.rmi.CORBA.Util;
-import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -130,9 +126,8 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void runDoesNotThrowExceptionWhenParameterListAreEqual() {
+    void runDoesNotThrowExceptionWhenParameterListAreEqual() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         //Arrange
-        ClassLoader classLoader = mock(ClassLoader.class);
         ThreadSolutionRunner threadSolutionRunner = new ThreadSolutionRunner();
         EntryPoint entryPoint = new EntryPoint() {
 
@@ -156,6 +151,8 @@ class ThreadSolutionRunnerTest {
                 return new Object[1];
             }
         };
+        //Act
+        threadSolutionRunner.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
         //Assert
         assertDoesNotThrow((ThrowingSupplier<IllegalAccessException>) IllegalAccessException::new);
     }
@@ -219,8 +216,8 @@ class ThreadSolutionRunnerTest {
                 return new Object[0];
             }
         };
-        runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         // Act
+        runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
         assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
     }
@@ -262,6 +259,7 @@ class ThreadSolutionRunnerTest {
 
     @Test
     void methodShouldNotAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        //Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
         final EntryPoint entryPoint = new EntryPoint() {
             @Override
@@ -284,11 +282,10 @@ class ThreadSolutionRunnerTest {
                 return new Object[0];
             }
         };
-
         runner.setTimeout(500, TimeUnit.MILLISECONDS);
-
+        //Act
         runner.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
-
+        //Assert
         assertTrue(takesNoArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -328,40 +325,8 @@ class ThreadSolutionRunnerTest {
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
 
-    /*@Test
-    void methodIsStatic(){
-        ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        EntryPoint entryPoint = new EntryPoint() {
-            @Override
-            public String getEntryPointClass() {
-                return Example.class.getName();
-            }
-
-            @Override
-            public String getEntryPointMethod() {
-                return "staticMethodExample";
-            }
-
-            @Override
-            public Class<?>[] getParameterTypes() {
-                return new Class<?>[0];
-            }
-
-            @Override
-            public Object[] getParameters() {
-                return new Object[0];
-            }
-        };
-
-
-        boolean isMethodStatic = Example.staticMethodExample(true);
-
-        assertTrue(isMethodStatic);
-    }*/
-
-
     @Test
-    void timeoutSetToZero() {
+    void timeoutSetToZero() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         //Arrange
         ThreadSolutionRunner runner = new ThreadSolutionRunner();
         EntryPoint entryPoint = new EntryPoint() {
@@ -385,10 +350,12 @@ class ThreadSolutionRunnerTest {
                 return new Object[0];
             }
         };
+        runner.timeoutMillis = 0;
         //Act
-        runner.setTimeout(0, TimeUnit.SECONDS);
+        runner.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
         //Assert
-        assertTimeout(Duration.ZERO, () -> runner.run(currentThread().getContextClassLoader(), entryPoint, progressReporter));
+        assertEquals(Duration.ZERO.toMillis(), runner.timeoutMillis);
+
     }
 
     @Test
@@ -403,7 +370,7 @@ class ThreadSolutionRunnerTest {
 
             @Override
             public String getEntryPointMethod() {
-                return "methodIsAbsent";
+                return "";
             }
 
             @Override
