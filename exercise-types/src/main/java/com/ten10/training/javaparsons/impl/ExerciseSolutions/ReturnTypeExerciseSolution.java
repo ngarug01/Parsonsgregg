@@ -150,6 +150,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
             return false;
         }
         output = result.getReturnValue();
+        progressReporter.storeCapturedOutput(output.toString());
         return true;
     }
 
