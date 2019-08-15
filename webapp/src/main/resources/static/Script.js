@@ -46,22 +46,7 @@ let exercises = null;
         }
         setExercise(0);
 
-        list = ["",
-        "public class Main{",
-        "public static void main(String[] args){",
-        "System.out.println(\"Exercise Paths!\");",
-        "}",];
-
-        const dropdowns = document.getElementsByClassName("epe");
-        for(input of dropdowns){
-            for(i=0;i<list.length;i++){
-                const elem = document.createElement("option");
-                elem.id = i;
-                elem.value = list[i];
-                elem.text = list[i];
-                input.appendChild(elem);
-            }
-        }
+        
     }
 
     function setExercise(exerciseNumber) {
@@ -89,6 +74,7 @@ let exercises = null;
         if(exerciseNumber==6){
             textbox.style.display = "none";
             dropdowns.style.display = "block";
+            loadDropDowns();
         }else{
             textbox.style.display = "block";
             dropdowns.style.display = "none";
@@ -99,6 +85,33 @@ let exercises = null;
         const list = document.getElementById("ExerciseList");
         const exerciseNumber = parseInt(list.options[list.selectedIndex].value, 10);
         setExercise(exerciseNumber);
+    }
+
+    function loadDropDowns() {
+        const div = document.getElementById("inputEPE");
+        const eod = document.getElementById("endofdrops");
+        var i=0;
+        var j=0;
+        var n=5;
+        list = ["",
+        "public class Main{",
+        "public static void main(String[] args){",
+        "System.out.println(\"Exercise Paths!\");",
+        "}"];
+
+        for(j=0;j<n;j++){
+            var select = document.createElement("select");
+            select.className = "epe";
+            select.id = "epe"+(j+1).toString();
+            for(i=0;i<list.length;i++){
+                const elem = document.createElement("option");
+                elem.id = i;
+                elem.value = list[i];
+                elem.text = list[i];
+                select.appendChild(elem);
+            }
+            div.insertBefore(select, eod);
+        }
     }
 
     function postAnswer() {
