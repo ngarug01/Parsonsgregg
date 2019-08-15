@@ -56,6 +56,7 @@ let exercises = null;
         for(input of dropdowns){
             for(i=0;i<list.length;i++){
                 const elem = document.createElement("option");
+                elem.id = i;
                 elem.value = list[i];
                 elem.text = list[i];
                 input.appendChild(elem);
