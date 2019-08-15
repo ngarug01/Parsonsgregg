@@ -14,30 +14,44 @@ import java.util.List;
 
 public class WholeClassExercise implements Exercise {
     private final String exerciseName;
+    private final String prefixCode;
+    private final String suffixCode;
     private SolutionCompiler compiler;
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
     private final int id;
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
+//    private final List<CompleteTheCodeChecker> completetheCodeCheckers;
 
 
     /**
      * Creates a new WholeClassExercise.
-     * @param compiler Prepares an user input to be run.
+     *
+     * @param compiler     Prepares an user input to be run.
      * @param exerciseName Description of the exercise.
-     * @param id The unique identifier of an exercise.
+     * @param id           The unique identifier of an exercise.
      */
-    public WholeClassExercise(SolutionCompiler compiler, List<CapturedOutputChecker> capturedOutputCheckers, List<ClassChecker> classCheckers, List<MethodReturnValueChecker> methodReturnValueCheckers, String exerciseName, int id) {
+    public WholeClassExercise(SolutionCompiler compiler,
+                              List<CapturedOutputChecker> capturedOutputCheckers,
+                              List<ClassChecker> classCheckers,
+                              List<MethodReturnValueChecker> methodReturnValueCheckers,
+//                              List<CompleteTheCodeChecker> completetheCodeCheckers,
+                              String exerciseName,
+                              int id,
+                              String prefixCode,
+                              String suffixCode) {
         this.compiler = compiler;
         this.exerciseName = exerciseName;
         this.id = id;
         this.capturedOutputCheckers = capturedOutputCheckers;
         this.classCheckers = classCheckers;
         this.methodReturnValueCheckers = methodReturnValueCheckers;
+        this.prefixCode = prefixCode;
+        this.suffixCode = suffixCode;
+//        this.completetheCodeCheckers = completetheCodeCheckers;
 
     }
-
 
 
     /**
@@ -53,7 +67,7 @@ public class WholeClassExercise implements Exercise {
      */
     @Override
     public String getTitle() {
-        return "Exercise "+getIdentifier()+": "+exerciseName;
+        return "Exercise " + getIdentifier() + ": " + exerciseName;
     }
 
     /**
@@ -78,22 +92,33 @@ public class WholeClassExercise implements Exercise {
 
     @Override
     public String getPrecedingCode() {
-        return null;
+
+        return prefixCode;
     }
 
     @Override
     public String getFollowingCode() {
-        return null;
+
+        return suffixCode;
+    }
+
+    public String returnAppendedUserInput(String userInput) {
+        if (prefixCode != null && suffixCode != null) {
+            return prefixCode + userInput + suffixCode;
+        } else {
+            return userInput;
+        }
+
     }
 
     /**
-     * @param userInput The input provided by the user.
+     * @param userInput        The input provided by the user.
      * @param progressReporter The callback object to use when reporting compilation and test results.
      * @return A new PrintOutExerciseSolution from user input.
      */
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
-        return new BaseSolution(compiler, runner, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers,  progressReporter);
+        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
     }
 
     @Override
