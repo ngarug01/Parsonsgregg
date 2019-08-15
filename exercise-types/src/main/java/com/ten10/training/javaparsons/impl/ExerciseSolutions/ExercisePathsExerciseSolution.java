@@ -63,17 +63,15 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
 
     private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if(byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
-            }
+            return run();
         }
         return false;
     }
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter);
+            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);
