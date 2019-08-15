@@ -49,6 +49,19 @@ div {
     background-color: rgb(255, 192, 55);
 }
 
+#input-box{
+    background-color: #ccccff;
+}
+
+#ExerciseList{
+    background-color: #c0c0c0;
+    border: none;
+    font-family: "Times New Roman";
+    color: #6758a6;
+    font-size: 20px;
+    text-align-last: center;
+}
+
 .codebox {
     visibility: hidden;
     background-color: rgb(200, 200, 200);
@@ -68,4 +81,15 @@ div {
     border-width: 5px;
     border-color: #6758a6;
     width: 75%;
+    background-color: #b0b0ff;
+}
+
+.submit{
+    background-color: #342953;
+    color: #b0b0ff;
+    border: none;
+    font-family: "Times New Roman";
+    text-align: center;
+    padding: 7px;
+    font-size: 15px;
 }
