@@ -118,6 +118,24 @@
                 exerciseList.appendChild(elem);
             }
             setExercise(0);
+
+            list = ["",
+            "public class Main{",
+            "public static void main(String[] args){",
+            "System.out.println(\"Exercise Paths!\");",
+            "}",
+            "}"];
+
+            const dropdowns = document.getElementsByClassName("epe");
+            for(input of dropdowns){
+                for(i=0;i<list.length;i++){
+                    const elem = document.createElement("option");
+                    elem.value = list[i];
+                    elem.text = list[i];
+                    input.appendChild(elem);
+                }
+            }
+
         }
 
         function setExercise(exerciseNumber) {
@@ -139,6 +157,17 @@
             } else {
                 followingCodeBox.style.visibility = "hidden";
             }
+
+            const textbox = document.getElementById("input");
+            const dropdowns = document.getElementById("inputEPE");
+            if(exerciseNumber==6){
+                textbox.style.display = "none";
+                dropdowns.style.display = "block";
+            }else{
+                textbox.style.display = "block";
+                dropdowns.style.display = "none";
+            }
+
         }
 
         function onSelectedExerciseChange() {
@@ -164,6 +193,38 @@
             const xhr = new XMLHttpRequest();
             xhr.addEventListener("load", onResultLoaded);
             var exercise = JSON.stringify({ input: document.getElementById("input-box").value });
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(exercise);
+            setLoading();
+        }
+
+        function postAnswerEPE() {
+            resetOutput();
+
+            if (document.getElementById("epe1").value === "" &&
+                document.getElementById("epe2").value === "" &&
+                document.getElementById("epe3").value === "" &&
+                document.getElementById("epe4").value === "" &&
+                document.getElementById("epe5").value === "") {
+                    window.location.href = "https://www.youtube.com/watch?v=C9xHlCAcwjw";
+                    return;
+                }
+
+            const list = document.getElementById("ExerciseList");
+            const exerciseNumber = parseInt(list.options[list.selectedIndex].value, 10);
+            const path = exercises[exerciseNumber].url;
+            // If we're in local development, point at a local webserver.
+            const url = document.location.href.startsWith("file:///") ? "http://localhost:8080/" + path : path;
+            console.log(url);
+            const xhr = new XMLHttpRequest();
+            xhr.addEventListener("load", onResultLoaded);
+            var exercise = JSON.stringify({input:
+                document.getElementById("epe1").value +
+                document.getElementById("epe2").value +
+                document.getElementById("epe3").value +
+                document.getElementById("epe4").value +
+                document.getElementById("epe5").value});
             xhr.open("POST", url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(exercise);
@@ -229,6 +290,7 @@
         function onLoad() {
             document.getElementById("ExerciseList").onchange = onSelectedExerciseChange;
             document.getElementById("enter-answer").onclick = postAnswer;
+            document.getElementById("enter-answer-epe").onclick = postAnswerEPE;
             setNotLoading();
             loadExercises();
         }
@@ -251,6 +313,14 @@
         <textarea id="input-box" name="HelloWorldJava" rows=12 cols="90"></textarea>
         <textarea name="Following Code" id="following-code-box" class="codebox" cols="90"></textarea>
         <button id="enter-answer">Submit</button>
+    </div>
+    <div id="inputEPE">
+    <select class="epe" id="epe1"></select><br>
+    <select class="epe" id="epe2"></select><br>
+    <select class="epe" id="epe3"></select><br>
+    <select class="epe" id="epe4"></select><br>
+    <select class="epe" id="epe5"></select><br>
+    <button id="enter-answer-epe">Submit</button>
     </div>
     <div id="runner-output" class="output"></div>
     <div name="Correct Answer" id="correct-answer" class="output"></div>
