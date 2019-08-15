@@ -6,7 +6,6 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler.CompilableSolution{
