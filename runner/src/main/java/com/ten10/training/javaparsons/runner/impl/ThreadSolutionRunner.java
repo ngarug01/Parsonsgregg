@@ -67,6 +67,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
                 returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
             } else {
                 returnValue = future.get();
+
             }
             return new RunResult() {
                 @Override
@@ -82,11 +83,15 @@ public class ThreadSolutionRunner implements SolutionRunner {
                 @Override
                 public Object getReturnValue() {
                     return returnValue;
+
                 }
             };
         } catch (TimeoutException e) {
             future.cancel(true);
+            progressReporter.reportRunnerError("timeout error");
             return FAILURE;
+
+
         } finally {
             executor.shutdownNow();
         }
