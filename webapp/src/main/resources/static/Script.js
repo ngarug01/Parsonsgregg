@@ -88,6 +88,7 @@ let exercises = null;
     }
 
     function loadDropDowns() {
+        clearDropDowns();
         const div = document.getElementById("inputEPE");
         const eod = document.getElementById("endofdrops");
         var i=0;
@@ -111,6 +112,16 @@ let exercises = null;
                 select.appendChild(elem);
             }
             div.insertBefore(select, eod);
+        }
+    }
+
+    function clearDropDowns() {
+        const div = document.getElementById("inputEPE");
+        var drops = div.getElementsByClassName("epe");
+        var k = 0;
+        var n = drops.length;
+        for(k=0;k<n;k++){
+            div.removeChild(drops[0]);
         }
     }
 
