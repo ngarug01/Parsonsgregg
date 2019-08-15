@@ -16,6 +16,9 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
 
     private final ProgressReporter progressReporter;
 
+    private long lineNumber = -1;
+
+
     ProgressReporterAdapter(ProgressReporter progressReporter) {
         this.progressReporter = Objects.requireNonNull(progressReporter, "progressReporter");
     }
@@ -27,6 +30,7 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
     @Override
     public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
         LOGGER.debug("Received diagnostic: {}", diagnostic);
+        lineNumber = diagnostic.getLineNumber();
         switch(diagnostic.getKind()) {
             case ERROR:
                 progressReporter.reportCompilerError(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
@@ -35,5 +39,10 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
                 progressReporter.reportCompilerInfo(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
         }
     }
+
+    public long getLineNumber() {
+        return lineNumber;
+    }
+
 }
 

@@ -1,15 +1,21 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
+
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import org.apache.commons.lang3.StringUtils;
 
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticCollector;
+import javax.tools.DiagnosticListener;
+import javax.tools.JavaFileObject;
 import java.util.Optional;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.CompilableSolution, DiagnosticListener<JavaFileObject> {
 
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
@@ -41,6 +47,7 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
     private final ProgressReporter progressReporter;
     private byte[] byteCode;
     private Object output;
+    private long currentLineNumber = -1;
 
     /**
      * Creates a new ReturnTypeExerciseSolution. This constructor sets the local fields.
@@ -55,13 +62,15 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
                                       SolutionRunner runner,
                                       String userInput,
                                       Object answer,
-                                      ProgressReporter progressReporter) {
+                                      ProgressReporter progressReporter)  {
 
         this.compiler = compiler;
         this.runner = runner;
         this.userInput = userInput;
         this.answer = answer;
         this.progressReporter = progressReporter;
+
+
     }
 
     /**
@@ -72,8 +81,8 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
      */
     @Override
     public boolean evaluate() throws Exception {
-        if(compile()){
-            if(canRun()){
+        if (compile()) {
+            if (run()) {
                 //System.out.println(output + " " + Optional.ofNullable(answer).toString());
                 return output.equals(answer);
             }
@@ -81,17 +90,10 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         return false;
     }
 
-    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        if (byteCode != null) {
-            if (run() != Optional.empty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private boolean compile() {
-        return compiler.compile(this, progressReporter);
+        boolean result = compiler.compile(this, progressReporter);
+        assert !result || byteCode != null;
+        return result;
     }
 
     /**
@@ -139,16 +141,30 @@ public class ReturnTypeExerciseSolution implements Solution, SolutionCompiler.Co
         };
     }
 
-    private Optional<Object> run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        try{
-            runner.run(getClassLoader(),entryPoint,progressReporter);
-            Object result = runner.getMethodOutput();
-            return Optional.ofNullable(result);
-        } catch(CancellationException e){
-            return Optional.empty();
-        } finally {
-            this.output = Optional.ofNullable(runner.getMethodOutput()).get();
-            progressReporter.storeCapturedOutput(output.toString());
+    // Returns True if the code ran to completion, and returned a non-null value.
+    // Sets output to the value returned.
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+        SolutionRunner.RunResult result;
+        result = runner.run(getClassLoader(), entryPoint, progressReporter);
+
+        if (!result.isSuccess()) {
+            return false;
         }
+        if (!result.hasReturnValue()) {
+            // If the method ran to completion, then this is true when the method wasn't void.
+            // For a return value exercise, we can treat void methods as failures.
+
+        progressReporter.reportCompilerError(currentLineNumber, "Method Return Type Should Not Be Void");
+
+            return false;
+        }
+        output = result.getReturnValue();
+        return true;
+    }
+
+    @Override
+    public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
+        currentLineNumber = diagnostic.getLineNumber();
+
     }
 }
