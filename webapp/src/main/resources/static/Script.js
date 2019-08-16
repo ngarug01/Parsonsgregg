@@ -74,7 +74,8 @@ let exercises = null;
         if(exerciseNumber==6){
             textbox.style.display = "none";
             dropdowns.style.display = "block";
-            loadDropDowns();
+            n = parseInt(selectedExerciseProperties.dropdownCount)
+            loadDropDowns(n);
         }else{
             textbox.style.display = "block";
             dropdowns.style.display = "none";
@@ -87,6 +88,27 @@ let exercises = null;
         setExercise(exerciseNumber);
     }
 
+    function onDropdownsLoaded(dropdown) {
+        setNotLoading();
+        if ((this.readyState !== 4 || this.status !== 200)) {
+            // TODO: Actual error handling
+            console.error(xhr.status);
+            return;
+        }
+        choices = JSON.parse(this.responseText);
+        // Populate Select Field
+        dropdowns = document.getElementsByClassName("epe");
+        for(const dropdown of dropdowns){
+            for (const entry of choices.entries()) {
+                const elem = document.createElement("option");
+                elem.id = entry[0];
+                elem.value = entry[1];
+                elem.text = entry[1];
+                dropdown.appendChild(elem);
+            }
+        } 
+    }   
+
     function findDropdownOptions() {
         const xhr = new XMLHttpRequest();
         const getDropdownListMembers = "/exercise/getDropdownListMembers";
@@ -97,33 +119,26 @@ let exercises = null;
         } else {
             url = getDropdownListMembers;
         }
+        xhr.addEventListener("load", onDropdownsLoaded);
         xhr.open("GET", url, true);
         setLoading();
         xhr.send(null);
     };
 
-    function loadDropDowns() {
+    function loadDropDowns(n) {
         clearDropDowns();
         const div = document.getElementById("inputEPE");
         const eod = document.getElementById("endofdrops");
         var i=0;
         var j=0;
-        var n=5;
-        dropdownList = JSON.parse(findDropdownOptions.responseText);
 
         for(j=0 ; j < n ; j++){
             var select = document.createElement("select");
             select.className = "epe";
             select.id = "epe"+(j+1).toString();
-            for(i=0 ; i < dropdownList.length ; i++){
-                const elem = document.createElement("option");
-                elem.id = i;
-                elem.value = dropdownList[i];
-                elem.text = dropdownList[i];
-                select.appendChild(elem);
-            }
             div.insertBefore(select, eod);
         }
+        findDropdownOptions()
     }
 
     function clearDropDowns() {

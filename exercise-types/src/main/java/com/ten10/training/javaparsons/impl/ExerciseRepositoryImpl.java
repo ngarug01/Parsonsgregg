@@ -28,7 +28,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         ReturnTypeExercise returnSquareNumber = new ReturnTypeExercise(compiler, runner, 4, "Two Squared", 4, "Write a Java method which when run will return");
         ReturnTypeExercise returnChar = new ReturnTypeExercise(compiler, runner, 'A', "Return Char A", 5, "Write a Java Method which will");
         CompleteTheCodeExercise methodStatementsHelloWorld = new CompleteTheCodeExercise(compiler, runner, "public class Main { \npublic static void main (String[] args) {", "}\n}", "Hello World!", "Complete the code - Hello World!", 6);
-        ExercisePathsExercise pathExercise = new ExercisePathsExercise(compiler, runner, "Exercise Paths!" ,"Exercise Paths!",7,  "Arrange the statements below, so the answer is: ");
+        ExercisePathsExercise pathExercise = new ExercisePathsExercise(compiler, runner, "Exercise Paths!" ,"Exercise Paths!",7,  "Arrange the statements below, so the answer is: ", 5);
         exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, methodStatementsHelloWorld, pathExercise);
 
     }

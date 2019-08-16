@@ -4,7 +4,7 @@ public enum DropdownListMembers {
 
     blank(""),
     classOpen("public class Main{"),
-    mainMethodOpen("op.add(\"public static void main(String[] args){\");"),
+    mainMethodOpen("public static void main(String[] args){"),
     printExercisePaths("System.out.println(\"Exercise Paths!\");"),
     closeBracket("}");
 

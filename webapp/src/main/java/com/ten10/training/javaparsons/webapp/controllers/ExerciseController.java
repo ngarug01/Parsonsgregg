@@ -28,13 +28,15 @@ public class ExerciseController {
         private final String description;
         private final String precedingCode;
         private final String followingCode;
+        private final int dropdownCount;
 
-        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode) {
+        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode, int dropdownCount) {
             url = URL;
             this.title = title;
             this.description = description;
             this.precedingCode = precedingCode;
             this.followingCode = followingCode;
+            this.dropdownCount = dropdownCount;
         }
 
         /**
@@ -53,6 +55,7 @@ public class ExerciseController {
         public String getDescription() { return description;}
         public String getPrecedingCode() { return precedingCode;}
         public String getFollowingCode() { return followingCode;}
+        public int getDropdownCount() { return dropdownCount; }
 
     }
 
@@ -77,6 +80,7 @@ public class ExerciseController {
                 ,exercise.getDescription()
                 ,exercise.getPrecedingCode()
                 ,exercise.getFollowingCode()
+                ,exercise.getDropdownNumber()
             ));
 
         }
