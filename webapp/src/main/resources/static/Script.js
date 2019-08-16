@@ -173,13 +173,20 @@ let exercises = null;
         setLoading();
     }
 
+    function easterEggEPEBoolean() {
+        const epes = document.getElementsByClassName("epe");
+        for(var i=0; i<epes.length; i++){
+            const n = epes.item(i).value;
+            if(n!==""){
+                return false;
+            }
+        }
+        return true;
+    }
+
     function postAnswerEPE() {
         resetOutput();
-        if (document.getElementById("epe1").value === "" &&
-        document.getElementById("epe2").value === "" &&
-        document.getElementById("epe3").value === "" &&
-        document.getElementById("epe4").value === "" &&
-        document.getElementById("epe5").value === "") {
+        if (easterEggEPEBoolean()) {
             window.location.href = "https://www.youtube.com/watch?v=C9xHlCAcwjw";
             return;
         }
