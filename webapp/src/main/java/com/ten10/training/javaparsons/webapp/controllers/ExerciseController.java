@@ -83,6 +83,16 @@ public class ExerciseController {
         return combinedExerciseParameters;
     }
 
+    @RequestMapping(value = "getDropdownListMembers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<String> getDropdownListMembers() {
+        List<String> op = new ArrayList<String>() {};
+        for(DropdownListMembers dlm: DropdownListMembers.values()){
+            op.add(dlm.inputText);
+        }
+        return op;
+    }
+
 
     /**
      * <p>

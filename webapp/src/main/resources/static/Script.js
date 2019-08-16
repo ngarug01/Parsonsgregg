@@ -87,6 +87,21 @@ let exercises = null;
         setExercise(exerciseNumber);
     }
 
+    function findDropdownOptions() {
+        const xhr = new XMLHttpRequest();
+        const getDropdownListMembers = "/exercise/getDropdownListMembers";
+        let url;
+        // If we're in local development, point at a local webserver.
+        if (document.location.href.startsWith("file:///")) {
+            url = "http://localhost:8080" + getDropdownListMembers;
+        } else {
+            url = getDropdownListMembers;
+        }
+        xhr.open("GET", url, true);
+        setLoading();
+        xhr.send(null);
+    };
+
     function loadDropDowns() {
         clearDropDowns();
         const div = document.getElementById("inputEPE");
@@ -94,21 +109,17 @@ let exercises = null;
         var i=0;
         var j=0;
         var n=5;
-        list = ["",
-        "public class Main{",
-        "public static void main(String[] args){",
-        "System.out.println(\"Exercise Paths!\");",
-        "}"];
+        dropdownList = JSON.parse(findDropdownOptions.responseText);
 
-        for(j=0;j<n;j++){
+        for(j=0 ; j < n ; j++){
             var select = document.createElement("select");
             select.className = "epe";
             select.id = "epe"+(j+1).toString();
-            for(i=0;i<list.length;i++){
+            for(i=0 ; i < dropdownList.length ; i++){
                 const elem = document.createElement("option");
                 elem.id = i;
-                elem.value = list[i];
-                elem.text = list[i];
+                elem.value = dropdownList[i];
+                elem.text = dropdownList[i];
                 select.appendChild(elem);
             }
             div.insertBefore(select, eod);
@@ -120,7 +131,7 @@ let exercises = null;
         var drops = div.getElementsByClassName("epe");
         var k = 0;
         var n = drops.length;
-        for(k=0;k<n;k++){
+        for(k=0 ; k < n ; k++){
             div.removeChild(drops[0]);
         }
     }
