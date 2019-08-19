@@ -71,7 +71,7 @@ let exercises = null;
 
         const textbox = document.getElementById("input");
         const dropdowns = document.getElementById("inputEPE");
-        if(exerciseNumber==6){
+        if(selectedExerciseProperties.dropdownCount > 1){
             textbox.style.display = "none";
             dropdowns.style.display = "block";
             n = parseInt(selectedExerciseProperties.dropdownCount)
