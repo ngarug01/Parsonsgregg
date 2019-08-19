@@ -18,7 +18,9 @@ public interface SolutionCompiler {
 
     /**
      * Compile the solution, reporting any errors or warnings to the progressReporter.
-     * Return a CompiledSolution on success.
+     * Returns true upon success.
+     *
+     * If compilation was successful, {@link CompilableSolution#recordCompiledClass(byte[])} will have been called.
      *
      * @param solution       The submitted solution to be compiled. This will not be modified.
      * @param progressReporter An object which will collect errors. This is modified.

@@ -8,7 +8,7 @@ import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ public class WholeClassExercise implements Exercise {
     private final String exerciseName;
     private final String prefixCode;
     private final String suffixCode;
-    private SolutionCompiler compiler;
-    private ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private final SolutionCompiler compiler;
+    private final SolutionRunner runner;
     private final int id;
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
@@ -29,19 +29,21 @@ public class WholeClassExercise implements Exercise {
      * Creates a new WholeClassExercise.
      *
      * @param compiler     Prepares an user input to be run.
+     * @param runner
      * @param exerciseName Description of the exercise.
      * @param id           The unique identifier of an exercise.
      */
     public WholeClassExercise(SolutionCompiler compiler,
+                              SolutionRunner runner,
                               List<CapturedOutputChecker> capturedOutputCheckers,
                               List<ClassChecker> classCheckers,
                               List<MethodReturnValueChecker> methodReturnValueCheckers,
-//                              List<CompleteTheCodeChecker> completetheCodeCheckers,
                               String exerciseName,
                               int id,
                               String prefixCode,
                               String suffixCode) {
         this.compiler = compiler;
+        this.runner = runner;
         this.exerciseName = exerciseName;
         this.id = id;
         this.capturedOutputCheckers = capturedOutputCheckers;

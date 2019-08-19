@@ -8,13 +8,10 @@ import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class BaseSolution implements Solution, SolutionCompiler.CompilableSolution {
@@ -42,10 +39,10 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
         }
     };
 
-    private SolutionCompiler compiler;
-    private ThreadSolutionRunner runner;
-    private String userInput;
-    private ProgressReporter progressReporter;
+    private final SolutionCompiler compiler;
+    private final SolutionRunner runner;
+    private final String userInput;
+    private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private byte[] byteCode;
     private final List<CapturedOutputChecker> capturedOutputCheckers;
@@ -62,9 +59,8 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @param userInput        The user input as a String.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-
     public BaseSolution(SolutionCompiler compiler,
-                        ThreadSolutionRunner runner,
+                        SolutionRunner runner,
                         String userInput,
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
@@ -89,32 +85,36 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      */
     @Override
     public boolean evaluate() throws Exception {
-        if (compile()) {
-            if (canRun()) {
-                ArrayList<Boolean> results = new ArrayList<>();
-                for (CapturedOutputChecker checker : capturedOutputCheckers) {
-                    results.add(checker.validate(output, progressReporter));
-                }
-                for (ClassChecker checker : classCheckers) {
-                    if (getClassFields(getClassLoader())){
-                    results.add(checker.validate(klassFields, progressReporter));}
-                }
-                for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
-                    results.add(checker.validate(result, progressReporter));
-                }
-                return !results.contains(false);
+        if (!compile()) {
+            return false;
+        }
+        boolean result;
+        result = run();
+        if (!result) {
+            return false;
+        }
 
+        ArrayList<Boolean> results = new ArrayList<>();
+        for (CapturedOutputChecker checker : capturedOutputCheckers) {
+            results.add(checker.validate(output, progressReporter));
+        }
+        for (ClassChecker checker : classCheckers) {
+            if (getClassFields(getClassLoader())) {
+                results.add(checker.validate(klassFields, progressReporter));
             }
         }
-        return false;
-    }
+        for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
+            results.add(checker.validate(result, progressReporter));
+        }
+        return !results.contains(false);
 
-    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-            return run();
+
     }
 
     private boolean compile() {
-        return compiler.compile(this, progressReporter);
+        boolean result = compiler.compile(this, progressReporter);
+        assert !result || (byteCode != null);
+        return result;
     }
 
     /**
@@ -164,20 +164,14 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private Boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
-        Object result;
         try {
-            runner.run(getClassLoader(), entryPoint, progressReporter);
+            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
+            progressReporter.storeCapturedOutput(output);
         }
-        try {
-            result = runner.getMethodOutput();
-        } finally {
-            Optional.ofNullable(runner.getMethodOutput()).ifPresent(o -> this.result = o);
-        }
-        return ((!output.isEmpty())||(result!=null));
     }
 
     private boolean getClassFields(ClassLoader classLoader) {

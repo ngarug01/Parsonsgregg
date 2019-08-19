@@ -22,7 +22,7 @@ class WholeClassExerciseTest {
     private List<ClassChecker> classCheckers = new ArrayList<>();
     private List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final WholeClassExercise wholeClassExercise = new WholeClassExercise(compiler, capturedOutputCheckers,classCheckers,methodReturnValueCheckers,"MY NAME",1,null,null);
+    private final WholeClassExercise wholeClassExercise = new WholeClassExercise(compiler, null, capturedOutputCheckers,classCheckers,methodReturnValueCheckers,"MY NAME",1,null,null);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     @Test
     void helloWorldExerciseIdentifierIs1() {

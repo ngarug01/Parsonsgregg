@@ -85,7 +85,7 @@ class ExerciseControllerTest {
         assertThat(output, is("{\"output\":\"Null\",\"succesfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 
-    private static final ExerciseController.ExerciseInformation exerciseInformation = new ExerciseController.ExerciseInformation("URL", "Title", "Description", "code", "code");
+    private static final ExerciseController.ExerciseInformation exerciseInformation = new ExerciseController.ExerciseInformation("URL", "Title", "Description", "code", "code", 1);
 
     @Test
     void exerciseInformationGetURL () {

@@ -42,6 +42,22 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M1</version>
+                    <configuration>
+                        <argLine>${surefireArgLine}</argLine>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <!-- Specifying required versions of plugins, using defaults for 3.5.0-->
@@ -135,19 +151,13 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>${surefireArgLine}</argLine>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <modules>
         <module>core-api</module>
         <module>webapp</module>
         <module>exercise-types</module>
+        <module>exercise-types.integration-tests</module>
         <module>compiler</module>
         <module>bootstrap</module>
         <module>acceptance-tests</module>
@@ -175,12 +185,6 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>${junitVersion}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junitVersion}</version>
                 <scope>test</scope>
             </dependency>

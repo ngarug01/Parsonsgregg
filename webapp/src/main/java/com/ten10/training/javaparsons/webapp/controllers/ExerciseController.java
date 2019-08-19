@@ -28,13 +28,15 @@ public class ExerciseController {
         private final String description;
         private final String precedingCode;
         private final String followingCode;
+        private final int dropdownCount;
 
-        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode) {
+        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode, int dropdownCount) {
             url = URL;
             this.title = title;
             this.description = description;
             this.precedingCode = precedingCode;
             this.followingCode = followingCode;
+            this.dropdownCount = dropdownCount;
         }
 
         /**
@@ -53,6 +55,7 @@ public class ExerciseController {
         public String getDescription() { return description;}
         public String getPrecedingCode() { return precedingCode;}
         public String getFollowingCode() { return followingCode;}
+        public int getDropdownCount() { return dropdownCount; }
 
     }
 
@@ -77,10 +80,21 @@ public class ExerciseController {
                 ,exercise.getDescription()
                 ,exercise.getPrecedingCode()
                 ,exercise.getFollowingCode()
+                ,exercise.getDropdownNumber()
             ));
 
         }
         return combinedExerciseParameters;
+    }
+
+    @RequestMapping(value = "getDropdownListMembers", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<String> getDropdownListMembers() {
+        List<String> op = new ArrayList<String>() {};
+        for(DropdownListMembers dlm: DropdownListMembers.values()){
+            op.add(dlm.inputText);
+        }
+        return op;
     }
 
 
@@ -101,7 +115,7 @@ public class ExerciseController {
      */
     @RequestMapping(value ="{identifier}", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public Results postRequestExercise(
+    public Results markUserInput(
         @PathVariable("identifier") Exercise exercise,
         @RequestBody SubmittedSolution submittedSolution) throws Exception {
         Results results = new Results();
