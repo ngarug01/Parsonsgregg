@@ -212,9 +212,10 @@ let exercises = null;
         var k = 0;
         var n = drops.length;
         for(k=0 ; k < n ; k++){
-            op += JSON.stringify({input: drops[k].value}, null, '\n');
+            op += drops[k].value + "\n";
         }
-        return op;
+        opf = JSON.stringify({input: op})
+        return opf;
 
     }
 
