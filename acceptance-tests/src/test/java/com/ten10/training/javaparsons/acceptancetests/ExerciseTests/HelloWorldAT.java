@@ -1,7 +1,7 @@
-package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
+package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.ExercisePage;
+import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.hamcrest.MatcherAssert.assertThat;
