@@ -89,7 +89,6 @@
             <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.ten10.training</groupId>
             <artifactId>webapp</artifactId>

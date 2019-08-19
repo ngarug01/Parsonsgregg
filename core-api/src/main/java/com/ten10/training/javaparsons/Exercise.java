@@ -34,6 +34,8 @@ public interface Exercise extends AutoCloseable {
         return null;
     }
 
+    default int getDropdownNumber() {return 1;}
+
     /**
      * Builds and returns a {@link Solution} object based on the provided input. When the {@link Solution#evaluate()}
      * method is called, results will be reported through the {@link ProgressReporter} provided.
