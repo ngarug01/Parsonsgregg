@@ -49,11 +49,15 @@ public abstract class BasePage {
     }
 
     private void setPort() {
-        String port = System.getProperty("test.server.port");
-        if (port.equals("")) {
-            this.port = "8080";
-        } else
-            this.port = port;
+        try {
+            String port = System.getProperty("test.server.port");
+            if (port.equals("")) {
+                this.port = "8080";
+            } else
+                this.port = port;
+        } catch (NullPointerException e) {
+            port = "8080";
+        }
     }
 
     private void setURL() {
