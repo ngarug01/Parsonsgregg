@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
-    private final List<? extends Exercise> exercises;
+    public final List<? extends Exercise> exercises;
 
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
