@@ -235,7 +235,7 @@ let exercises = null;
             document.getElementById('runner-output').innerHTML = response.output;
             makeVisible('runner-output');
         }
-        if (response.succesfulSolution) {
+        if (response.successfulSolution) {
             document.getElementById("correct-answer").innerHTML = "Correct answer. Well done!";
             makeVisible("correct-answer");
         } else {
