@@ -326,39 +326,6 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void timeoutSetToZero() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-        //Arrange
-        ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        EntryPoint entryPoint = new EntryPoint() {
-            @Override
-            public String getEntryPointClass() {
-                return Example.class.getName();
-            }
-
-            @Override
-            public String getEntryPointMethod() {
-                return "exampleMethod";
-            }
-
-            @Override
-            public Class<?>[] getParameterTypes() {
-                return new Class<?>[0];
-            }
-
-            @Override
-            public Object[] getParameters() {
-                return new Object[0];
-            }
-        };
-        runner.timeoutMillis = 0;
-        //Act
-        runner.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
-        //Assert
-        assertEquals(Duration.ZERO.toMillis(), runner.timeoutMillis);
-
-    }
-
-    @Test
     void exceptionIsThrownWhenNoMethodIsPresent() throws ReflectiveOperationException, ExecutionException, InterruptedException {
         //Arrange
         ThreadSolutionRunner runner = new ThreadSolutionRunner();
