@@ -35,7 +35,7 @@ public class Results implements ProgressReporter {
 
     private String output = "";
 
-    private boolean succesfulSolution = false;
+    private boolean successfulSolution = false;
 
     private final List<Information> compilerErrors = new ArrayList<>();
     private final List<Information> compilerInfo = new ArrayList<>();
@@ -77,7 +77,7 @@ public class Results implements ProgressReporter {
      * @param answer {@code True} if successful, {@code False} if unsuccessful.
      */
     public void setSuccessfulSolution(boolean answer) {
-        succesfulSolution = answer;
+        successfulSolution = answer;
     }
 
     @Override
@@ -85,8 +85,8 @@ public class Results implements ProgressReporter {
         runnerErrors.add(new Information(message));
     }
 
-    public boolean isSuccesfulSolution() {
-        return succesfulSolution;
+    public boolean isSuccessfulSolution() {
+        return successfulSolution;
     }
 }
 

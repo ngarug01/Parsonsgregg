@@ -60,7 +60,7 @@ public class ReturnCharAAT {
     void notCharA() {
         page.trySolution(INCORRECT_PROGRAM);
         assertFalse(page.isSuccessful());
-        assertEquals(page.getOutput(), "B");
+        assertEquals("B", page.getOutput());
     }
 
 }

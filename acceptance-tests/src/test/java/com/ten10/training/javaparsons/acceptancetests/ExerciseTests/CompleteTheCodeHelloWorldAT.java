@@ -72,7 +72,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void lineNumbersAreTranslated() {
         page.trySolution(COMPLETE_HELLO_WORLD_INCORRECT);
-        assertEquals(page.getErrorLine(), "Error on line: 1");
+        assertEquals("Error on line: 1", page.getErrorLine());
     }
 
     @Test
@@ -80,7 +80,7 @@ class CompleteTheCodeHelloWorldAT {
     void timeoutError() {
         page.trySolution(COMPLETE_HELLO_WORLD_INFLOOP);
         System.out.println(page.getErrors());
-        assertEquals(page.getErrors().toString(), "[The runner error description was: timeout error]");
+        assertEquals("[The runner error description was: timeout error]", page.getErrors().toString());
     }
 
 }

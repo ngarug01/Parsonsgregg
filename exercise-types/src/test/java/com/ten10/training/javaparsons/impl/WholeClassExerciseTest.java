@@ -35,10 +35,10 @@ class WholeClassExerciseTest {
     }
     @Test
     void getTitleOfExercise(){
-        assertEquals(wholeClassExercise.getTitle(),"Exercise 1: MY NAME");
+        assertEquals("Exercise 1: MY NAME",wholeClassExercise.getTitle());
     }
     @Test
     void getDescription(){
-        assertEquals(wholeClassExercise.getDescription(),"Create a Java class that: \nThe program prints out Answer\n");
+        assertEquals("Create a Java class that: \nThe program prints out Answer\n",wholeClassExercise.getDescription());
     }
 }
