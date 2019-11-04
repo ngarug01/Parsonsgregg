@@ -71,7 +71,7 @@ let exercises = null;
 
         const textbox = document.getElementById("input");
         const dropdowns = document.getElementById("inputEPE");
-        if(exerciseNumber==6){
+        if(selectedExerciseProperties.dropdownCount > 1){
             textbox.style.display = "none";
             dropdowns.style.display = "block";
             n = parseInt(selectedExerciseProperties.dropdownCount)
@@ -129,7 +129,6 @@ let exercises = null;
         clearDropDowns();
         const div = document.getElementById("inputEPE");
         const eod = document.getElementById("endofdrops");
-        var i=0;
         var j=0;
 
         for(j=0 ; j < n ; j++){
@@ -199,16 +198,25 @@ let exercises = null;
         console.log(url);
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", onResultLoaded);
-        var exercise = JSON.stringify({input:
-        document.getElementById("epe1").value +
-        document.getElementById("epe2").value +
-        document.getElementById("epe3").value +
-        document.getElementById("epe4").value +
-        document.getElementById("epe5").value});
+        var exercise = readEPE();
         xhr.open("POST", url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(exercise);
         setLoading();
+    }
+
+    function readEPE() {
+        var op = "";
+        const div = document.getElementById("inputEPE");
+        var drops = div.getElementsByClassName("epe");
+        var k = 0;
+        var n = drops.length;
+        for(k=0 ; k < n ; k++){
+            op += drops[k].value + "\n";
+        }
+        opf = JSON.stringify({input: op})
+        return opf;
+
     }
 
     function onResultLoaded() {

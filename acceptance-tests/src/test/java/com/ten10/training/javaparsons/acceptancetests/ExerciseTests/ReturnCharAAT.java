@@ -1,7 +1,7 @@
-package com.ten10.training.javaparsons.acceptancetests.ExersiseTests;
+package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 
 
-import com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects.ExercisePage;
+import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;

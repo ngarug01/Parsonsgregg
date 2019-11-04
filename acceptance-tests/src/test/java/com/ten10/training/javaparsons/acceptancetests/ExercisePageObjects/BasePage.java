@@ -1,7 +1,6 @@
-package com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects;
+package com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -50,11 +49,15 @@ public abstract class BasePage {
     }
 
     private void setPort() {
-        String port = System.getProperty("test.server.port");
-        if (port.equals("")) {
-            this.port = "8080";
-        } else
-            this.port = port;
+        try {
+            String port = System.getProperty("test.server.port");
+            if (port.equals("")) {
+                this.port = "8080";
+            } else
+                this.port = port;
+        } catch (NullPointerException e) {
+            port = "8080";
+        }
     }
 
     private void setURL() {

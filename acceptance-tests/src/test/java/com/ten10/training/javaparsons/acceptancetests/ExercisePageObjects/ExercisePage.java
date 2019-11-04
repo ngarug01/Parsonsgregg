@@ -1,8 +1,7 @@
-package com.ten10.training.javaparsons.acceptancetests.ExersisePageObjects;
+package com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -18,6 +17,7 @@ public class ExercisePage extends BasePage {
     private static final By EXERCISE_LIST = By.cssSelector("#ExerciseList");
     private static final By INPUT_BOX = By.cssSelector("#input-box");
     private static final By SUBMIT_BUTTON = By.cssSelector("#enter-answer");
+    private static final By SUBMIT_BUTTON_EPE = By.id("enter-answer-epe");
     private static final By OUTPUT_BOX = By.id("runner-output");
     private static final By CORRECT_ANSWER_BOX = By.id("correct-answer");
     private static final By INCORRECT_BOX = By.id("incorrect-answer");
@@ -25,6 +25,7 @@ public class ExercisePage extends BasePage {
     private static final By DESCRIPTION = By.id("Description");
     private static final By PREFIX_CODE_BOX = By.cssSelector("#preceding-code-box");
     private static final By SUFFIX_CODE_BOX = By.cssSelector("#following-code-box");
+
 
 
     // Conditions
@@ -60,6 +61,16 @@ public class ExercisePage extends BasePage {
         driver.findElements(INPUT_BOX).clear();
     }
 
+    private void clearSolutionBoxEPE() {
+        Select select;
+        int i=1;
+        while(driver.findElements(By.id("epe"+i)).size()!=0){
+            select = new Select(driver.findElement(By.id("epe"+(i))));
+            select.selectByIndex(0);
+            i++;
+        }
+    }
+
     private void typeSolution(String solution) {
         driver.findElement(INPUT_BOX).sendKeys(solution);
     }
@@ -69,10 +80,21 @@ public class ExercisePage extends BasePage {
         waitUntilLoadFinished();
     }
 
+    private void submitSolutionEPE() {
+        driver.findElement(SUBMIT_BUTTON_EPE).click();
+        waitUntilLoadFinished();
+    }
+
     public void trySolution(String solution) {
         clearSolutionBox();
         typeSolution(solution);
         submitSolution();
+    }
+
+    public void trySolutionEPE(int[] input) {
+        clearSolutionBoxEPE();
+        dropdownSelect(input);
+        submitSolutionEPE();
     }
 
     public String getOutput() {
@@ -138,5 +160,13 @@ public class ExercisePage extends BasePage {
     public void goToHomepage() {
         super.goToHomepage();
         waitUntilLoadFinished();
+    }
+
+    public void dropdownSelect(int[] input) {
+        Select select;
+        for(int i=0; i<input.length; i++){
+            select = new Select(driver.findElement(By.id("epe"+(i+1))));
+            select.selectByIndex(input[i]);
+        }
     }
 }
