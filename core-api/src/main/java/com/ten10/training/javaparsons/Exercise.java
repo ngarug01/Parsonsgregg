@@ -6,34 +6,19 @@ package com.ten10.training.javaparsons;
  * <p>It should not be necessary to implement this interface, instead fetch instances using
  * {@link ExerciseRepository#getExerciseByIdentifier(int)}.
  */
-public interface Exercise extends AutoCloseable {
+public interface Exercise extends ExerciseInformation {
 
-    /**
-     *
-     * @return the identifier identifying the exercise.
-     */
-    int getIdentifier();
-
-    /**
-     *
-     * @return the stored title of this exercise.
-     */
-    String getTitle();
-
-    /**
-     *
-     * @return the stored Description of this exercise.
-     */
-    String getDescription();
-
+    @Override
     default String getPrecedingCode(){
         return null;
     }
 
+    @Override
     default String getFollowingCode() {
         return null;
     }
 
+    @Override
     default int getDropdownNumber() {return 1;}
 
     /**
