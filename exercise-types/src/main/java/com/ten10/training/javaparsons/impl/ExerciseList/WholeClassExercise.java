@@ -120,6 +120,9 @@ public class WholeClassExercise implements Exercise {
      */
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
+        if (null != prefixCode) {
+            progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
+        }
         return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
     }
 

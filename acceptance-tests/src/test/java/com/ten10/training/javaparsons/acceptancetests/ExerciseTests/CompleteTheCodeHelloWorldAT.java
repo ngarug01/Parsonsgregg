@@ -50,7 +50,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void descriptionChanges() {
 
-        assertTrue(page.getDescription().contains("Complete the Java code"));
+        assertTrue(page.getDescription().contains("The program prints out Hello World!"));
     }
 
     @Test
@@ -72,7 +72,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void lineNumbersAreTranslated() {
         page.trySolution(COMPLETE_HELLO_WORLD_INCORRECT);
-        assertEquals(page.getErrorLine(), "Error on line: 1");
+            assertEquals("Error on line: 1", page.getErrorLine());
     }
 
     @Test
