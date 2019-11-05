@@ -22,7 +22,7 @@ public class WholeClassExercise implements Exercise {
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
-//    private final List<CompleteTheCodeChecker> completetheCodeCheckers;
+//    private final List<CompleteTheCodeChecker> completeTheCodeCheckers;
 
 
     /**
@@ -51,7 +51,7 @@ public class WholeClassExercise implements Exercise {
         this.methodReturnValueCheckers = methodReturnValueCheckers;
         this.prefixCode = prefixCode;
         this.suffixCode = suffixCode;
-//        this.completetheCodeCheckers = completetheCodeCheckers;
+//        this.completeTheCodeCheckers = completeTheCodeCheckers;
 
     }
 

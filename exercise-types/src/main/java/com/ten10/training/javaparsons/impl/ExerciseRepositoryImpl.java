@@ -11,11 +11,12 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
-    public final List<? extends Exercise> exercises;
+    public final List<Exercise> exercises;
 
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
@@ -55,4 +56,11 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public int getExerciseArraySize() {
         return exercises.size();
     }
+
+    @Override
+    public Iterator<Exercise> iterator() {
+        return exercises.iterator();
+    }
+
+
 }

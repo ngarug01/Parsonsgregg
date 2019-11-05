@@ -73,9 +73,20 @@ public class ExerciseController {
     @ResponseBody
     public List<ExerciseInformation> getExercises() {
         List<ExerciseInformation> combinedExerciseParameters = new ArrayList<>();
-        for (int i = 1; i <= exerciseRepository.getExerciseArraySize(); i++) {
-            Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
-            combinedExerciseParameters.add(new ExerciseInformation("exercise/" + i
+//        for (int i = 1; i <= exerciseRepository.getExerciseArraySize(); i++) {
+//            Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
+//            combinedExerciseParameters.add(new ExerciseInformation("exercise/" + i
+//                ,exercise.getTitle()
+//                ,exercise.getDescription()
+//                ,exercise.getPrecedingCode()
+//                ,exercise.getFollowingCode()
+//                ,exercise.getDropdownNumber()
+//            ));
+//
+//        }
+            for (Exercise exercise : exerciseRepository) {
+            int id = exercise.getIdentifier();
+            combinedExerciseParameters.add(new ExerciseInformation("exercise/" + id
                 ,exercise.getTitle()
                 ,exercise.getDescription()
                 ,exercise.getPrecedingCode()
