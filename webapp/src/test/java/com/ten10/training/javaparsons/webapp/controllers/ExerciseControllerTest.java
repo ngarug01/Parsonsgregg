@@ -85,20 +85,5 @@ class ExerciseControllerTest {
         assertThat(output, is("{\"output\":\"Null\",\"successfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 
-    private static final ExerciseController.ExerciseInformation exerciseInformation = new ExerciseController.ExerciseInformation("URL", "Title", "Description", "code", "code", 1);
 
-    @Test
-    void exerciseInformationGetURL () {
-        assertEquals(exerciseInformation.getUrl(), "URL");
-    }
-
-    @Test
-    void exerciseInformationGetTitle () {
-        assertEquals(exerciseInformation.getTitle(), "Title");
-    }
-
-    @Test
-    void exerciseInformationGetDescription () {
-        assertEquals(exerciseInformation.getDescription(), "Description");
-    }
 }
