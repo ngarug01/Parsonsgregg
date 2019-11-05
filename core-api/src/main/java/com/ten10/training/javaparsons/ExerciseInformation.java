@@ -1,6 +1,6 @@
 package com.ten10.training.javaparsons;
 
-public interface ExerciseInformation extends AutoCloseable {
+public interface ExerciseInformation {
     /**
      *
      * @return the identifier identifying the exercise.
@@ -19,9 +19,13 @@ public interface ExerciseInformation extends AutoCloseable {
      */
     String getDescription();
 
-    String getPrecedingCode();
+    default String getPrecedingCode(){
+        return null;
+    }
 
-    String getFollowingCode();
+    default String getFollowingCode() {
+        return null;
+    }
 
-    int getDropdownNumber();
+    default int getDropdownNumber() {return 1;}
 }

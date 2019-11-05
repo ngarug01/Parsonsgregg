@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
@@ -42,7 +43,8 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     @Override
     public Exercise getExerciseByIdentifier(int identifier) {
         for (Exercise exercise : exercises) {
-            if (exercise.getIdentifier() == identifier) {
+            ExerciseInformation info = exercise.getInformation();
+            if (info.getIdentifier() == identifier) {
                 return exercise;
             }
         }

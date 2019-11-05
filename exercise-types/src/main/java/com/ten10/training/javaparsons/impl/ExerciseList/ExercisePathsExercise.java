@@ -1,13 +1,14 @@
 package com.ten10.training.javaparsons.impl.ExerciseList;
 
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.ExercisePathsExerciseSolution;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
-public class ExercisePathsExercise implements Exercise {
+public class ExercisePathsExercise implements Exercise, ExerciseInformation {
 
     private final String exerciseName;
     private SolutionCompiler compiler;
@@ -43,6 +44,12 @@ public class ExercisePathsExercise implements Exercise {
         return  description+ " " + exerciseName;
     }
 
+    //TODO Cara look here
+    @Override
+    public ExerciseInformation getInformation() {
+        return null;
+    }
+
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws Exception {
         return new ExercisePathsExerciseSolution(compiler, runner, userInput, answer,  progressReporter);
@@ -51,8 +58,5 @@ public class ExercisePathsExercise implements Exercise {
     @Override
     public int getDropdownNumber() { return dropdownNumber; }
 
-    @Override
-    public void close() throws Exception {
 
-    }
 }

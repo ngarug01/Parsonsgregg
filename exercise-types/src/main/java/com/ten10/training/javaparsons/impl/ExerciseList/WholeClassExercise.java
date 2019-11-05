@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl.ExerciseList;
 
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
@@ -12,7 +13,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
 
-public class WholeClassExercise implements Exercise {
+public class WholeClassExercise implements Exercise, ExerciseInformation {
     private final String exerciseName;
     private final String prefixCode;
     private final String suffixCode;
@@ -113,6 +114,11 @@ public class WholeClassExercise implements Exercise {
 
     }
 
+    @Override
+    public ExerciseInformation getInformation() {
+        return this;
+    }
+
     /**
      * @param userInput        The input provided by the user.
      * @param progressReporter The callback object to use when reporting compilation and test results.
@@ -123,7 +129,4 @@ public class WholeClassExercise implements Exercise {
         return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
     }
 
-    @Override
-    public void close() throws Exception {
-    }
 }

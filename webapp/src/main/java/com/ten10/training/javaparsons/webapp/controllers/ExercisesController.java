@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,13 +35,14 @@ public class ExercisesController {
     public List<ExerciseController.ExerciseInformation> getExercises() {
         List<ExerciseController.ExerciseInformation> combinedExerciseParameters = new ArrayList<>();
         for (Exercise exercise : exerciseRepository) {
-            int id = exercise.getIdentifier();
+            ExerciseInformation info = exercise.getInformation();
+            int id = info.getIdentifier();
             combinedExerciseParameters.add(new ExerciseController.ExerciseInformation("exercise/" + id
-                ,exercise.getTitle()
-                ,exercise.getDescription()
-                ,exercise.getPrecedingCode()
-                ,exercise.getFollowingCode()
-                ,exercise.getDropdownNumber()
+                ,info.getTitle()
+                ,info.getDescription()
+                ,info.getPrecedingCode()
+                ,info.getFollowingCode()
+                ,info.getDropdownNumber()
             ));
 
         }

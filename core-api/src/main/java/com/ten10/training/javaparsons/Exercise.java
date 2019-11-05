@@ -6,20 +6,9 @@ package com.ten10.training.javaparsons;
  * <p>It should not be necessary to implement this interface, instead fetch instances using
  * {@link ExerciseRepository#getExerciseByIdentifier(int)}.
  */
-public interface Exercise extends ExerciseInformation {
+public interface Exercise {
 
-    @Override
-    default String getPrecedingCode(){
-        return null;
-    }
-
-    @Override
-    default String getFollowingCode() {
-        return null;
-    }
-
-    @Override
-    default int getDropdownNumber() {return 1;}
+    ExerciseInformation getInformation();
 
     /**
      * Builds and returns a {@link Solution} object based on the provided input. When the {@link Solution#evaluate()}
