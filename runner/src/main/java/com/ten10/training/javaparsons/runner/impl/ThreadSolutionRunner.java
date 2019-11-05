@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.runner.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
 
     @Override
-    public RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException {
+    public RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) {
         // Pull data out of the entry point object
         String entryPointClassName = solution.getEntryPointClass();
         String entryPointMethodName = solution.getEntryPointMethod();
@@ -40,11 +41,24 @@ public class ThreadSolutionRunner implements SolutionRunner {
         Object[] parameters = solution.getParameters();
         // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
         if (parameters.length != parameterTypes.length) {
-            throw new IllegalArgumentException("parameter types and parameters must be the same length");
+            throw new IllegalArgumentException("Parameter types and parameters must be the same length");
+        }
+        for (int i = 0; i < parameters.length; i++) {
+            String a = parameters[i].getClass().toString().toLowerCase();
+            String b = parameterTypes[i].toString().toLowerCase();
+            if (!a.contains(b)) {
+                throw new IllegalArgumentException("The types must match the parameters");
+            }
         }
 
+
         // Locate the method we are going to invoke
-        Class<?> klass = classLoader.loadClass(entryPointClassName);
+        Class<?> klass = null;
+        try {
+            klass = classLoader.loadClass(entryPointClassName);
+        } catch (ClassNotFoundException e) {
+            progressReporter.reportRunnerError("No such class " + entryPointClassName);
+        }
         Method method;
         try {
             method = klass.getMethod(entryPointMethodName, parameterTypes);
@@ -55,7 +69,22 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
         Object instance = null;
         if (!Modifier.isStatic(method.getModifiers())) {
-            instance = klass.getDeclaredConstructor().newInstance();
+            if (!entryPointMethodName.equals("main")) {
+                try {
+                    instance = klass.getDeclaredConstructor().newInstance();
+                } catch (InstantiationException e) {
+                    progressReporter.reportRunnerError("Class object cannot be instantiated because it is an interface or an abstract class");
+                } catch (IllegalAccessException e) {
+                    progressReporter.reportRunnerError("Cannot access method due to visibility qualifiers");
+                } catch (InvocationTargetException e) {
+                    progressReporter.reportRunnerError("Exception thrown by an invoked method or constructor");
+                } catch (NoSuchMethodException e) {
+                    progressReporter.reportRunnerError("No such method");
+                }
+            } else {
+                progressReporter.reportRunnerError("main method should be static");
+                return FAILURE;
+            }
         }
         final Object finalInstance = instance;
 
@@ -91,6 +120,15 @@ public class ThreadSolutionRunner implements SolutionRunner {
             progressReporter.reportRunnerError("timeout error");
             return FAILURE;
 
+        } catch (InterruptedException e) {
+            future.cancel(true);
+            progressReporter.reportRunnerError("interrupted error");
+            return FAILURE;
+
+        } catch (ExecutionException e) {
+            future.cancel(true);
+            progressReporter.reportRunnerError("execution error");
+            return FAILURE;
 
         } finally {
             executor.shutdownNow();

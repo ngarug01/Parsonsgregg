@@ -44,7 +44,7 @@ public interface SolutionRunner {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) throws ReflectiveOperationException, ExecutionException, InterruptedException;
+    RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
 
 }
 

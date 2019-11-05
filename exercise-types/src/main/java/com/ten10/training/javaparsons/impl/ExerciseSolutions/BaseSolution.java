@@ -84,7 +84,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @throws Exception Exceptions when
      */
     @Override
-    public boolean evaluate() throws Exception {
+    public boolean evaluate() {
         if (!compile()) {
             return false;
         }
@@ -164,7 +164,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run()  {
         captureConsoleOutput.start();
         try {
             return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
