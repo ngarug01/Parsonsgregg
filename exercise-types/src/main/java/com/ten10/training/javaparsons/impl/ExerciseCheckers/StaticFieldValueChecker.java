@@ -29,7 +29,7 @@ public class StaticFieldValueChecker implements ClassChecker {
                 progressReporter.reportRunnerError("Incorrect number of fields");
                 return false;
             } else if (!(Modifier.isStatic(klassFields[0].getModifiers()))) {
-                progressReporter.reportRunnerError("Field no static");
+                progressReporter.reportRunnerError("Field not static");
                 return false;
             } else {
                 Field field = klassFields[0];

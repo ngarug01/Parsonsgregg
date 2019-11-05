@@ -19,9 +19,6 @@ import java.util.List;
 @RequestMapping("/exercise/")
 public class ExerciseController {
 
-    @Autowired
-    ExerciseRepository exerciseRepository;
-
     public static class ExerciseInformation {
         private final String url;
         private final String title;
@@ -59,44 +56,6 @@ public class ExerciseController {
 
     }
 
-
-    /**
-     * <p>
-     *     When {@link org.springframework.boot.autoconfigure.SpringBootApplication} receives a GET request with the
-     *     value {@code getExercises} this method is called and run.</p>
-     * <p>
-     *     This method gets all stored {@link Exercise} in the {@link ExerciseRepository} as {@link ExerciseInformation}.
-     * </p>
-     * @return a list of all exercises with the title and description
-     */
-    @RequestMapping(value = "getExercises", method = RequestMethod.GET, produces = "application/json")
-    @ResponseBody
-    public List<ExerciseInformation> getExercises() {
-        List<ExerciseInformation> combinedExerciseParameters = new ArrayList<>();
-//        for (int i = 1; i <= exerciseRepository.getExerciseArraySize(); i++) {
-//            Exercise exercise = exerciseRepository.getExerciseByIdentifier(i);
-//            combinedExerciseParameters.add(new ExerciseInformation("exercise/" + i
-//                ,exercise.getTitle()
-//                ,exercise.getDescription()
-//                ,exercise.getPrecedingCode()
-//                ,exercise.getFollowingCode()
-//                ,exercise.getDropdownNumber()
-//            ));
-//
-//        }
-            for (Exercise exercise : exerciseRepository) {
-            int id = exercise.getIdentifier();
-            combinedExerciseParameters.add(new ExerciseInformation("exercise/" + id
-                ,exercise.getTitle()
-                ,exercise.getDescription()
-                ,exercise.getPrecedingCode()
-                ,exercise.getFollowingCode()
-                ,exercise.getDropdownNumber()
-            ));
-
-        }
-        return combinedExerciseParameters;
-    }
 
     @RequestMapping(value = "getDropdownListMembers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody

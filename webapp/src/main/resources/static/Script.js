@@ -13,7 +13,7 @@ let exercises = null;
 
     function loadExercises() {
         const xhr = new XMLHttpRequest();
-        const exercisesPath = "/exercise/getExercises";
+        const exercisesPath = "/getExercises";
         let url;
         // If we're in local development, point at a local webserver.
         if (document.location.href.startsWith("file:///")) {
