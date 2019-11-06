@@ -16,9 +16,12 @@ import java.util.List;
 @RequestMapping("/")
 public class ExercisesController {
 
-    @Autowired
-    ExerciseRepository exerciseRepository;
+    Iterable<Exercise> exerciseRepository;
 
+    @Autowired
+    public ExercisesController(Iterable<Exercise> exerciseRepository) {
+        this.exerciseRepository = exerciseRepository;
+    }
 
     /**
      * <p>
