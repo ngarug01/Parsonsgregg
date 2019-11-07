@@ -1,5 +1,10 @@
 package com.ten10.training.javaparsons.webapp.controllers;
 
+import com.ten10.training.javaparsons.ExerciseRepository;
+import com.ten10.training.javaparsons.ProgressReporter;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.webapp.views.ExerciseDetails;
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseInformation;
@@ -10,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,44 +23,27 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ExercisesControllerTest {
-//TODO: Fix
-//
-//
-//    private final ExerciseInformation exerciseInformation = new ExerciseInformation() {
-//        @Override
-//        public int getIdentifier() {
-//            return 1;
-//        }
-//
-//        @Override
-//        public String getTitle() {
-//            return "Test Exercise 1";
-//        }
-//
-//        @Override
-//        public String getDescription() {
-//            return "Do the thing";
-//        }
-//    };
-//
-//    @Mock
-//    Exercise exercise;
-//    private Iterable<Exercise> exercises;
-//    private ExercisesController exercisesController;
-//
-//
-//    @BeforeEach
-//    public void setup() {
-//        exercises = singletonList(exercise);
-//        exercisesController = new ExercisesController(exercises);
-//    }
-//
-//    @Test
-//    public void testControllerList() {
-//        when(exercise.getInformation()).thenReturn(exerciseInformation);
-//
-//        List<ExerciseController.ExerciseInformation> exerciseList = exercisesController.getExercises();
-//
-//        assertNotNull(exerciseList);
-//    }
+
+    @Mock
+    private ExerciseRepository exercises;
+    private ExercisesController exercisesController;
+
+
+    @BeforeEach
+    public void setup() {
+        exercises = new ExerciseRepositoryImpl((solution, progressReporter) -> false, (classLoader, solution, progressReporter) -> null);
+        exercisesController = new ExercisesController(exercises);
+    }
+
+    @Test
+    public void testControllerCreatesList() {
+        List<ExerciseDetails> exerciseList = exercisesController.getExercises();
+        assertNotNull(exerciseList);
+    }
+
+    @Test
+    public void exercisesControllerCoversAllExercises() {
+        List<ExerciseDetails> exerciseList = exercisesController.getExercises();
+        assertEquals(exercises.getExercisesSize(), exerciseList.size());
+    }
 }

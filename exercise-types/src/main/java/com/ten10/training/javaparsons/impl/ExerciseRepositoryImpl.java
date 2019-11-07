@@ -32,9 +32,11 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         WholeClassExercise returnChar = new WholeClassExercise(compiler, runner, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns a Char with value 'A'", 'A'))), "Return Char A", 5,null,null);
         WholeClassExercise completeTheCodeHelloWorld = new WholeClassExercise(compiler, runner, new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))), new ArrayList<>(), new ArrayList<>(), "Complete the code - Hello World!", 6,"public class Main { \npublic static void main (String[] args) {","}\n}");
         exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, completeTheCodeHelloWorld);
-
     }
 
+    public int getExercisesSize() {
+        return exercises.size();
+    }
 
     /**
      * @param identifier The unique identifier for an exercise
