@@ -1,11 +1,6 @@
 package com.ten10.training.javaparsons;
 
 public interface ExerciseInformation {
-    /**
-     *
-     * @return the identifier identifying the exercise.
-     */
-    int getIdentifier();
 
     /**
      *

@@ -41,22 +41,13 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
      * @return The exercise with a given id.
      */
     @Override
-    public Exercise getExerciseByIdentifier(int identifier) {
-        for (Exercise exercise : exercises) {
-            ExerciseInformation info = exercise.getInformation();
-            if (info.getIdentifier() == identifier) {
-                return exercise;
-            }
-        }
-        return null;
+    public Exercise getExerciseByIdentifier(int identifier){
+        return exercises.get(identifier);
     }
 
-    /**
-     * @return The number of exercises available.
-     */
     @Override
-    public int getExerciseArraySize() {
-        return exercises.size();
+    public int getIdentifierFor(Exercise exercise) {
+        return exercises.indexOf(exercise);
     }
 
     @Override

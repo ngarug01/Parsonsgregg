@@ -13,7 +13,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
 
-public class WholeClassExercise implements Exercise, ExerciseInformation {
+public class WholeClassExercise implements Exercise{
     private final String exerciseName;
     private final String prefixCode;
     private final String suffixCode;
@@ -57,53 +57,7 @@ public class WholeClassExercise implements Exercise, ExerciseInformation {
     }
 
 
-    /**
-     * @return The unique identifier of an exercise.
-     */
-    @Override
-    public int getIdentifier() {
-        return id;
-    }
 
-    /**
-     * @return A string containing the name of the exercise.
-     */
-    @Override
-    public String getTitle() {
-        return "Exercise " + getIdentifier() + ": " + exerciseName;
-    }
-
-    /**
-     * @return A string containing the description and instruction of an exercise.
-     */
-
-    @Override
-    public String getDescription() {
-        StringBuilder goals = new StringBuilder();
-        goals.append("Create a Java class that: \n");
-        for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
-            goals.append(checker.getGoal());
-        }
-        for (ClassChecker checker : classCheckers) {
-            goals.append(checker.getGoal());
-        }
-        for (CapturedOutputChecker checker : capturedOutputCheckers) {
-            goals.append(checker.getGoal());
-        }
-        return goals.toString();
-    }
-
-    @Override
-    public String getPrecedingCode() {
-
-        return prefixCode;
-    }
-
-    @Override
-    public String getFollowingCode() {
-
-        return suffixCode;
-    }
 
     public String returnAppendedUserInput(String userInput) {
         if (prefixCode != null && suffixCode != null) {
@@ -116,7 +70,55 @@ public class WholeClassExercise implements Exercise, ExerciseInformation {
 
     @Override
     public ExerciseInformation getInformation() {
-        return this;
+        return new ExerciseInformation() {
+
+            @Override
+            public String getPrecedingCode() {
+
+                return prefixCode;
+            }
+
+            @Override
+            public String getFollowingCode() {
+
+                return suffixCode;
+            }
+            /**
+             * @return The unique identifier of an exercise.
+             */
+            private int getIdentifier() {
+                return id;
+            }
+
+            /**
+             * @return A string containing the name of the exercise.
+             */
+            @Override
+            public String getTitle() {
+                return "Exercise " + getIdentifier() + ": " + exerciseName;
+            }
+
+            /**
+             * @return A string containing the description and instruction of an exercise.
+             */
+
+            @Override
+            public String getDescription() {
+                StringBuilder goals = new StringBuilder();
+                goals.append("Create a Java class that: \n");
+                for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
+                    goals.append(checker.getGoal());
+                }
+                for (ClassChecker checker : classCheckers) {
+                    goals.append(checker.getGoal());
+                }
+                for (CapturedOutputChecker checker : capturedOutputCheckers) {
+                    goals.append(checker.getGoal());
+                }
+                return goals.toString();
+            }
+
+        };
     }
 
     /**

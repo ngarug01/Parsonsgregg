@@ -19,43 +19,6 @@ import java.util.List;
 @RequestMapping("/exercise/")
 public class ExerciseController {
 
-    public static class ExerciseInformation {
-        private final String url;
-        private final String title;
-        private final String description;
-        private final String precedingCode;
-        private final String followingCode;
-        private final int dropdownCount;
-
-        ExerciseInformation(String URL, String title, String description, String precedingCode, String followingCode, int dropdownCount) {
-            url = URL;
-            this.title = title;
-            this.description = description;
-            this.precedingCode = precedingCode;
-            this.followingCode = followingCode;
-            this.dropdownCount = dropdownCount;
-        }
-
-        /**
-         * @return The title of this {@link Exercise}.
-         */
-        public String getTitle() {
-            return title;
-        }
-
-        /**
-         * @return the URL of this {@link Exercise}.
-         */
-        public String getUrl() {
-            return url;
-        }
-        public String getDescription() { return description;}
-        public String getPrecedingCode() { return precedingCode;}
-        public String getFollowingCode() { return followingCode;}
-        public int getDropdownCount() { return dropdownCount; }
-
-    }
-
 
     @RequestMapping(value = "getDropdownListMembers", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
