@@ -128,6 +128,8 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @return True if the output matches, else return False.
      * @throws Exception Exceptions when
      */
+    ArrayList<Boolean> results = new ArrayList<>();
+
     @Override
     public boolean evaluate() {
         if (!compile()) {
@@ -139,7 +141,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
             return false;
         }
 
-        ArrayList<Boolean> results = new ArrayList<>();
+
         for (CapturedOutputChecker checker : capturedOutputCheckers) {
             results.add(checker.validate(output, progressReporter));
         }
@@ -220,6 +222,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     }
 
     private boolean getClassFields(ClassLoader classLoader) {
+        results.clear();
         try {
             Class<?> klass = classLoader.loadClass(entryPoint.getEntryPointClass());
             klassFields = klass.getFields();
@@ -227,7 +230,8 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                 return true;
             }
             else{
-                progressReporter.reportRunnerError("There is no fields here.");
+                progressReporter.reportRunnerError("There are no fields here.");
+                results.add(false);
                 return false;
             }
         } catch (ClassNotFoundException e) {

@@ -39,6 +39,10 @@ public class StaticFieldValueChecker implements ClassChecker {
                         progressReporter.storeCapturedOutput(field.get(field).toString());
                         return true;
                     }
+                    if (!field.get(field).equals(answer)) {
+                        progressReporter.reportRunnerError("Expected int " + answer);
+                        return false;
+                    }
                 } catch (IllegalAccessException e) {
                     progressReporter.reportRunnerError("No access to field: " + field.getName());
                 }
