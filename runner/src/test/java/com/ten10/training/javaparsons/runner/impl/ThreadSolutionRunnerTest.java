@@ -1,30 +1,42 @@
 package com.ten10.training.javaparsons.runner.impl;
-
 import com.ten10.training.javaparsons.ProgressReporter;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
+import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
+
+
+
 
 class ThreadSolutionRunnerTest {
+
 
     private static final AtomicBoolean exampleMethodCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesArgsCalled = new AtomicBoolean(false);
     private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private static ClassLoader classLoader = mock(ClassLoader.class);
+    private static EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
+
+
 
     @SuppressWarnings("unused")
     static class Example {
@@ -42,7 +54,6 @@ class ThreadSolutionRunnerTest {
             takesArgsCalled.set(true);
         }
 
-
         public void instanceMethod() {
             instanceMethodCalled.set(true);
         }
@@ -51,44 +62,66 @@ class ThreadSolutionRunnerTest {
 
     @Test
     void runShouldBeAbleToCallStaticMethodOnClass() throws ReflectiveOperationException, ExecutionException, InterruptedException {
-        // Arrange
-        exampleMethodCalled.set(false);
-        ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        EntryPoint callInformation = new EntryPoint() {
+        /**
+         EntryPoint callInformation = new EntryPoint() {
 
-            @Override
-            public String getEntryPointClass() {
-                return Example.class.getName();
-            }
+        @Override
+        public String getEntryPointClass() {
+        return Example.class.getName();
+        }
 
-            @Override
-            public String getEntryPointMethod() {
-                return "exampleMethod";
-            }
+        @Override
+        public String getEntryPointMethod() {
+        return "exampleMethod";
+        }
 
-            @Override
-            public Class<?>[] getParameterTypes() {
-                return new Class<?>[0];
-            }
+        @Override
+        public Class<?>[] getParameterTypes() {
+        return new Class<?>[0];
+        }
 
-            @Override
-            public Object[] getParameters() {
-                return new Object[0];
-            }
+        @Override
+        public Object[] getParameters() {
+        return new Object[0];
+        }
         };
-        // Act
-        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+
+         **/
+        // Arrange
+
+        exampleMethodCalled.set(false);
+        EntryPointBuilder entryPointBuilder =startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("exampleMethod")
+            .parameterTypesList( new Class<?>[0])
+            .getParameter(new Object[0]);
+
+        //Act
+        EntryPoint entryPoint = entryPointBuilder.build();
+        LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
+        loadedEntryPoint.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
+
         //Assert
-        //assertTrue(result, "run() should have completed successfully");
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
     }
 
+
+
     @Test
-    void runThrowsExceptionWhenParameterListArentEqual() {
+    void runThrowsExceptionWhenParameterListArentEqual() throws ClassNotFoundException {
         //Arrange
-        ClassLoader classLoader = mock(ClassLoader.class);
-        ThreadSolutionRunner threadSolutionRunner = new ThreadSolutionRunner();
+        EntryPointBuilder entryPointBuilder =startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("exampleMethod")
+            .parameterTypesList( new Class<?>[2])
+            .getParameter(new Object[1]);
+
+        EntryPoint entryPoint = entryPointBuilder.build();
+        LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
+
+        /**
         EntryPoint entryPoint = new EntryPoint() {
+
 
             @Override
             public String getEntryPointClass() {
@@ -110,17 +143,26 @@ class ThreadSolutionRunnerTest {
                 return new Object[1];
             }
         };
+
+        **/
         //Assert
-        assertThrows(IllegalArgumentException.class, () -> threadSolutionRunner.run(classLoader, entryPoint, progressReporter));
+        assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run(classLoader, entryPoint, progressReporter));
     }
 
     @Test
     @Tag("slow")
-    void methodsShouldTimeOut() {
-        // Arrange
-        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        final EntryPoint callInformation = new EntryPoint() {
+    void methodsShouldTimeOut() throws ClassNotFoundException {
+         //Arrange
+            EntryPointBuilder entryPointBuilder =startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("blockForever")
+            .parameterTypesList( new Class<?>[0])
+            .getParameter(new Object[0]);
 
+            EntryPoint callInformation = entryPointBuilder.build();
+            LoadedEntryPoint loadedEntryPoint=callInformation.load(classLoader);
+
+            /**
             @Override
             public String getEntryPointClass() {
                 return Example.class.getName();
@@ -141,17 +183,25 @@ class ThreadSolutionRunnerTest {
                 return new Object[0];
             }
         };
-        runner.setTimeout(500, TimeUnit.MILLISECONDS);
-        // Act
-        //Assert
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
+        **/
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
     }
 
     @Test
     void methodsShouldAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         // Arrange
-        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-        final EntryPoint callInformation = new EntryPoint() {
+        EntryPointBuilder entryPointBuilder =startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("takesArgs")
+            .parameterTypesList( new Class<?>[]{int.class, int.class})
+            .getParameter(new Object[]{1,3});
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        LoadedEntryPoint loadedEntryPoint=callInformation.load(classLoader);
+
+
+        /**final EntryPoint callInformation = new EntryPoint() {
 
             @Override
             public String getEntryPointClass() {
@@ -173,19 +223,32 @@ class ThreadSolutionRunnerTest {
                 return new Object[]{1, 3};
             }
         };
-        runner.setTimeout(500, TimeUnit.MILLISECONDS);
+         **/
+
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
-        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        //assertTrue(result, "run() should have completed successfully");
+//        assertTrue(result, "run() should have completed successfully");
+        loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
+
 
 
     @Test
     void handleInstanceMethods() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         // Arrange
-        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+
+        EntryPointBuilder entryPointBuilder =startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("instanceMethod")
+            .parameterTypesList( new Class<?>[0])
+            .getParameter(new Object[0]);
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        LoadedEntryPoint loadedEntryPoint=callInformation.load(classLoader);
+
+        /**
         final EntryPoint callInformation = new EntryPoint() {
 
             @Override
@@ -208,11 +271,11 @@ class ThreadSolutionRunnerTest {
                 return new Object[0];
             }
         };
-        runner.setTimeout(500, TimeUnit.MILLISECONDS);
-        // Act
-        /*boolean result = */runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        **/
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
+         //Act
+        loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
         //Assert
-        //assertTrue(result, "run() should have completed successfully");
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
 }

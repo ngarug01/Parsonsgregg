@@ -4,8 +4,41 @@ import com.ten10.training.javaparsons.ProgressReporter;
 
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
 
 public interface SolutionRunner {
+                                         //An extra class with EntryPointBuilderImplementation
+    interface EntryPointBuilder {
+        EntryPointBuilder className(String className);
+        EntryPointBuilder methodName(String methodName);
+        EntryPointBuilder parameterTypesList(Class<?>... parameterTypes);
+        EntryPointBuilder getParameter(Object[] parameterList);
+        EntryPoint build();
+    }
+
+    interface EntryPoint {
+
+        ClassLoader getClassLoader();
+
+        String getEntryPointClass();
+
+        String getEntryPointMethod();
+
+        Class<?>[] getParameterTypes();
+
+        Object[] getParameters();
+
+        LoadedEntryPoint load(ClassLoader classLoader) throws ClassNotFoundException;
+
+    }
+
+    interface LoadedEntryPoint {
+        RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
+        public void setTimeout(long count, TimeUnit timeUnit);
+    }
+
+    /**
     interface EntryPoint {
 
         String getEntryPointClass();
@@ -15,7 +48,9 @@ public interface SolutionRunner {
         Class<?>[] getParameterTypes();
 
         Object[] getParameters();
+
     }
+     **/
 
     /**
      * If the application runs with no time outs, and there is a return value,
@@ -44,7 +79,7 @@ public interface SolutionRunner {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
-
+//    RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
+//    EntryPointBuilder entryPoint();
 }
 

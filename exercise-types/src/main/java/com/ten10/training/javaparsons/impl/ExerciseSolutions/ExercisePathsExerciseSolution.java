@@ -5,6 +5,7 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 import java.util.concurrent.ExecutionException;
 
@@ -22,7 +23,7 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
                                     SolutionRunner runner,
                                     String userInput,
                                     String answer,
-                                    ProgressReporter progressReporter) {
+                                    ProgressReporter progressReporter) throws ClassNotFoundException {
 
         this.compiler = compiler;
         this.runner = runner;
@@ -32,7 +33,16 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
     }
 
     private String output = "";
+    private static SolutionRunner.EntryPointBuilder entryPointBuilder = new EntryPointBuilderImpl()
+        .className("Main")
+        .methodName("method")
+        .parameterTypesList( new Class<?>[]{String[].class})
+        .getParameter(new Object[]{new String[]{}});
 
+
+    private SolutionRunner.EntryPoint entryPoint = entryPointBuilder.build();
+    private SolutionRunner.LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
+/**
     private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 
         @Override
@@ -55,7 +65,7 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
             return new Object[]{new String[]{}};
         }
     };
-
+**/
     private boolean compile() {
         return compiler.compile(this, progressReporter);
     }
@@ -70,7 +80,7 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
     private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
+            return loadedEntryPoint.run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

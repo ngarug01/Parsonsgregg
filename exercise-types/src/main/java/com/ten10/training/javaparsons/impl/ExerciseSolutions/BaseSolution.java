@@ -8,6 +8,12 @@ import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
+import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
+//import com.ten10.training.javaparsons.runner.EntryPointBuilder;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -15,29 +21,68 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BaseSolution implements Solution, SolutionCompiler.CompilableSolution {
+//    private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
+//
+//        @Override
+//        public String getEntryPointClass() {
+//            return "Main";
+//        }
+//
+//        @Override
+//        public String getEntryPointMethod() {
+//            return "main";
+//        }
+//
+//        @Override
+//        public Class<?>[] getParameterTypes() {
+//            return new Class<?>[]{String[].class};
+//        }
+//
+//        @Override
+//        public Object[] getParameters() {
+//            return new Object[]{new String[]{}};
+//        }
+//    };
+    /** Builder solution
+     1. Create an instance of builder;
+     2. Create an EntryPoint (??)
+     3. Call build() method
 
-    private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
-
-        @Override
-        public String getEntryPointClass() {
-            return "Main";
+     EntryPointBuilderImpl entryPointBuilder=new EntryPointBuilder
+        {
+            @Override
+            EntryPoint build()
+        {
+            return new EntryPoint
         }
+        };
 
-        @Override
-        public String getEntryPointMethod() {
-            return "main";
-        }
 
-        @Override
-        public Class<?>[] getParameterTypes() {
-            return new Class<?>[]{String[].class};
-        }
+     entryPointBuilder
+     .getEntryPointClass(params);
+     .getEntryPointMethod(params);
+     .getParameterTypes(params);
+     .getParameters(params);
 
-        @Override
-        public Object[] getParameters() {
-            return new Object[]{new String[]{}};
+     entryPointBuilder.build()
+     {
+      return new EntryPoint{
+          @Override LoadedEntryPoint load(getClassLoader)
         }
-    };
+     }
+
+
+     **/
+    private static EntryPointBuilder entryPointBuilder = new EntryPointBuilderImpl()
+        .className("Main")
+        .methodName("main")
+        .parameterTypesList( new Class<?>[]{String[].class})
+        .getParameter(new Object[]{new String[]{}});
+
+
+    private EntryPoint entryPoint = entryPointBuilder.build();
+    private LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
+
 
     private final SolutionCompiler compiler;
     private final SolutionRunner runner;
@@ -65,7 +110,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
                         List<MethodReturnValueChecker> methodReturnValueCheckers,
-                        ProgressReporter progressReporter) {
+                        ProgressReporter progressReporter) throws ClassNotFoundException {
 
         this.compiler = compiler;
         this.runner = runner;
@@ -167,7 +212,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     private boolean run()  {
         captureConsoleOutput.start();
         try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
+            return loadedEntryPoint.run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);
@@ -180,6 +225,10 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
             klassFields = klass.getFields();
             if (klassFields.length != 0) {
                 return true;
+            }
+            else{
+                progressReporter.reportRunnerError("There is no fields here.");
+                return false;
             }
         } catch (ClassNotFoundException e) {
             progressReporter.reportRunnerError("No such class " + entryPoint.getEntryPointClass());

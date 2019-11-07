@@ -30,7 +30,7 @@ class WholeClassExerciseTest {
     }
 
     @Test
-    void getSolutionFromUserInputReturnsBaseSolution() {
+    void getSolutionFromUserInputReturnsBaseSolution() throws ClassNotFoundException {
         assertThat(wholeClassExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(BaseSolution.class)));
     }
     @Test

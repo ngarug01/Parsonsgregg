@@ -63,7 +63,7 @@ public abstract class BasePage {
     private void setURL() {
         setHost();
         setPort();
-        url = "http://" + host + port;
+        url = "http://127.0.0.1:8080/";
     }
 
     public void goToHomepage() {

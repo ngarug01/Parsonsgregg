@@ -119,7 +119,7 @@ public class WholeClassExercise implements Exercise {
      * @return A new PrintOutExerciseSolution from user input.
      */
     @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
         return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
     }
 
