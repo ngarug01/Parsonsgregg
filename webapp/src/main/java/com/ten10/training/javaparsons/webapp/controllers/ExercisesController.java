@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -19,9 +18,12 @@ import java.util.stream.StreamSupport;
 @RequestMapping("/exercises/")
 public class ExercisesController {
 
-    @Autowired
     ExerciseRepository exerciseRepository;
 
+    @Autowired
+    public ExercisesController(ExerciseRepository exerciseRepository) {
+        this.exerciseRepository = exerciseRepository;
+    }
 
     /**
      * <p>
