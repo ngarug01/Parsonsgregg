@@ -14,4 +14,5 @@ public interface ExerciseRepository extends Iterable<Exercise> {
 
     int getIdentifierFor(Exercise exercise);
 
+    int getExercisesSize();
 }
