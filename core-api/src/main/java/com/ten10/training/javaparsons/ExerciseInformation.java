@@ -22,5 +22,4 @@ public interface ExerciseInformation {
         return null;
     }
 
-    default int getDropdownNumber() {return 1;}
 }
