@@ -30,6 +30,13 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         WholeClassExercise returnChar = new WholeClassExercise(compiler, runner, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns a Char with value 'A'", 'A'))), "Return Char A", 5,null,null);
         WholeClassExercise completeTheCodeHelloWorld = new WholeClassExercise(compiler, runner, new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))), new ArrayList<>(), new ArrayList<>(), "Complete the code - Hello World!", 6,"public class Main { \r\npublic static void main (String[] args) { \r\n","}\r\n}");
         exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, completeTheCodeHelloWorld);
+        // TemplateExerciseBuilder builder = new TemplateExerciseBuilder();
+        // Exercise helloWorld = builder.getResult();
+
+        //Builder Interface
+        //EmptyExerciseBuilder
+        //TemplateExerciseBuilder
+        //ParsonsExerciseBuilder
 
     }
 
