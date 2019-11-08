@@ -51,8 +51,7 @@ public class StaticFieldExerciseAT {
     void doesNotContainCorrectAnswer() {
         page.trySolution(INCORRECT_STATIC_FIELD_ANSWER);
         assertFalse(page.isSuccessful());
-        assertThat(page.getErrors(),
-            contains("Expected int 3"));
+        assertTrue(page.getErrors().contains("Expected int 3"));
     }
 
     @Test
