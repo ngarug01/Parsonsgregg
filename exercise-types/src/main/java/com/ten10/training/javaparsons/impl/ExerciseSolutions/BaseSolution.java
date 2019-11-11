@@ -93,7 +93,6 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
-    private Object result;
     private Field[] klassFields;
 
     /**

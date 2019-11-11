@@ -22,8 +22,6 @@ public class WholeClassExercise implements Exercise {
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
-//    private final List<CompleteTheCodeChecker> completetheCodeCheckers;
-
 
     /**
      * Creates a new WholeClassExercise.
@@ -51,8 +49,17 @@ public class WholeClassExercise implements Exercise {
         this.methodReturnValueCheckers = methodReturnValueCheckers;
         this.prefixCode = prefixCode;
         this.suffixCode = suffixCode;
-//        this.completetheCodeCheckers = completetheCodeCheckers;
-
+    }
+    public WholeClassExercise(CreateExercise buildedExercise){
+        this.compiler=buildedExercise.getCompiler();
+        this.runner=buildedExercise.getRunner();
+        this.exerciseName=buildedExercise.getName();
+        this.id=buildedExercise.getId();
+        this.capturedOutputCheckers=buildedExercise.getCapturedOutputCheckers();
+        this.classCheckers=buildedExercise.getClassCheckers();
+        this.methodReturnValueCheckers=buildedExercise.getMethodReturnValueCheckers();
+        this.prefixCode=buildedExercise.getPrefixCode();
+        this.suffixCode=buildedExercise.getSuffixCode();
     }
 
 
