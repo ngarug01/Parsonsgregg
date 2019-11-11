@@ -230,7 +230,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                 return true;
             }
             else{
-                progressReporter.reportRunnerError("There are no fields here.");
+                progressReporter.reportRunnerError("There are no fields here. Make sure fields are public.");
                 results.add(false);
                 return false;
             }
