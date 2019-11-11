@@ -20,8 +20,9 @@ public class ReturnTypeChecker implements MethodReturnValueChecker {
     }
 
     @Override
-    public Boolean validate(Object result, ProgressReporter progressReporter) {
-        progressReporter.storeCapturedOutput(result.toString());
-        return result.equals(answer);
+    public Boolean validate(String result, ProgressReporter progressReporter) {
+//        progressReporter.storeCapturedOutput(result.toString());
+        result=result.trim();
+        return result.equals(answer.toString());
     }
 }

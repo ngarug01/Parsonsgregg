@@ -11,27 +11,27 @@ import java.util.concurrent.*;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
-    private static final RunResult FAILURE = new RunResult() {
-        @Override
-        public boolean isSuccess() {
-            return false;
-        }
-
-        @Override
-        public boolean hasReturnValue() {
-            return false;
-        }
-
-        @Override
-        public Object getReturnValue() {
-            throw new IllegalStateException();
-        }
-    };
-
-
-    private long timeoutMillis = 500;
-    private ExecutorService executor;
-    private Future<Object> future;
+//    private static final RunResult FAILURE = new RunResult() {
+//        @Override
+//        public boolean isSuccess() {
+//            return false;
+//        }
+//
+//        @Override
+//        public boolean hasReturnValue() {
+//            return false;
+//        }
+//
+//        @Override
+//        public Object getReturnValue() {
+//            throw new IllegalStateException();
+//        }
+//    };
+//
+//
+//    private long timeoutMillis = 500;
+//    private ExecutorService executor;
+//    private Future<Object> future;
 
 /**
 

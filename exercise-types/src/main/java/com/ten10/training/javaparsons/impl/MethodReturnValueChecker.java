@@ -6,5 +6,5 @@ public interface MethodReturnValueChecker {
 
     String getGoal();
 
-    Boolean validate(Object result, ProgressReporter progressReporter);
+    Boolean validate(String result, ProgressReporter progressReporter);
 }

@@ -73,14 +73,17 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
 
      **/
-    private static EntryPointBuilder entryPointBuilder = new EntryPointBuilderImpl()
+
+
+    private static EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
         .parameterTypesList( new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}});
+        .getParameter(new Object[]{new String[]{}})
+        .build();
 
 
-    private EntryPoint entryPoint = entryPointBuilder.build();
+//    private EntryPoint entryPoint = entryPointBuilder.build();
     private LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
 
 
@@ -127,18 +130,16 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @return True if the output matches, else return False.
      * @throws Exception Exceptions when
      */
+    ArrayList<Boolean> results = new ArrayList<>();
     @Override
     public boolean evaluate() {
         if (!compile()) {
             return false;
         }
-        boolean result;
-        result = run();
-        if (!result) {
+        if (!run()) {
             return false;
         }
 
-        ArrayList<Boolean> results = new ArrayList<>();
         for (CapturedOutputChecker checker : capturedOutputCheckers) {
             results.add(checker.validate(output, progressReporter));
         }
@@ -146,12 +147,12 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
             if (getClassFields(getClassLoader())) {
                 results.add(checker.validate(klassFields, progressReporter));
             }
+
         }
         for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
-            results.add(checker.validate(result, progressReporter));
+            results.add(checker.validate(output, progressReporter));
         }
         return !results.contains(false);
-
 
     }
 
@@ -227,7 +228,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
             }
             else{
                 progressReporter.reportRunnerError("There is no fields here.");
-                return false;
+                results.add(false);
             }
         } catch (ClassNotFoundException e) {
             progressReporter.reportRunnerError("No such class " + entryPoint.getEntryPointClass());
