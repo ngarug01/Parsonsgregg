@@ -108,7 +108,9 @@ public class WholeClassExercise implements Exercise {
         if (prefixCode != null && suffixCode != null) {
             return prefixCode + userInput + suffixCode;
         } else {
+
             return userInput;
+
         }
 
     }

@@ -99,7 +99,7 @@ class ThreadSolutionRunnerTest {
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
-        loadedEntryPoint.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
+        RunResult myResults=loadedEntryPoint.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");

@@ -33,6 +33,7 @@ public class Results implements ProgressReporter {
         }
     }
 
+
     private String output = "";
 
     private boolean succesfulSolution = false;

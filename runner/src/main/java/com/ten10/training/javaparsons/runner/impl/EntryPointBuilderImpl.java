@@ -148,6 +148,7 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
                 klass = classLoader.loadClass(entryPointClassName);
             } catch (ClassNotFoundException e) {
                 progressReporter.reportRunnerError("No such class " + entryPointClassName);
+                return FAILURE;
             }
             Method method;
             try {
