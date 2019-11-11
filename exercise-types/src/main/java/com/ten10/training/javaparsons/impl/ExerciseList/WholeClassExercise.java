@@ -12,6 +12,9 @@ import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Objects.isNull;
 
 public class WholeClassExercise implements Exercise{
     private final String exerciseName;
@@ -50,13 +53,23 @@ public class WholeClassExercise implements Exercise{
         this.capturedOutputCheckers = capturedOutputCheckers;
         this.classCheckers = classCheckers;
         this.methodReturnValueCheckers = methodReturnValueCheckers;
-        this.prefixCode = prefixCode;
-        this.suffixCode = suffixCode;
+        this.prefixCode = normalizePrefixCode(prefixCode);
+        this.suffixCode = normalizeSuffixCode(suffixCode);
 //        this.completeTheCodeCheckers = completeTheCodeCheckers;
 
     }
 
+    private static String normalizePrefixCode(String contextCode) {
+        if (isNull(contextCode)) return null;
+        contextCode = contextCode.trim();
+        if (contextCode.isEmpty()) return null;
+        return String.join(System.lineSeparator(), contextCode.split("\\R")) + System.lineSeparator();
+    }
 
+    private static String normalizeSuffixCode(String suffixCode) {
+        suffixCode = normalizePrefixCode(suffixCode);
+        return isNull(suffixCode) ? null : System.lineSeparator() + suffixCode;
+    }
 
 
     public String returnAppendedUserInput(String userInput) {
