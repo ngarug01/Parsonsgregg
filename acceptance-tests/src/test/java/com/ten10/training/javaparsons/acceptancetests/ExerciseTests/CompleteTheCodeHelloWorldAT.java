@@ -50,7 +50,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void descriptionChanges() {
 
-        assertTrue(page.getDescription().contains("Complete the Java code"));
+        assertTrue(page.getDescription().contains("The program prints out Hello World!"));
     }
 
     @Test
@@ -72,7 +72,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void lineNumbersAreTranslated() {
         page.trySolution(COMPLETE_HELLO_WORLD_INCORRECT);
-        assertEquals("Error on line: 1", page.getErrorLine());
+            assertEquals("Error on line: 1", page.getErrorLine());
     }
 
     @Test
@@ -80,7 +80,7 @@ class CompleteTheCodeHelloWorldAT {
     void timeoutError() {
         page.trySolution(COMPLETE_HELLO_WORLD_INFLOOP);
         System.out.println(page.getErrors());
-        assertEquals("[The runner error description was: timeout error]", page.getErrors().toString());
+        assertEquals(page.getErrors().toString(), "[The runner error description was: timeout error]");
     }
 
 }

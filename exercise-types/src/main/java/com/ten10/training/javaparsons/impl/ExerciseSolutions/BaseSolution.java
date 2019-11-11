@@ -88,9 +88,11 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
         if (!compile()) {
             return false;
         }
-        boolean result;
-        result = run();
-        if (!result) {
+        // alter red; change type of result to be a run result, change test of the if statement to .issuccess
+        //
+        SolutionRunner.RunResult runResult;
+        runResult = run();
+        if (!runResult.isSuccess()) {
             return false;
         }
 
@@ -103,10 +105,15 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                 results.add(checker.validate(klassFields, progressReporter));
             }
         }
-        for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
-            results.add(checker.validate(result, progressReporter));
+        if (runResult.hasReturnValue()) {
+            Object result = runResult.getReturnValue();
+
+            for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
+                results.add(checker.validate(result, progressReporter));
+            }
         }
         return !results.contains(false);
+        // if result has value, return value.
 
 
     }
@@ -164,10 +171,11 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private SolutionRunner.RunResult run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
-            return runner.run(getClassLoader(), entryPoint, progressReporter).isSuccess();
+            return runner.run(getClassLoader(), entryPoint, progressReporter);
+            //follow refactoring process
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

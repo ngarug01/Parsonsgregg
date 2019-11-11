@@ -49,7 +49,7 @@ public class HelloWorldAT {
     @BeforeEach
     void beforeEveryTest() {
         page.goToHomepage();
-        page.chooseExercise(1, "Hello World!");
+        page.chooseExercise(1, "Whole Class \"Hello world\"");
     }
 
     @Test
