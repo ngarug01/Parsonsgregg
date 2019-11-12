@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
@@ -12,11 +13,12 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
-    public final List<? extends Exercise> exercises;
+    public final List<Exercise> exercises;
 
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
@@ -99,29 +101,30 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
 
 
         exercises = Arrays.asList(helloWorld, cruelWorld, staticField, returnSquareNumber, returnChar, completeTheCodeHelloWorld);
-
     }
 
+    public int getExercisesSize() {
+        return exercises.size();
+    }
 
     /**
      * @param identifier The unique identifier for an exercise
      * @return The exercise with a given id.
      */
     @Override
-    public Exercise getExerciseByIdentifier(int identifier) {
-        for (Exercise exercise : exercises) {
-            if (exercise.getIdentifier() == identifier) {
-                return exercise;
-            }
-        }
-        return null;
+    public Exercise getExerciseByIdentifier(int identifier){
+        return exercises.get(identifier);
     }
 
-    /**
-     * @return The number of exercises available.
-     */
     @Override
-    public int getExerciseArraySize() {
-        return exercises.size();
+    public int getIdentifierFor(Exercise exercise) {
+        return exercises.indexOf(exercise);
     }
+
+    @Override
+    public Iterator<Exercise> iterator() {
+        return exercises.iterator();
+    }
+
+
 }

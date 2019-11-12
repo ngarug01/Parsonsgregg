@@ -2,6 +2,8 @@ package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ten10.training.javaparsons.ExerciseInformation;
+import com.ten10.training.javaparsons.webapp.views.ExerciseDetails;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
 import org.junit.jupiter.api.Test;
@@ -14,9 +16,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import static com.ten10.training.javaparsons.webapp.controllers.DropdownListMembers.blank;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -28,9 +34,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ExerciseControllerTest {
-
+    // TODO: Fix
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
     private static final String TRIVIAL_OUTPUT = "{}";
+    private static final ExerciseInformation exerciseInformation = new ExerciseInformation() {
+
+        @Override
+        public String getTitle() {
+            return null;
+        }
+
+        @Override
+        public String getDescription() {
+            return null;
+        }
+    };
 
 
     @Autowired
@@ -52,7 +70,7 @@ class ExerciseControllerTest {
         Results results = new Results();
         results.storeCapturedOutput("Foo");
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Foo\",\"succesfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[]}"));
+        assertThat(output, is("{\"output\":\"Foo\",\"successfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 
     @Test
@@ -82,23 +100,17 @@ class ExerciseControllerTest {
         results.storeCapturedOutput("Null");
         results.reportCompilerError(3, "incorrect Method");
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Null\",\"succesfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
+        assertThat(output, is("{\"output\":\"Null\",\"successfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
     }
 
-    private static final ExerciseController.ExerciseInformation exerciseInformation = new ExerciseController.ExerciseInformation("URL", "Title", "Description", "code", "code", 1);
 
     @Test
-    void exerciseInformationGetURL () {
-        assertEquals(exerciseInformation.getUrl(), "URL");
-    }
-
-    @Test
-    void exerciseInformationGetTitle () {
-        assertEquals(exerciseInformation.getTitle(), "Title");
-    }
-
-    @Test
-    void exerciseInformationGetDescription () {
-        assertEquals(exerciseInformation.getDescription(), "Description");
+    void getDropdownListMembersReturnsListInputText() {
+        List<String> dropdownListMembers = new ExerciseController().getDropdownListMembers();
+        assertTrue(dropdownListMembers.contains("") &&
+            dropdownListMembers.contains("public class Main {") &&
+            dropdownListMembers.contains("public static void main(String[] args) {") &&
+            dropdownListMembers.contains("System.out.println(\"Exercise Paths!\");") &&
+            dropdownListMembers.contains("}"));
     }
 }

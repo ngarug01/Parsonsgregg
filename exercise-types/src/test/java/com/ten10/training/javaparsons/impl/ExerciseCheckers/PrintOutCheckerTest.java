@@ -12,7 +12,7 @@ class PrintOutCheckerTest {
  ProgressReporter progressReporter=mock(ProgressReporter.class);
     @Test
     void getGoal() {
-     assertEquals(printOutChecker.getGoal(),"The program prints out "+answer + "\n");
+     assertEquals("The program prints out "+answer + "\n", printOutChecker.getGoal());
 
     }
 

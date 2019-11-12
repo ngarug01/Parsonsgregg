@@ -13,7 +13,7 @@ let exercises = null;
 
     function loadExercises() {
         const xhr = new XMLHttpRequest();
-        const exercisesPath = "/exercise/getExercises";
+        const exercisesPath = "/exercises/";
         let url;
         // If we're in local development, point at a local webserver.
         if (document.location.href.startsWith("file:///")) {
@@ -38,9 +38,10 @@ let exercises = null;
         // Populate Select Field
         const exerciseList = document.getElementById("ExerciseList");
 
-        for (const [index, details] of exercises.entries()) {
+        for (const [index, exercise] of exercises.entries()) {
             const elem = document.createElement("option");
             elem.value = index;
+            const details = exercise.exerciseInformation;
             elem.text = details.title;
             exerciseList.appendChild(elem);
         }
@@ -50,7 +51,7 @@ let exercises = null;
     }
 
     function setExercise(exerciseNumber) {
-        const selectedExerciseProperties = exercises[exerciseNumber];
+        const selectedExerciseProperties = exercises[exerciseNumber].exerciseInformation;
         document.getElementById("Description").textContent = selectedExerciseProperties.description;
 
         const precedingCodeBox = document.getElementById("preceding-code-box");
@@ -159,9 +160,9 @@ let exercises = null;
         }
         const list = document.getElementById("ExerciseList");
         const exerciseNumber = parseInt(list.options[list.selectedIndex].value, 10);
-        const path = exercises[exerciseNumber].url;
+        const path = exercises[exerciseNumber].path;
         // If we're in local development, point at a local webserver.
-        const url = document.location.href.startsWith("file:///") ? "http://localhost:8080/" + path : path;
+        const url = document.location.href.startsWith("file:///") ? "http://localhost:8080/"+ path : path;
         console.log(url);
         const xhr = new XMLHttpRequest();
         xhr.addEventListener("load", onResultLoaded);
@@ -192,7 +193,7 @@ let exercises = null;
 
         const list = document.getElementById("ExerciseList");
         const exerciseNumber = parseInt(list.options[list.selectedIndex].value, 10);
-        const path = exercises[exerciseNumber].url;
+        const path = exercises[exerciseNumber].path;
         // If we're in local development, point at a local webserver.
         const url = document.location.href.startsWith("file:///") ? "http://localhost:8080/" + path : path;
         console.log(url);
@@ -235,7 +236,7 @@ let exercises = null;
             document.getElementById('runner-output').innerHTML = response.output;
             makeVisible('runner-output');
         }
-        if (response.succesfulSolution) {
+        if (response.successfulSolution) {
             document.getElementById("correct-answer").innerHTML = "Correct answer. Well done!";
             makeVisible("correct-answer");
         } else {

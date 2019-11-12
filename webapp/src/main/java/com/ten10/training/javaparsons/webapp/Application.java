@@ -1,4 +1,5 @@
 package com.ten10.training.javaparsons.webapp;
+
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
@@ -69,6 +70,7 @@ public class Application {
     public ExerciseRepository exerciseRepository(SolutionCompiler compiler, SolutionRunner runner) {
         return new ExerciseRepositoryImpl(compiler, runner);
     }
+
 
     /** Runs the {@link SpringBootApplication} with this {@code class} as a parameter.
      */

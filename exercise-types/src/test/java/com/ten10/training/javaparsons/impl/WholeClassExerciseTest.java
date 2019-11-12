@@ -24,21 +24,21 @@ class WholeClassExerciseTest {
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
     private final WholeClassExercise wholeClassExercise = new WholeClassExercise(compiler, null, capturedOutputCheckers,classCheckers,methodReturnValueCheckers,"MY NAME",1,null,null);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
-    @Test
-    void helloWorldExerciseIdentifierIs1() {
-        assertEquals(1, wholeClassExercise.getIdentifier());
-    }
-
-    @Test
-    void getSolutionFromUserInputReturnsBaseSolution() throws ClassNotFoundException {
-        assertThat(wholeClassExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(BaseSolution.class)));
-    }
-    @Test
-    void getTitleOfExercise(){
-        assertEquals(wholeClassExercise.getTitle(),"Exercise 1: MY NAME");
-    }
-    @Test
-    void getDescription(){
-        assertEquals(wholeClassExercise.getDescription(),"Create a Java class that: \nThe program prints out Answer\n");
-    }
+//    @Test
+//    void helloWorldExerciseIdentifierIs1() {
+//        assertEquals(1, wholeClassExercise.getIdentifier());
+//    }
+//
+//    @Test
+//    void getSolutionFromUserInputReturnsBaseSolution() {
+//        assertThat(wholeClassExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(BaseSolution.class)));
+//    }
+//    @Test
+//    void getTitleOfExercise(){
+//        assertEquals("Exercise 1: MY NAME",wholeClassExercise.getTitle());
+//    }
+//    @Test
+//    void getDescription(){
+//        assertEquals("Create a Java class that: \nThe program prints out Answer\n",wholeClassExercise.getDescription());
+//    }
 }

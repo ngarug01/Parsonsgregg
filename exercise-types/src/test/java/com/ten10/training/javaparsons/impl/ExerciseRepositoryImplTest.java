@@ -15,7 +15,6 @@ class ExerciseRepositoryImplTest {
 
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
     private final SolutionRunner runner = mock(SolutionRunner.class);
-    private final ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler, runner);
 
 
     @Test
@@ -24,8 +23,4 @@ class ExerciseRepositoryImplTest {
         assertThat(exerciseRepository.getExerciseByIdentifier(1), is(instanceOf(WholeClassExercise.class)));
     }
 
-    @Test
-    void getExerciseArraySize(){
-        assertEquals(exerciseRepository.getExerciseArraySize(),(exerciseRepository.exercises.size()));
-    }
 }

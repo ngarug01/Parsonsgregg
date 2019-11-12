@@ -51,7 +51,7 @@ public class ReturnCharAAT {
     @Tag("acceptance-tests")
     void charAInputted() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRINTS_CHAR_A);
-       // assertThat(page.getOutput(), is("A"));
+        assertTrue(page.getOutput().contains("A"));
         assertTrue(page.isSuccessful());
     }
 
@@ -60,7 +60,7 @@ public class ReturnCharAAT {
     void notCharA() {
         page.trySolution(INCORRECT_PROGRAM);
         assertFalse(page.isSuccessful());
-      //  assertEquals(page.getOutput(), "B");
+        assertEquals("B",page.getOutput());
     }
 
 }

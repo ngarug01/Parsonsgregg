@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BaseSolution implements Solution, SolutionCompiler.CompilableSolution {
+//
 //    private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
 //
 //        @Override
@@ -42,33 +43,6 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 //        public Object[] getParameters() {
 //            return new Object[]{new String[]{}};
 //        }
-//    };
-    /** Builder solution
-     1. Create an instance of builder;
-     2. Create an EntryPoint (??)
-     3. Call build() method
-
-     EntryPointBuilderImpl entryPointBuilder=new EntryPointBuilder
-        {
-            @Override
-            EntryPoint build()
-        {
-            return new EntryPoint
-        }
-        };
-
-
-     entryPointBuilder
-     .getEntryPointClass(params);
-     .getEntryPointMethod(params);
-     .getParameterTypes(params);
-     .getParameters(params);
-
-     entryPointBuilder.build()
-     {
-      return new EntryPoint{
-          @Override LoadedEntryPoint load(getClassLoader)
-        }
      }
 
 
@@ -96,6 +70,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
+    private Object result;
     private Field[] klassFields;
 
     /**
@@ -209,7 +184,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private boolean run()  {
+    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
             return loadedEntryPoint.run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();

@@ -1,6 +1,7 @@
 package com.ten10.training.javaparsons.impl.ExerciseList;
 
 import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
@@ -11,8 +12,11 @@ import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
+import java.util.Objects;
 
-public class WholeClassExercise implements Exercise {
+import static java.util.Objects.isNull;
+
+public class WholeClassExercise implements Exercise{
     private final String exerciseName;
     private final String prefixCode;
     private final String suffixCode;
@@ -22,6 +26,8 @@ public class WholeClassExercise implements Exercise {
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
+//    private final List<CompleteTheCodeChecker> completetheCodeCheckers;
+
 
     /**
      * Creates a new WholeClassExercise.
@@ -60,44 +66,83 @@ public class WholeClassExercise implements Exercise {
         this.methodReturnValueCheckers=buildedExercise.getMethodReturnValueCheckers();
         this.prefixCode=buildedExercise.getPrefixCode();
         this.suffixCode=buildedExercise.getSuffixCode();
+        this.prefixCode = normalizePrefixCode(prefixCode);
+        this.suffixCode = normalizeSuffixCode(suffixCode);
+//        this.completeTheCodeCheckers = completeTheCodeCheckers;
+
+    }
+
+    private static String normalizePrefixCode(String contextCode) {
+        if (isNull(contextCode)) return null;
+        contextCode = contextCode.trim();
+        if (contextCode.isEmpty()) return null;
+        return String.join(System.lineSeparator(), contextCode.split("\\R")) + System.lineSeparator();
+    }
+
+    private static String normalizeSuffixCode(String suffixCode) {
+        suffixCode = normalizePrefixCode(suffixCode);
+        return isNull(suffixCode) ? null : System.lineSeparator() + suffixCode;
     }
 
 
-    /**
-     * @return The unique identifier of an exercise.
-     */
-    @Override
-    public int getIdentifier() {
-        return id;
-    }
-
-    /**
-     * @return A string containing the name of the exercise.
-     */
-    @Override
-    public String getTitle() {
-        return "Exercise " + getIdentifier() + ": " + exerciseName;
-    }
-
-    /**
-     * @return A string containing the description and instruction of an exercise.
-     */
-
-    @Override
-    public String getDescription() {
-        StringBuilder goals = new StringBuilder();
-        goals.append("Create a Java class that: \n");
-        for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
-            goals.append(checker.getGoal());
+    public String returnAppendedUserInput(String userInput) {
+        if (prefixCode != null && suffixCode != null) {
+            return prefixCode + userInput + suffixCode;
+        } else {
+            return userInput;
         }
-        for (ClassChecker checker : classCheckers) {
-            goals.append(checker.getGoal());
-        }
-        for (CapturedOutputChecker checker : capturedOutputCheckers) {
-            goals.append(checker.getGoal());
-        }
-        return goals.toString();
+
     }
+
+    @Override
+    public ExerciseInformation getInformation() {
+        return new ExerciseInformation() {
+
+            @Override
+            public String getPrecedingCode() {
+
+                return prefixCode;
+            }
+
+            @Override
+            public String getFollowingCode() {
+
+                return suffixCode;
+            }
+            /**
+             * @return The unique identifier of an exercise.
+             */
+            private int getIdentifier() {
+                return id;
+            }
+
+            /**
+             * @return A string containing the name of the exercise.
+             */
+            @Override
+            public String getTitle() {
+                return "Exercise " + getIdentifier() + ": " + exerciseName;
+            }
+
+            /**
+             * @return A string containing the description and instruction of an exercise.
+             */
+
+            @Override
+            public String getDescription() {
+                StringBuilder goals = new StringBuilder();
+                goals.append("Create a Java class that: \n");
+                for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
+                    goals.append(checker.getGoal());
+                }
+                for (ClassChecker checker : classCheckers) {
+                    goals.append(checker.getGoal());
+                }
+                for (CapturedOutputChecker checker : capturedOutputCheckers) {
+                    goals.append(checker.getGoal());
+                }
+                return goals.toString();
+            }
 
     @Override
     public String getPrecedingCode() {
@@ -115,9 +160,7 @@ public class WholeClassExercise implements Exercise {
         if (prefixCode != null && suffixCode != null) {
             return prefixCode + userInput + suffixCode;
         } else {
-
             return userInput;
-
         }
 
     }
@@ -128,11 +171,11 @@ public class WholeClassExercise implements Exercise {
      * @return A new PrintOutExerciseSolution from user input.
      */
     @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
+        if (null != prefixCode) {
+            progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
+        }
         return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
     }
 
-    @Override
-    public void close() throws Exception {
-    }
 }

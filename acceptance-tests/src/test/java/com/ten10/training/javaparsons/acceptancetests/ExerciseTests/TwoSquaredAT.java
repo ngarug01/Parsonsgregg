@@ -1,7 +1,6 @@
 package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 
 import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
-import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("Tests for feature 4: Two Squared")
 public class TwoSquaredAT {
 
+//    private static final String TWO_SQUARED_CORRECT = "public class Main {public static Integer main(String[] args) {return 2*2;}}";
     private static final String TWO_SQUARED_CORRECT = "public class Main {public static Integer main(String[] args) {return 2*2;}}";
+
 
     private final ExercisePage page;
 
@@ -39,6 +40,7 @@ public class TwoSquaredAT {
     void twoSquaredInputted() {
 
         page.trySolution(TWO_SQUARED_CORRECT);
+        assertThat(page.getOutput(),is("4"));
         assertTrue(page.isSuccessful());
     }
 
