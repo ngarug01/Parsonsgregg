@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
-@DisplayName("Tests for Feature 3: 42 (Static Field Exercise)")
+@DisplayName("Tests for Feature 3: 3 (Static Field Exercise)")
 public class StaticFieldExerciseAT {
 
-    private static final String CORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int i = 42; \npublic static void main(String[] args){\n}\n}";
+    private static final String CORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int i = 3; \npublic static void main(String[] args){\n}\n}";
     private static final String INCORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int i = 40; \npublic static void main(String[] args){\n}\n}";
-    private static final String INCORRECT_TYPE_STATIC_FIELD_ANSWER = "public class Main{ \n public static String i = \"42\"; \npublic static void main(String[] args){\n}\n}";
+    private static final String INCORRECT_TYPE_STATIC_FIELD_ANSWER = "public class Main{ \n public static String i = \"3\"; \npublic static void main(String[] args){\n}\n}";
 
 
     private ExercisePage page;
@@ -35,14 +35,14 @@ public class StaticFieldExerciseAT {
     @BeforeEach
     void goToHomepage() {
         page.goToHomepage();
-        page.chooseExercise(3,"42");
+        page.chooseExercise(3,"Static Field");
     }
 
     @Test
     @Tag("acceptance-tests")
     void containsCorrectAnswer() {
         page.trySolution(CORRECT_STATIC_FIELD_ANSWER);
-        assertThat(page.getOutput(),is("42"));
+        assertThat(page.getOutput(),is("3"));
         assertTrue(page.isSuccessful());
     }
 
@@ -51,8 +51,7 @@ public class StaticFieldExerciseAT {
     void doesNotContainCorrectAnswer() {
         page.trySolution(INCORRECT_STATIC_FIELD_ANSWER);
         assertFalse(page.isSuccessful());
-        assertThat(page.getErrors(),
-            contains("The runner error description was: Expected: 42. Received: 40"));
+        assertTrue(page.getErrors().toString().contains("Expected int 3"));
     }
 
     @Test
@@ -60,6 +59,6 @@ public class StaticFieldExerciseAT {
     void incorrectTypeAnswer() {
         page.trySolution(INCORRECT_TYPE_STATIC_FIELD_ANSWER);
         assertFalse(page.isSuccessful());
-        assertThat(page.getErrors(),hasItem(containsString("Expected: 42. Received: 42")));
+        assertTrue(page.getErrors().toString().contains("Expected int 3"));
     }
 }

@@ -22,7 +22,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
     private Object[] parameters;
 
 
-
     @Override
     public EntryPointBuilder parameterTypesList(Class<?>... parameterTypes) {
         this.parameterTypes = parameterTypes;
@@ -53,62 +52,57 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
     }
 
 
+    private class EntryPointImpl implements EntryPoint {
+        private String className;
+        private String methodName;
+        private Class<?>[] parameterTypes;
+        private Object[] parameters;
+        private ClassLoader classLoader;
 
 
-        private class EntryPointImpl implements EntryPoint
-            {
-                private String className;
-                private String methodName;
-                private Class<?>[] parameterTypes;
-                private Object[] parameters;
-                private ClassLoader classLoader;
+        public String getEntryPointClass() {
+            return className;
+        }
 
+        public String getEntryPointMethod() {
+            return methodName;
+        }
 
-                public String getEntryPointClass() {
-                    return className;
-                }
+        public Class<?>[] getParameterTypes() {
+            return parameterTypes;
+        }
 
-                public String getEntryPointMethod() {
-                    return methodName;
-                }
+        public Object[] getParameters() {
+            return parameters;
+        }
 
-                public Class<?>[] getParameterTypes() {
-                    return parameterTypes;
-                }
+        public ClassLoader getClassLoader() {
+            return classLoader;
+        }
 
-                public Object[] getParameters() {
-                    return parameters;
-                }
-
-                public ClassLoader getClassLoader() {
-                    return classLoader;
-                }
-
-                EntryPointImpl(EntryPointBuilderImpl builder) {
-                    className=builder.className;
-                    methodName=builder.methodName;
-                    parameterTypes=builder.parameterTypes;
-                    parameters=builder.parameters;
+        EntryPointImpl(EntryPointBuilderImpl builder) {
+            className = builder.className;
+            methodName = builder.methodName;
+            parameterTypes = builder.parameterTypes;
+            parameters = builder.parameters;
 
         }
 
-//throws ClassNotFoundException
+        //throws ClassNotFoundException
         @Override
-        public LoadedEntryPoint load(ClassLoader classLoader){
-            this.classLoader=classLoader;
+        public LoadedEntryPoint load(ClassLoader classLoader) {
+            this.classLoader = classLoader;
             return new LoadedEntryPointImpl();
 //            return null;
         }
     }
 
 
-
-    private class LoadedEntryPointImpl implements LoadedEntryPoint
-    {
+    private class LoadedEntryPointImpl implements LoadedEntryPoint {
         private long timeoutMillis = 500;
         private ExecutorService executor;
         private Future<Object> future;
-        private  final RunResult FAILURE = new RunResult() {
+        private final RunResult FAILURE = new RunResult() {
             @Override
             public boolean isSuccess() {
                 return false;
@@ -124,9 +118,9 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
                 throw new IllegalStateException();
             }
         };
+
         @Override
-        public RunResult run(ClassLoader classLoader, SolutionRunner.EntryPoint solution, ProgressReporter progressReporter)
-        {
+        public RunResult run(ClassLoader classLoader, SolutionRunner.EntryPoint solution, ProgressReporter progressReporter) {
             String entryPointClassName = solution.getEntryPointClass();
             String entryPointMethodName = solution.getEntryPointMethod();
             Class<?>[] parameterTypes = solution.getParameterTypes();
@@ -182,7 +176,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             executor = Executors.newSingleThreadExecutor();
             future = executor.submit(() -> method.invoke(finalInstance, parameters));
             try {
-                Object returnValue;
                 if (timeoutMillis != 0) {
                     returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
                 } else {
@@ -231,6 +224,15 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         public void setTimeout(long count, TimeUnit timeUnit) {
             timeoutMillis = timeUnit.toMillis(count);
         }
+    }
+    static Object returnValue;
+    public static Object getReturnValue() {
+        return returnValue;
+
+    }
+
+    public static void setReturnValue(Object o) {
+        returnValue = o;
     }
 }
 

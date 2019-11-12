@@ -29,7 +29,7 @@ public class StaticFieldValueChecker implements ClassChecker {
                 progressReporter.reportRunnerError("Incorrect number of fields");
                 return false;
             } else if (!(Modifier.isStatic(klassFields[0].getModifiers()))) {
-                progressReporter.reportRunnerError("Field no static");
+                progressReporter.reportRunnerError("Field not static");
                 return false;
             } else {
                 Field field = klassFields[0];
@@ -38,6 +38,10 @@ public class StaticFieldValueChecker implements ClassChecker {
                     if (field.get(field).equals(answer)) {
                         progressReporter.storeCapturedOutput(field.get(field).toString());
                         return true;
+                    }
+                    if (!field.get(field).equals(answer)) {
+                        progressReporter.reportRunnerError("Expected int " + answer);
+                        return false;
                     }
                 } catch (IllegalAccessException e) {
                     progressReporter.reportRunnerError("No access to field: " + field.getName());
