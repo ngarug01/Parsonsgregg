@@ -43,7 +43,7 @@ public abstract class BasePage {
     private void setHost() {
 //        String host = System.getProperty("YOUR_PROPERTY_NAME");
 //        if (host.equals("")){
-        host = "localhost:";
+        host = "localhost";
 //        } else
 //            host = host;
     }
@@ -63,7 +63,7 @@ public abstract class BasePage {
     private void setURL() {
         setHost();
         setPort();
-        url = "http://127.0.0.1:8080/";
+        url = "http://" + host + ":" + port;
     }
 
     public void goToHomepage() {
