@@ -7,9 +7,10 @@ import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -18,8 +19,8 @@ import static java.util.Objects.isNull;
 
 public class WholeClassExercise implements Exercise{
     private final String exerciseName;
-    private final String prefixCode;
-    private final String suffixCode;
+    private String prefixCode;
+    private String suffixCode;
     private final SolutionCompiler compiler;
     private final SolutionRunner runner;
     private final int id;
@@ -66,8 +67,8 @@ public class WholeClassExercise implements Exercise{
         this.methodReturnValueCheckers=buildedExercise.getMethodReturnValueCheckers();
         this.prefixCode=buildedExercise.getPrefixCode();
         this.suffixCode=buildedExercise.getSuffixCode();
-        this.prefixCode = normalizePrefixCode(prefixCode);
-        this.suffixCode = normalizeSuffixCode(suffixCode);
+        this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
+        this.suffixCode =  normalizeSuffixCode(buildedExercise.getSuffixCode());
 //        this.completeTheCodeCheckers = completeTheCodeCheckers;
 
     }
@@ -109,6 +110,7 @@ public class WholeClassExercise implements Exercise{
 
                 return suffixCode;
             }
+
             /**
              * @return The unique identifier of an exercise.
              */
@@ -123,6 +125,7 @@ public class WholeClassExercise implements Exercise{
             public String getTitle() {
                 return "Exercise " + getIdentifier() + ": " + exerciseName;
             }
+
 
             /**
              * @return A string containing the description and instruction of an exercise.
@@ -143,35 +146,17 @@ public class WholeClassExercise implements Exercise{
                 }
                 return goals.toString();
             }
-
-    @Override
-    public String getPrecedingCode() {
-
-        return prefixCode;
+        };
     }
 
+        /**
+         * @param userInput        The input provided by the user.
+         * @param progressReporter The callback object to use when reporting compilation and test results.
+         * @return A new PrintOutExerciseSolution from user input.
+         */
+
     @Override
-    public String getFollowingCode() {
-
-        return suffixCode;
-    }
-
-    public String returnAppendedUserInput(String userInput) {
-        if (prefixCode != null && suffixCode != null) {
-            return prefixCode + userInput + suffixCode;
-        } else {
-            return userInput;
-        }
-
-    }
-
-    /**
-     * @param userInput        The input provided by the user.
-     * @param progressReporter The callback object to use when reporting compilation and test results.
-     * @return A new PrintOutExerciseSolution from user input.
-     */
-    @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }

@@ -13,7 +13,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
-//import com.ten10.training.javaparsons.runner.EntryPointBuilder;
+
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -43,10 +43,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 //        public Object[] getParameters() {
 //            return new Object[]{new String[]{}};
 //        }
-     }
 
-
-     **/
 
 
     private static EntryPoint entryPoint = new EntryPointBuilderImpl()
@@ -56,9 +53,8 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
         .getParameter(new Object[]{new String[]{}})
         .build();
 
-
-//    private EntryPoint entryPoint = entryPointBuilder.build();
     private LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
+
 
 
     private final SolutionCompiler compiler;
@@ -107,7 +103,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      */
     ArrayList<Boolean> results = new ArrayList<>();
     @Override
-    public boolean evaluate() {
+    public boolean evaluate() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if (!compile()) {
             return false;
         }
@@ -211,4 +207,5 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
         return false;
     }
+
 }

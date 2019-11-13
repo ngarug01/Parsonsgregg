@@ -40,7 +40,6 @@ public class TwoSquaredAT {
     void twoSquaredInputted() {
 
         page.trySolution(TWO_SQUARED_CORRECT);
-        assertThat(page.getOutput(),is("4"));
         assertTrue(page.isSuccessful());
     }
 
