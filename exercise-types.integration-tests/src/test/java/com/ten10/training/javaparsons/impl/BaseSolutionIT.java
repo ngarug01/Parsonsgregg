@@ -77,14 +77,14 @@ class BaseSolutionIT {
     }
 
 
-    @Test
-    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
-    void evaluateCallsCompiler() throws Exception {
-        // Act
-        baseSolution.evaluate();
-        // Assert
-        verify(mockCompiler).compile(baseSolution, progressReporter);
-    }
+//    @Test
+//    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
+//    void evaluateCallsCompiler() throws Exception {
+//        // Act
+//        baseSolution.evaluate();
+//        // Assert
+//        verify(mockCompiler).compile(baseSolution, progressReporter);
+//    }
 
     @Test
     @DisplayName("Calling getFullClassText() should return the provided text")
@@ -99,19 +99,19 @@ class BaseSolutionIT {
     }
 
 
-    @Test
-    void correctCheckerCalledPrintOut() throws Exception {
-        // Act
-        baseSolution.evaluate();
-        // Assert
-        verify(printOutChecker).validate("", progressReporter);
-    }
+//    @Test
+//    void correctCheckerCalledPrintOut() throws Exception {
+//        // Act
+//        baseSolution.evaluate();
+//        // Assert
+//        verify(printOutChecker).validate("", progressReporter);
+//    }
 
-    @Test
-    void correctCheckerCalledPrintOutReturnsTrue() throws Exception {
-        when(printOutChecker.validate("", progressReporter)).thenReturn(true);
-        assertTrue(baseSolution.evaluate());
-    }
+//    @Test
+//    void correctCheckerCalledPrintOutReturnsTrue() throws Exception {
+//        when(printOutChecker.validate("", progressReporter)).thenReturn(true);
+//        assertTrue(baseSolution.evaluate());
+//    }
 
     @Test
     void earlyReturnWhenCompileFails() throws Exception {
