@@ -1,14 +1,12 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
 import com.ten10.training.javaparsons.impl.ExerciseList.CreateExercise;
-import com.ten10.training.javaparsons.impl.ExerciseList.WholeClassExercise;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.ArrayList;
@@ -26,7 +24,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
      * @param runner
      */
     public ExerciseRepositoryImpl(SolutionCompiler compiler, SolutionRunner runner) {
-        WholeClassExercise helloWorld = new CreateExercise()
+        Exercise helloWorld = new CreateExercise()
             .setCompiler(compiler)
             .setRunner(runner)
             .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))))
@@ -38,7 +36,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
             .setSuffixCode(null)
             .build();
 
-        WholeClassExercise cruelWorld = new CreateExercise()
+        Exercise cruelWorld = new CreateExercise()
             .setCompiler(compiler)
             .setRunner(runner)
             .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Goodbye Cruel World!"))))
@@ -50,7 +48,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
             .setSuffixCode(null)
             .build();
 
-        WholeClassExercise staticField = new CreateExercise()
+        Exercise staticField = new CreateExercise()
             .setCompiler(compiler)
             .setRunner(runner)
             .setCapturedOutputCheckers(new ArrayList<>())
@@ -62,7 +60,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
             .setSuffixCode(null)
             .build();
 
-        WholeClassExercise returnSquareNumber = new CreateExercise()
+        Exercise returnSquareNumber = new CreateExercise()
             .setCompiler(compiler)
             .setRunner(runner)
             .setCapturedOutputCheckers(new ArrayList<>())
@@ -74,7 +72,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
             .setSuffixCode(null)
             .build();
 
-        WholeClassExercise returnChar = new CreateExercise()
+        Exercise returnChar = new CreateExercise()
             .setCompiler(compiler)
             .setRunner(runner)
             .setCapturedOutputCheckers(new ArrayList<>())
@@ -86,7 +84,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
             .setSuffixCode(null)
             .build();
 
-        WholeClassExercise completeTheCodeHelloWorld = new CreateExercise()
+        Exercise completeTheCodeHelloWorld = new CreateExercise()
             .setCompiler(compiler)
             .setRunner(runner)
             .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))))

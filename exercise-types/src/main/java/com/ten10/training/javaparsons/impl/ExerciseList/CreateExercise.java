@@ -5,7 +5,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.*;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import java.lang.reflect.Field;
+
 import java.util.List;
 
 public class CreateExercise implements ExerciseBuilder {
@@ -131,7 +131,7 @@ public class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
-    public WholeClassExercise build() {
+    public Exercise build() {
         return new WholeClassExercise(this);
     }
 }
