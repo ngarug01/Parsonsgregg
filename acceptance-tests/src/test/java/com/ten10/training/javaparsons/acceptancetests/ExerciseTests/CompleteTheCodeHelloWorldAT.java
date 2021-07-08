@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.emptyString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,7 +57,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void prefixCodeIsDisplayed() {
 
-        assertThat(page.getPrefixCode(), not(isEmptyString()));
+        assertThat(page.getPrefixCode(), not(emptyString()));
 
     }
 
@@ -65,7 +65,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void followingCodeIsDisplayed() {
 
-        assertThat(page.getSuffixCode(), not(isEmptyString()));
+        assertThat(page.getSuffixCode(), not(emptyString()));
     }
 
     @Test

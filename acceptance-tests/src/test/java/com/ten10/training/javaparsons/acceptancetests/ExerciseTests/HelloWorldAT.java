@@ -97,7 +97,7 @@ public class HelloWorldAT {
     @Tag("acceptance-tests")
     void informationBoxDisplayed() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS);
-        assertThat(page.getInfo(), not(isEmptyString()));
+        assertThat(page.getInfo(), not(emptyString()));
         assertTrue(page.isSuccessful());
     }
 }
