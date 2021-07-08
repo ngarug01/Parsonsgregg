@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SingleSession
 public class HelloWorldAT {
 
-    private static final Matcher<String> STRING_NOT_EMPTY = is(not(emptyString()));
     private static final String CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
     private static final String INCORRECT_PROGRAM = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
     private static final String CORRECT_PROGRAM_THAT_DOESNT_PRINT_HELLO_WORLD = "public class Main {public static void main (String [] args) {System.out.println(\"Telly Tubby!\");}}";
@@ -100,7 +99,7 @@ public class HelloWorldAT {
     @Tag("acceptance-tests")
     void informationBoxDisplayed() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS);
-        assertThat(page.getInfo(), STRING_NOT_EMPTY);
+        assertThat(page.getInfo(), is(not(emptyString())));
         assertTrue(page.isSuccessful());
     }
 }

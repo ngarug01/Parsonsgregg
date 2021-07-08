@@ -27,7 +27,6 @@ class CompleteTheCodeHelloWorldAT {
     private final String COMPLETE_HELLO_WORLD_CORRECT = "System.out.println(\"Hello World!\");";
     private final String COMPLETE_HELLO_WORLD_INCORRECT = "System.out.println(\"Hello World!\")";
     private final String COMPLETE_HELLO_WORLD_INFLOOP = "while(true){}";
-    private static final Matcher<String> STRING_NOT_EMPTY = is(not(emptyString()));
 
 
     CompleteTheCodeHelloWorldAT(ChromeDriver driver) {
@@ -59,7 +58,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void prefixCodeIsDisplayed() {
 
-        assertThat(page.getPrefixCode(), STRING_NOT_EMPTY);
+        assertThat(page.getPrefixCode(), is(not(emptyString())));
 
     }
 
@@ -67,7 +66,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void followingCodeIsDisplayed() {
 
-        assertThat(page.getSuffixCode(), STRING_NOT_EMPTY);
+        assertThat(page.getSuffixCode(), is(not(emptyString())));
     }
 
     @Test
