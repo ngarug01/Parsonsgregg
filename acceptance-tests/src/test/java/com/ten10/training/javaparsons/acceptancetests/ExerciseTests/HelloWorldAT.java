@@ -4,6 +4,7 @@ package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SingleSession
 public class HelloWorldAT {
 
+    private static final Matcher<String> STRING_NOT_EMPTY = is(not(emptyString()));
     private static final String CORRECT_PROGRAM_THAT_PRINTS_HELLO_WORLD = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\");}}";
     private static final String INCORRECT_PROGRAM = "public class Main {public static void main(String[] args) {System.out.println(\"Hello World!\")}}";
     private static final String CORRECT_PROGRAM_THAT_DOESNT_PRINT_HELLO_WORLD = "public class Main {public static void main (String [] args) {System.out.println(\"Telly Tubby!\");}}";
@@ -97,7 +100,7 @@ public class HelloWorldAT {
     @Tag("acceptance-tests")
     void informationBoxDisplayed() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS);
-        assertThat(page.getInfo(), not(emptyString()));
+        assertThat(page.getInfo(), STRING_NOT_EMPTY);
         assertTrue(page.isSuccessful());
     }
 }

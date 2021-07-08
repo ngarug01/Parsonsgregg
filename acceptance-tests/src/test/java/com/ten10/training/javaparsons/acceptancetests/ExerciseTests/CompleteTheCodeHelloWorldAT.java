@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -26,6 +27,7 @@ class CompleteTheCodeHelloWorldAT {
     private final String COMPLETE_HELLO_WORLD_CORRECT = "System.out.println(\"Hello World!\");";
     private final String COMPLETE_HELLO_WORLD_INCORRECT = "System.out.println(\"Hello World!\")";
     private final String COMPLETE_HELLO_WORLD_INFLOOP = "while(true){}";
+    private static final Matcher<String> STRING_NOT_EMPTY = is(not(emptyString()));
 
 
     CompleteTheCodeHelloWorldAT(ChromeDriver driver) {
@@ -57,7 +59,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void prefixCodeIsDisplayed() {
 
-        assertThat(page.getPrefixCode(), not(emptyString()));
+        assertThat(page.getPrefixCode(), STRING_NOT_EMPTY);
 
     }
 
@@ -65,7 +67,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void followingCodeIsDisplayed() {
 
-        assertThat(page.getSuffixCode(), not(emptyString()));
+        assertThat(page.getSuffixCode(), STRING_NOT_EMPTY);
     }
 
     @Test
