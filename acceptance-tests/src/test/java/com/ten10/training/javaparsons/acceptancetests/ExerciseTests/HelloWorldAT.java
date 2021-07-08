@@ -4,6 +4,7 @@ package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
@@ -97,7 +99,7 @@ public class HelloWorldAT {
     @Tag("acceptance-tests")
     void informationBoxDisplayed() {
         page.trySolution(CORRECT_PROGRAM_THAT_PRODUCES_WARNINGS);
-        assertThat(page.getInfo(), not(isEmptyString()));
+        assertThat(page.getInfo(), is(not(emptyString())));
         assertTrue(page.isSuccessful());
     }
 }
