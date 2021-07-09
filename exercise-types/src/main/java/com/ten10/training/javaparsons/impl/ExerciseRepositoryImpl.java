@@ -2,6 +2,7 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
+import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
@@ -18,7 +19,14 @@ import java.util.function.Consumer;
 public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     public final List<Exercise> exercises = new ArrayList<>();
-    public ExerciseRepositoryImpl(SolutionCompiler compiler, SolutionRunner runner) {}
+    private final SolutionRunner runner;
+    private final SolutionCompiler compiler;
+
+    public ExerciseRepositoryImpl(SolutionCompiler compiler, SolutionRunner runner) {
+        this.compiler = compiler;
+        this.runner = runner;
+
+    }
 
 //    /**
 //     * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
@@ -49,12 +57,21 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
         return exercises.iterator();
     }
 
+    public SolutionRunner getRunner() {
+        return runner;
+    }
 
-    public void addExercise(java.util.function.Consumer<ExerciseBuilder> builderConsumer) {
-        ExerciseBuilder builder = new CreateExercise();
+    public SolutionCompiler getCompiler() {
+        return compiler;
+    }
+
+    public void addExercise(Consumer<ExerciseBuilder> builderConsumer) {
+        ExerciseBuilder builder = new CreateExercise(compiler, runner);
         builderConsumer.accept(builder);
         Exercise exercise = builder.build();
         exercises.add(exercise);
 
     }
+
+
 }
