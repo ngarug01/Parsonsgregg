@@ -179,6 +179,8 @@
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
+                <!-- Must match the version specified by SpringBoot-->
+                <version>1.2.3</version>
             </dependency>
 
 
