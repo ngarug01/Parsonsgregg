@@ -77,14 +77,14 @@ class BaseSolutionIT {
     }
 
 
-//    @Test
-//    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
-//    void evaluateCallsCompiler() throws Exception {
-//        // Act
-//        baseSolution.evaluate();
-//        // Assert
-//        verify(mockCompiler).compile(baseSolution, progressReporter);
-//    }
+    @Test
+    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
+    void evaluateCallsCompiler() throws Exception {
+        // Act
+        baseSolution.evaluate();
+        // Assert
+        verify(mockCompiler).compile(baseSolution, progressReporter);
+    }
 
     @Test
     @DisplayName("Calling getFullClassText() should return the provided text")

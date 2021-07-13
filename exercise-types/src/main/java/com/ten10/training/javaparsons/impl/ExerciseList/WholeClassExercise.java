@@ -114,7 +114,8 @@ public class WholeClassExercise implements Exercise{
             /**
              * @return The unique identifier of an exercise.
              */
-            private int getIdentifier() {
+            @Override
+            public Integer getIdentifier() {
                 return id;
             }
 
