@@ -23,6 +23,11 @@ public class CreateExercise implements ExerciseBuilder {
     private String prefixCode;
     private String suffixCode;
 
+    public CreateExercise(SolutionCompiler compiler, SolutionRunner runner) {
+        this.compiler = compiler;
+        this.runner = runner;
+    }
+
     public SolutionCompiler getCompiler() {
         return compiler;
     }
