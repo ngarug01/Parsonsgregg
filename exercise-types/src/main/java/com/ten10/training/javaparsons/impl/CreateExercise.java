@@ -1,20 +1,18 @@
-package com.ten10.training.javaparsons.impl.ExerciseList;
+package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.*;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
 
-public class CreateExercise implements ExerciseBuilder {
+class CreateExercise implements ExerciseBuilder {
 
 
-    private SolutionCompiler compiler;
-    private SolutionRunner runner;
+    private final SolutionCompiler compiler;
+    private final SolutionRunner runner;
     private ProgressReporter progressReporter;
-    private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
     private List<CapturedOutputChecker> capturedOutputCheckers;
     private List<ClassChecker> classCheckers;
     private List<MethodReturnValueChecker> methodReturnValueCheckers;
@@ -22,6 +20,11 @@ public class CreateExercise implements ExerciseBuilder {
     private int id;
     private String prefixCode;
     private String suffixCode;
+
+    public CreateExercise(SolutionCompiler compiler, SolutionRunner runner) {
+        this.compiler = compiler;
+        this.runner = runner;
+    }
 
     public SolutionCompiler getCompiler() {
         return compiler;
@@ -33,10 +36,6 @@ public class CreateExercise implements ExerciseBuilder {
 
     public ProgressReporter getProgressReporter() {
         return progressReporter;
-    }
-
-    public CaptureConsoleOutput getCaptureConsoleOutput() {
-        return captureConsoleOutput;
     }
 
     public List<CapturedOutputChecker> getCapturedOutputCheckers() {
@@ -68,42 +67,29 @@ public class CreateExercise implements ExerciseBuilder {
     }
 
 
-
-
     @Override
-    public ExerciseBuilder setCompiler(SolutionCompiler solutionCompiler) {
-        this.compiler=solutionCompiler;
-        return this;
-    }
-
-    @Override
-    public ExerciseBuilder setRunner(SolutionRunner solutionRunner) {
-        this.runner=solutionRunner;
-        return this;
-    }
-    @Override
-    public ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers){
-        this.capturedOutputCheckers=capturedOutputCheckers;
+    public ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers) {
+        this.capturedOutputCheckers = capturedOutputCheckers;
         return this;
     }
 
     @Override
     public ExerciseBuilder setClassCheckers(List<ClassChecker> classCheckers) {
-        this.classCheckers=classCheckers;
+        this.classCheckers = classCheckers;
 
         return this;
     }
 
     @Override
     public ExerciseBuilder setMethodReturnValueChecker(List<MethodReturnValueChecker> methodReturnValueCheckers) {
-        this.methodReturnValueCheckers=methodReturnValueCheckers;
+        this.methodReturnValueCheckers = methodReturnValueCheckers;
         return this;
 
     }
 
     @Override
     public ExerciseBuilder setProgressReporter(ProgressReporter progressReporter) {
-        this.progressReporter=progressReporter;
+        this.progressReporter = progressReporter;
         return this;
     }
 
@@ -113,8 +99,7 @@ public class CreateExercise implements ExerciseBuilder {
         return this;
     }
 
-    @Override
-    public ExerciseBuilder setId(int id) {
+    public CreateExercise setId(int id) {
         this.id = id;
         return this;
     }
@@ -124,13 +109,13 @@ public class CreateExercise implements ExerciseBuilder {
         this.prefixCode = prefixCode;
         return this;
     }
+
     @Override
     public ExerciseBuilder setSuffixCode(String suffixCode) {
         this.suffixCode = suffixCode;
         return this;
     }
 
-    @Override
     public Exercise build() {
         return new WholeClassExercise(this);
     }

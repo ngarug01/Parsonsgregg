@@ -1,19 +1,15 @@
-package com.ten10.training.javaparsons.impl.ExerciseList;
+package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
-import com.ten10.training.javaparsons.impl.ClassChecker;
-import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.impl.ExerciseList.LineNumberTranslationProgressReporter;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
-
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
-import java.util.Objects;
 
 import static java.util.Objects.isNull;
 
@@ -27,14 +23,13 @@ public class WholeClassExercise implements Exercise {
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
-//    private final List<CompleteTheCodeChecker> completetheCodeCheckers;
 
 
     /**
      * Creates a new WholeClassExercise.
      *
      * @param compiler     Prepares an user input to be run.
-     * @param runner
+     * @param runner       Runs the solution
      * @param exerciseName Description of the exercise.
      * @param id           The unique identifier of an exercise.
      */
@@ -70,7 +65,7 @@ public class WholeClassExercise implements Exercise {
         this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
         this.suffixCode = normalizeSuffixCode(buildedExercise.getSuffixCode());
-//        this.completeTheCodeCheckers = completeTheCodeCheckers;
+
 
     }
 
