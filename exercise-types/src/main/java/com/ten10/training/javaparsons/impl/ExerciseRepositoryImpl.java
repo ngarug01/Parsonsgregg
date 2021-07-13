@@ -32,12 +32,12 @@ public class ExerciseRepositoryImpl implements ExerciseRepository{
 
     @Override
     public Exercise getExerciseByIdentifier(int identifier){
-        return exercises.get(identifier);
+        return exercises.get(identifier - 1);  // Identifiers are one-based, not zero-based
     }
 
     @Override
     public int getIdentifierFor(Exercise exercise) {
-        return exercises.indexOf(exercise);
+        return exercises.indexOf(exercise) + 1;  // Identifiers are one-based, not zero-based
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository{
     public void addExercise(Consumer<ExerciseBuilder> builderConsumer) {
         CreateExercise builder = new CreateExercise(compiler, runner);
         builderConsumer.accept(builder);
-        builder.setId(exercises.size());
+        builder.setId(exercises.size() + 1);  // Ids are one-based, not zero-based
         Exercise exercise = builder.build();
         exercises.add(exercise);
 
