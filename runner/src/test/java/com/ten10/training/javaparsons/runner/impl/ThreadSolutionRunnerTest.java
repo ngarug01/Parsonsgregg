@@ -120,7 +120,7 @@ class ThreadSolutionRunnerTest {
         assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
     }
 //
-//    @Test
+//    @Test     //call information parameter does not exist.
 //    void methodsShouldNotTimeOut() throws InterruptedException, ExecutionException, ReflectiveOperationException {
 //        // Arrange
 //        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -151,26 +151,6 @@ class ThreadSolutionRunnerTest {
         LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
 
 
-        /**final EntryPoint callInformation = new EntryPoint() {
-
-        @Override public String getEntryPointClass() {
-        return Example.class.getName();
-        }
-
-        @Override public String getEntryPointMethod() {
-        return "takesArgs";
-        }
-
-        @Override public Class<?>[] getParameterTypes() {
-        return new Class<?>[]{int.class, int.class};
-        }
-
-        @Override public Object[] getParameters() {
-        return new Object[]{1, 3};
-        }
-        };
-         **/
-
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
@@ -179,7 +159,7 @@ class ThreadSolutionRunnerTest {
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
-//    @Test
+//    @Test  //doesn't implement every method in EntryPoint() and so doesn't work.
 //    void methodShouldNotAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
 //        //Arrange
 //        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
@@ -224,27 +204,6 @@ class ThreadSolutionRunnerTest {
 
         EntryPoint callInformation = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
-
-        /**
-         final EntryPoint callInformation = new EntryPoint() {
-
-        @Override public String getEntryPointClass() {
-        return Example.class.getName();
-        }
-
-        @Override public String getEntryPointMethod() {
-        return "instanceMethod";
-        }
-
-        @Override public Class<?>[] getParameterTypes() {
-        return new Class<?>[0];
-        }
-
-        @Override public Object[] getParameters() {
-        return new Object[0];
-        }
-        };
-         **/
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
         loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
