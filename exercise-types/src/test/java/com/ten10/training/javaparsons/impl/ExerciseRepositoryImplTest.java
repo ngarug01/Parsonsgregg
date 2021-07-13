@@ -30,7 +30,7 @@ class ExerciseRepositoryImplTest {
             .setName("Whole Class \"Hello world\"")
             .setPrefixCode(null)
             .setSuffixCode(null));
-        Exercise exercise = exerciseRepository.getExerciseByIdentifier(0);
+        Exercise exercise = exerciseRepository.getExerciseByIdentifier(1);
         assertThat(exercise, is(instanceOf(WholeClassExercise.class)));
     }
 

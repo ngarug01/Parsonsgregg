@@ -14,7 +14,6 @@ public interface ExerciseBuilder {
     ExerciseBuilder setName(String name);
     ExerciseBuilder setPrefixCode(String prefixCode);
     ExerciseBuilder setSuffixCode(String suffixCode);
-    Exercise build();
 
 }
 
