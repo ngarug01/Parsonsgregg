@@ -17,7 +17,7 @@ import java.util.Objects;
 
 import static java.util.Objects.isNull;
 
-public class WholeClassExercise implements Exercise{
+public class WholeClassExercise implements Exercise {
     private final String exerciseName;
     private String prefixCode;
     private String suffixCode;
@@ -57,18 +57,19 @@ public class WholeClassExercise implements Exercise{
         this.prefixCode = prefixCode;
         this.suffixCode = suffixCode;
     }
-    public WholeClassExercise(CreateExercise buildedExercise){
-        this.compiler=buildedExercise.getCompiler();
-        this.runner=buildedExercise.getRunner();
-        this.exerciseName=buildedExercise.getName();
-        this.id=buildedExercise.getId();
-        this.capturedOutputCheckers=buildedExercise.getCapturedOutputCheckers();
-        this.classCheckers=buildedExercise.getClassCheckers();
-        this.methodReturnValueCheckers=buildedExercise.getMethodReturnValueCheckers();
-        this.prefixCode=buildedExercise.getPrefixCode();
-        this.suffixCode=buildedExercise.getSuffixCode();
+
+    public WholeClassExercise(CreateExercise buildedExercise) {
+        this.compiler = buildedExercise.getCompiler();
+        this.runner = buildedExercise.getRunner();
+        this.exerciseName = buildedExercise.getName();
+        this.id = buildedExercise.getId();
+        this.capturedOutputCheckers = buildedExercise.getCapturedOutputCheckers();
+        this.classCheckers = buildedExercise.getClassCheckers();
+        this.methodReturnValueCheckers = buildedExercise.getMethodReturnValueCheckers();
+        this.prefixCode = buildedExercise.getPrefixCode();
+        this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
-        this.suffixCode =  normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.suffixCode = normalizeSuffixCode(buildedExercise.getSuffixCode());
 //        this.completeTheCodeCheckers = completeTheCodeCheckers;
 
     }
@@ -149,11 +150,11 @@ public class WholeClassExercise implements Exercise{
         };
     }
 
-        /**
-         * @param userInput        The input provided by the user.
-         * @param progressReporter The callback object to use when reporting compilation and test results.
-         * @return A new PrintOutExerciseSolution from user input.
-         */
+    /**
+     * @param userInput        The input provided by the user.
+     * @param progressReporter The callback object to use when reporting compilation and test results.
+     * @return A new PrintOutExerciseSolution from user input.
+     */
 
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
