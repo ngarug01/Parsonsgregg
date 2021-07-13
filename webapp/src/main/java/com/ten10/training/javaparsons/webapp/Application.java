@@ -95,7 +95,11 @@ public class Application {
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Whole Class \"Hello world\"")
             .setPrefixCode(null)
-            .setSuffixCode(null));
+            .setSuffixCode(null)
+        .setEntryPoint(ep -> ep
+            .className("Methods")
+            .methodName("World")
+            .parameterTypesList(String.class)));
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Goodbye Cruel World!"))))
@@ -103,7 +107,11 @@ public class Application {
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Goodbye Cruel World!")
             .setPrefixCode(null)
-            .setSuffixCode(null));
+            .setSuffixCode(null)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("Cruel")
+                .parameterTypesList(String.class)));
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
@@ -111,7 +119,11 @@ public class Application {
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Static Field")
             .setPrefixCode(null)
-            .setSuffixCode(null));
+            .setSuffixCode(null)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("Static")
+                .parameterTypesList(String.class)));
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
@@ -119,7 +131,11 @@ public class Application {
             .setMethodReturnValueChecker(new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4))))
             .setName("Two Squared")
             .setPrefixCode(null)
-            .setSuffixCode(null));
+            .setSuffixCode(null)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("Squared")
+                .parameterTypesList(String.class)));
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
@@ -127,7 +143,11 @@ public class Application {
             .setMethodReturnValueChecker(new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns a Char with value 'A'", 'A'))))
             .setName("Return Char A")
             .setPrefixCode(null)
-            .setSuffixCode(null));
+            .setSuffixCode(null)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("ValueA")
+                .parameterTypesList(String.class)));
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))))
@@ -135,7 +155,11 @@ public class Application {
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Complete the code - Hello World!")
             .setPrefixCode("public class Main { \npublic static void main (String[] args) {")
-            .setSuffixCode("}\n}"));
+            .setSuffixCode("}\n}")
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("Hello")
+                .parameterTypesList(String.class)));
 
         return repository;
     }

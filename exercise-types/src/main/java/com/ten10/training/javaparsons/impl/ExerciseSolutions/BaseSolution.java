@@ -46,14 +46,25 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
 
 
-    private static EntryPoint entryPoint = new EntryPointBuilderImpl()
-        .className("Main")
-        .methodName("main")
-        .parameterTypesList( new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
-        .build();
+    private final EntryPoint entryPoint;
 
-    private LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
+    {
+        entryPoint = getEntryPoint();
+    }
+
+    private EntryPoint getEntryPoint() {
+        final EntryPoint entryPoint;
+        entryPoint = new EntryPointBuilderImpl()
+            .className("Main")
+            .methodName("main")
+            .parameterTypesList(String[].class)
+            .getParameter(new Object[]{new String[]{}})
+            .build();
+        return entryPoint;
+    }
+
+
+    private final LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
 
 
 

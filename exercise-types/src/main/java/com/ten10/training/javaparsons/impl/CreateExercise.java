@@ -6,6 +6,7 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 class CreateExercise implements ExerciseBuilder {
 
@@ -20,6 +21,7 @@ class CreateExercise implements ExerciseBuilder {
     private int id;
     private String prefixCode;
     private String suffixCode;
+    private Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner;
 
     public CreateExercise(SolutionCompiler compiler, SolutionRunner runner) {
         this.compiler = compiler;
@@ -64,6 +66,10 @@ class CreateExercise implements ExerciseBuilder {
 
     public String getSuffixCode() {
         return suffixCode;
+    }
+
+    public Consumer<SolutionRunner.EntryPointBuilder> getEntryPointBuilderRunner(){
+        return entryPointBuilderRunner;
     }
 
 
@@ -114,6 +120,13 @@ class CreateExercise implements ExerciseBuilder {
         this.suffixCode = suffixCode;
         return this;
     }
+
+    @Override
+    public ExerciseBuilder setEntryPoint(Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner) {
+        this.entryPointBuilderRunner = entryPointBuilderRunner;
+        return this;
+    }
+
 
     public Exercise build() {
         return new WholeClassExercise(this);
