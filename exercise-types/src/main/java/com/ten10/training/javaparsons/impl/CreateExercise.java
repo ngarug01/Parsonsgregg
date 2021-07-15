@@ -4,8 +4,10 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 class CreateExercise implements ExerciseBuilder {
 
@@ -20,6 +22,13 @@ class CreateExercise implements ExerciseBuilder {
     private int id;
     private String prefixCode;
     private String suffixCode;
+    private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
+        .className("Main")
+        .methodName("main")
+        .parameterTypesList(new Class<?>[]{String[].class})
+        .getParameter(new Object[]{new String[]{}})
+        .build();
+    private Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner;
 
     public CreateExercise(SolutionCompiler compiler, SolutionRunner runner) {
         this.compiler = compiler;
@@ -65,6 +74,8 @@ class CreateExercise implements ExerciseBuilder {
     public String getSuffixCode() {
         return suffixCode;
     }
+
+
 
 
     @Override
@@ -119,4 +130,19 @@ class CreateExercise implements ExerciseBuilder {
     public Exercise build() {
         return new WholeClassExercise(this);
     }
+
+    @Override
+    public ExerciseBuilder setEntryPoint(Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner) {
+        EntryPointBuilderImpl builder = new EntryPointBuilderImpl();
+        entryPointBuilderRunner.accept(builder);
+        this.entryPoint = builder.build();
+        return this;
+    }
+
+    public SolutionRunner.EntryPoint getEntryPoint() {
+        return entryPoint;
+    }
+
 }
+
+

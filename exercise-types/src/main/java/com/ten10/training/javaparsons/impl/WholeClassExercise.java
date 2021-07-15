@@ -8,12 +8,14 @@ import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.LineNumberTranslationProgressReporter;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
+
 
 import java.util.List;
 
 import static java.util.Objects.isNull;
 
-public class WholeClassExercise implements Exercise {
+ class WholeClassExercise implements Exercise{
     private final String exerciseName;
     private String prefixCode;
     private String suffixCode;
@@ -23,6 +25,13 @@ public class WholeClassExercise implements Exercise {
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
+    private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
+        .className("Main")
+        .methodName("main")
+        .parameterTypesList(new Class<?>[]{String[].class})
+        .getParameter(new Object[]{new String[]{}})
+        .build();
+
 
 
     /**
@@ -64,7 +73,8 @@ public class WholeClassExercise implements Exercise {
         this.prefixCode = buildedExercise.getPrefixCode();
         this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
-        this.suffixCode = normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.suffixCode =  normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.entryPoint = buildedExercise.getEntryPoint();
 
 
     }
@@ -110,7 +120,6 @@ public class WholeClassExercise implements Exercise {
             /**
              * @return The unique identifier of an exercise.
              */
-            @Override
             public Integer getIdentifier() {
                 return id;
             }
@@ -157,7 +166,7 @@ public class WholeClassExercise implements Exercise {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
+        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
     }
 
 }

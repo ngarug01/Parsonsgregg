@@ -139,6 +139,18 @@ public class Application {
             .setPrefixCode("public class Main { \npublic static void main (String[] args) {")
             .setSuffixCode("}\n}"));
 
+        repository.addExercise(builder -> builder
+            .setCapturedOutputCheckers(new ArrayList<>())
+            .setClassCheckers(new ArrayList<>())
+            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4)))
+            .setName("Use a method called squaresTwo to find the square of 2")
+            .setPrefixCode(null)
+            .setSuffixCode(null)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("squaresTwo")
+                .parameterTypesList(new Class<?>[]{String[].class})
+                .getParameter(new Object[]{new String[]{}})));
         return repository;
     }
 
