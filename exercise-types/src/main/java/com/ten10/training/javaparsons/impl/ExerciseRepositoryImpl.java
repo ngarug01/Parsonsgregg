@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ExerciseRepositoryImpl implements ExerciseRepository{
+public class ExerciseRepositoryImpl implements ExerciseRepository {
 
     public final List<Exercise> exercises = new ArrayList<>();
     private final SolutionRunner runner;
@@ -31,7 +31,7 @@ public class ExerciseRepositoryImpl implements ExerciseRepository{
      */
 
     @Override
-    public Exercise getExerciseByIdentifier(int identifier){
+    public Exercise getExerciseByIdentifier(int identifier) {
         return exercises.get(identifier - 1);  // Identifiers are one-based, not zero-based
     }
 
@@ -48,8 +48,9 @@ public class ExerciseRepositoryImpl implements ExerciseRepository{
     public void addExercise(Consumer<ExerciseBuilder> builderConsumer) {
         CreateExercise builder = new CreateExercise(compiler, runner);
         builderConsumer.accept(builder);
-        builder.setId(exercises.size() + 1);  // Ids are one-based, not zero-based
-        Exercise exercise = builder.build();
+        Exercise exercise = builder
+            .setId(exercises.size() + 1)  // Ids are one-based, not zero-based
+            .build();
         exercises.add(exercise);
 
     }

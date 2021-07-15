@@ -80,6 +80,6 @@ public interface SolutionRunner {
      * @throws InterruptedException
      */
     RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
-//    EntryPointBuilder entryPoint();
+    //EntryPointBuilder entryPoint();
 }
 

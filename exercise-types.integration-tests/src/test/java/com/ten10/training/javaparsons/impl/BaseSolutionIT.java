@@ -82,7 +82,7 @@ class BaseSolutionIT {
     }
 
 
-//    @Test
+//    @Test //Test does not work
 //    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
 //    void evaluateCallsCompiler() throws Exception {
 //        // Act
@@ -90,6 +90,7 @@ class BaseSolutionIT {
 //        // Assert
 //        verify(mockCompiler).compile(baseSolution, progressReporter);
 //    }
+
 
     @Test
     @DisplayName("Calling getFullClassText() should return the provided text")
@@ -104,7 +105,7 @@ class BaseSolutionIT {
     }
 
 
-//    @Test
+//    @Test //Test does not work
 //    void correctCheckerCalledPrintOut() throws Exception {
 //        // Act
 //        baseSolution.evaluate();
@@ -112,7 +113,7 @@ class BaseSolutionIT {
 //        verify(printOutChecker).validate("", progressReporter);
 //    }
 
-//    @Test
+//    @Test //Test does not work
 //    void correctCheckerCalledPrintOutReturnsTrue() throws Exception {
 //        when(printOutChecker.validate("", progressReporter)).thenReturn(true);
 //        assertTrue(baseSolution.evaluate());

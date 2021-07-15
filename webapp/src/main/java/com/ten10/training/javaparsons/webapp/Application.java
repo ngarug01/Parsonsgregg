@@ -14,12 +14,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import static java.lang.Integer.parseInt;
+import static java.util.Collections.singletonList;
 
 @SpringBootApplication
 public class Application {
@@ -37,13 +40,13 @@ public class Application {
         /**
          * if Exercise convert is called the user types a string in to get the exercise they require
          *
-         * @param //identifier is for the id of the exercise
-         *                     the exercise identifier is stored as an integer
+         * @param identifier is for the id of the exercise
+         *                   the exercise identifier is stored as an integer
          * @return the exercise that has been requested
          */
         @Override
-        public Exercise convert(String identifier) {
-            return repository.getExerciseByIdentifier(Integer.valueOf(identifier));
+        public Exercise convert(@NonNull String identifier) {
+            return repository.getExerciseByIdentifier(parseInt(identifier));
         }
     }
 
@@ -60,7 +63,7 @@ public class Application {
     /**
      * When {@link SpringBootApplication} requires a new {@link SolutionCompiler} this method is called to create it.
      *
-     * @param //compiler will compile the solution.
+     * @param compiler will compile the solution.
      * @return a new {@link SolutionCompiler}.
      */
     @Bean
@@ -71,7 +74,6 @@ public class Application {
     /**
      * When {@link SpringBootApplication} requires a new {@link ExerciseRepository} this method is called to create it.
      *
-     * @param //compiler will compile the solution.
      * @return a new {@link ExerciseRepository}.
      */
     @Bean
@@ -83,14 +85,14 @@ public class Application {
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
      *
      * @param compiler Prepares an user input to be run.
-     * @param runner
+     * @param runner   Used to run a solution
      */
     @Bean
     public ExerciseRepository exerciseRepository(SolutionCompiler compiler, SolutionRunner runner) {
 
         ExerciseRepositoryImpl repository = new ExerciseRepositoryImpl(compiler, runner);
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))))
+            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Hello World!")))
             .setClassCheckers(new ArrayList<>())
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Whole Class \"Hello world\"")
@@ -98,7 +100,7 @@ public class Application {
             .setSuffixCode(null));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Goodbye Cruel World!"))))
+            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Goodbye Cruel World!")))
             .setClassCheckers(new ArrayList<>())
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Goodbye Cruel World!")
@@ -107,7 +109,7 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(new ArrayList<>(Arrays.asList(new StaticFieldValueChecker("Has a static int field with a value of 3 \n", 3))))
+            .setClassCheckers(singletonList(new StaticFieldValueChecker("Has a static int field with a value of 3 \n", 3)))
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Static Field")
             .setPrefixCode(null)
@@ -116,7 +118,7 @@ public class Application {
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
             .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4))))
+            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4)))
             .setName("Two Squared")
             .setPrefixCode(null)
             .setSuffixCode(null));
@@ -124,13 +126,13 @@ public class Application {
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
             .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns a Char with value 'A'", 'A'))))
+            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns a Char with value 'A'", 'A')))
             .setName("Return Char A")
             .setPrefixCode(null)
             .setSuffixCode(null));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))))
+            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Hello World!")))
             .setClassCheckers(new ArrayList<>())
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Complete the code - Hello World!")

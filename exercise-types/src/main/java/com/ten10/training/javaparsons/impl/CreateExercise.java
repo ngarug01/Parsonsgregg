@@ -12,8 +12,8 @@ import java.util.function.Consumer;
 class CreateExercise implements ExerciseBuilder {
 
 
-    private SolutionCompiler compiler;
-    private SolutionRunner runner;
+    private final SolutionCompiler compiler;
+    private final SolutionRunner runner;
     private ProgressReporter progressReporter;
     private List<CapturedOutputChecker> capturedOutputCheckers;
     private List<ClassChecker> classCheckers;
@@ -79,28 +79,28 @@ class CreateExercise implements ExerciseBuilder {
 
 
     @Override
-    public ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers){
-        this.capturedOutputCheckers=capturedOutputCheckers;
+    public ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers) {
+        this.capturedOutputCheckers = capturedOutputCheckers;
         return this;
     }
 
     @Override
     public ExerciseBuilder setClassCheckers(List<ClassChecker> classCheckers) {
-        this.classCheckers=classCheckers;
+        this.classCheckers = classCheckers;
 
         return this;
     }
 
     @Override
     public ExerciseBuilder setMethodReturnValueChecker(List<MethodReturnValueChecker> methodReturnValueCheckers) {
-        this.methodReturnValueCheckers=methodReturnValueCheckers;
+        this.methodReturnValueCheckers = methodReturnValueCheckers;
         return this;
 
     }
 
     @Override
     public ExerciseBuilder setProgressReporter(ProgressReporter progressReporter) {
-        this.progressReporter=progressReporter;
+        this.progressReporter = progressReporter;
         return this;
     }
 
@@ -110,7 +110,7 @@ class CreateExercise implements ExerciseBuilder {
         return this;
     }
 
-    public ExerciseBuilder setId(int id) {
+    public CreateExercise setId(int id) {
         this.id = id;
         return this;
     }
@@ -120,6 +120,7 @@ class CreateExercise implements ExerciseBuilder {
         this.prefixCode = prefixCode;
         return this;
     }
+
     @Override
     public ExerciseBuilder setSuffixCode(String suffixCode) {
         this.suffixCode = suffixCode;

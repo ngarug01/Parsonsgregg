@@ -2,6 +2,8 @@ package com.ten10.training.javaparsons;
 
 public interface ExerciseInformation {
 
+    Integer getIdentifier();
+
     /**
      *
      * @return the stored title of this exercise.

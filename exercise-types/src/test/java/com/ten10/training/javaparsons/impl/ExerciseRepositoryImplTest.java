@@ -7,12 +7,11 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 class ExerciseRepositoryImplTest {
@@ -24,7 +23,7 @@ class ExerciseRepositoryImplTest {
     void exercise1IsAWholeClassExercise() {
         ExerciseRepositoryImpl exerciseRepository = new ExerciseRepositoryImpl(compiler, runner);
         exerciseRepository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>(Arrays.asList(new PrintOutChecker("Hello World!"))))
+            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Hello World!")))
             .setClassCheckers(new ArrayList<>())
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Whole Class \"Hello world\"")

@@ -2,8 +2,6 @@ package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ten10.training.javaparsons.ExerciseInformation;
-import com.ten10.training.javaparsons.webapp.views.ExerciseDetails;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
 import org.junit.jupiter.api.Test;
@@ -17,16 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static com.ten10.training.javaparsons.webapp.controllers.DropdownListMembers.blank;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.IOException;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,18 +32,6 @@ class ExerciseControllerTest {
     // TODO: Fix
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
     private static final String TRIVIAL_OUTPUT = "{}";
-    private static final ExerciseInformation exerciseInformation = new ExerciseInformation() {
-
-        @Override
-        public String getTitle() {
-            return null;
-        }
-
-        @Override
-        public String getDescription() {
-            return null;
-        }
-    };
 
 
     @Autowired

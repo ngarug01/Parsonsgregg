@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-@ExtendWith(MockitoExtension.class)
 class ExercisesControllerTest {
 
     private ExerciseRepository exercises;
