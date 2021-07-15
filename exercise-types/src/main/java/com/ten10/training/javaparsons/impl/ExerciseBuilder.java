@@ -1,23 +1,11 @@
 package com.ten10.training.javaparsons.impl;
 
-
-import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ProgressReporter;
-import java.util.List;
-
 public interface ExerciseBuilder {
 
-    ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers);
-    ExerciseBuilder setClassCheckers(List<ClassChecker> classCheckers);
-    ExerciseBuilder setMethodReturnValueChecker(List<MethodReturnValueChecker> methodValueChecker);
-    ExerciseBuilder setProgressReporter(ProgressReporter progressReporter);
-    ExerciseBuilder setName(String name);
-    ExerciseBuilder setPrefixCode(String prefixCode);
-    ExerciseBuilder setSuffixCode(String suffixCode);
-
+    ExerciseBuilder named(String name);
+    ExerciseBuilder checkStaticField(int expectedValue);
+    ExerciseBuilder checkReturnValueIs(Object expectedReturnValue);
+    ExerciseBuilder checkOutputIs(String output);
+    ExerciseBuilder withPrefixCode(String prefixCode);
+    ExerciseBuilder withSuffixCode(String suffixCode);
 }
-
-
-
-
-

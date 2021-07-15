@@ -26,12 +26,11 @@ import static java.util.Objects.isNull;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
 
-
     /**
      * Creates a new WholeClassExercise.
      *
      * @param compiler     Prepares an user input to be run.
-     * @param runner
+     * @param runner       Runs the user input.
      * @param exerciseName Description of the exercise.
      * @param id           The unique identifier of an exercise.
      */

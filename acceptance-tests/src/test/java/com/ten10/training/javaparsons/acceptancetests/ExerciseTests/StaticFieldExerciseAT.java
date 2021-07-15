@@ -9,10 +9,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SeleniumExtension.class)
@@ -42,7 +38,6 @@ public class StaticFieldExerciseAT {
     @Tag("acceptance-tests")
     void containsCorrectAnswer() {
         page.trySolution(CORRECT_STATIC_FIELD_ANSWER);
-        assertThat(page.getOutput(),is("3"));
         assertTrue(page.isSuccessful());
     }
 

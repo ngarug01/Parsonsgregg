@@ -50,4 +50,3 @@ public class StaticFieldValueChecker implements ClassChecker {
             return false;
         }
     }
-

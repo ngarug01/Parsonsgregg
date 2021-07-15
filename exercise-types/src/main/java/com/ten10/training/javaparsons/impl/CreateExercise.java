@@ -1,25 +1,26 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 class CreateExercise implements ExerciseBuilder {
 
-
-    private SolutionCompiler compiler;
-    private SolutionRunner runner;
-    private ProgressReporter progressReporter;
-    private List<CapturedOutputChecker> capturedOutputCheckers;
-    private List<ClassChecker> classCheckers;
-    private List<MethodReturnValueChecker> methodReturnValueCheckers;
+    private final SolutionCompiler compiler;
+    private final SolutionRunner runner;
+    private final List<CapturedOutputChecker> capturedOutputCheckers = new ArrayList<>();
+    private final List<ClassChecker> classCheckers = new ArrayList<>();
+    private final List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private String name;
-    private int id;
     private String prefixCode;
     private String suffixCode;
+    private int id;
 
     public CreateExercise(SolutionCompiler compiler, SolutionRunner runner) {
         this.compiler = compiler;
@@ -29,90 +30,69 @@ class CreateExercise implements ExerciseBuilder {
     public SolutionCompiler getCompiler() {
         return compiler;
     }
-
     public SolutionRunner getRunner() {
         return runner;
     }
-
-    public ProgressReporter getProgressReporter() {
-        return progressReporter;
-    }
-
     public List<CapturedOutputChecker> getCapturedOutputCheckers() {
         return capturedOutputCheckers;
     }
-
     public List<ClassChecker> getClassCheckers() {
         return classCheckers;
     }
-
     public List<MethodReturnValueChecker> getMethodReturnValueCheckers() {
         return methodReturnValueCheckers;
     }
-
     public String getName() {
         return name;
     }
-
     public int getId() {
         return id;
     }
-
     public String getPrefixCode() {
         return prefixCode;
     }
-
     public String getSuffixCode() {
         return suffixCode;
     }
 
-
     @Override
-    public ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers){
-        this.capturedOutputCheckers=capturedOutputCheckers;
+    public ExerciseBuilder checkOutputIs(String output) {
+        this.capturedOutputCheckers.add(new PrintOutChecker(output));
         return this;
     }
 
     @Override
-    public ExerciseBuilder setClassCheckers(List<ClassChecker> classCheckers) {
-        this.classCheckers=classCheckers;
-
+    public ExerciseBuilder checkReturnValueIs(Object expectedReturnValue) {
+        this.methodReturnValueCheckers.add(new ReturnTypeChecker(expectedReturnValue));
         return this;
     }
 
     @Override
-    public ExerciseBuilder setMethodReturnValueChecker(List<MethodReturnValueChecker> methodReturnValueCheckers) {
-        this.methodReturnValueCheckers=methodReturnValueCheckers;
-        return this;
-
-    }
-
-    @Override
-    public ExerciseBuilder setProgressReporter(ProgressReporter progressReporter) {
-        this.progressReporter=progressReporter;
-        return this;
-    }
-
-    @Override
-    public ExerciseBuilder setName(String name) {
+    public ExerciseBuilder named(String name) {
         this.name = name;
         return this;
     }
 
-    public ExerciseBuilder setId(int id) {
-        this.id = id;
+    @Override
+    public ExerciseBuilder checkStaticField(int expectedValue) {
+        this.classCheckers.add(new StaticFieldValueChecker("has a static int field with a value of " + (expectedValue), expectedValue));
         return this;
     }
 
     @Override
-    public ExerciseBuilder setPrefixCode(String prefixCode) {
+    public ExerciseBuilder withPrefixCode(String prefixCode) {
         this.prefixCode = prefixCode;
         return this;
     }
+
     @Override
-    public ExerciseBuilder setSuffixCode(String suffixCode) {
+    public ExerciseBuilder withSuffixCode(String suffixCode) {
         this.suffixCode = suffixCode;
         return this;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Exercise build() {
