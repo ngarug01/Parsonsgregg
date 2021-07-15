@@ -142,7 +142,7 @@ public class Application {
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
             .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(new ArrayList<>(Arrays.asList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4))))
+            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4)))
             .setName("Use a method called squaresTwo to find the square of 2")
             .setPrefixCode(null)
             .setSuffixCode(null)
