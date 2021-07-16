@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonList;
@@ -109,7 +110,7 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(singletonList(new StaticFieldValueChecker("Has a static int field with a value of 3 \n", 3)))
+            .setClassCheckers(Arrays.asList(new StaticFieldValueChecker("Has a static int field x with value 3, and a static string field y that contains only the word \"hello\" inside it.", "x", 3, "y", "hello")))
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Static Field")
             .setPrefixCode(null)

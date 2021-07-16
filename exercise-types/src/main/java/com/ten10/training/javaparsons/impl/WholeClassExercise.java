@@ -136,7 +136,7 @@ public class WholeClassExercise implements Exercise {
                     goals.append(checker.getGoal());
                 }
                 for (ClassChecker checker : classCheckers) {
-                    goals.append(checker.getGoal());
+                    goals.append(checker.getDesc());
                 }
                 for (CapturedOutputChecker checker : capturedOutputCheckers) {
                     goals.append(checker.getGoal());

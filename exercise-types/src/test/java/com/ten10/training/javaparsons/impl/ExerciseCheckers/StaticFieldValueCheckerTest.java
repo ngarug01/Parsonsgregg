@@ -8,12 +8,12 @@ import static org.mockito.Mockito.mock;
 
 class StaticFieldValueCheckerTest {
     private int answer=4;
-    StaticFieldValueChecker staticFieldValueChecker=new StaticFieldValueChecker("this", answer);
+    StaticFieldValueChecker staticFieldValueChecker=new StaticFieldValueChecker("this", null, null, null, null);
     ProgressReporter progressReporter=mock(ProgressReporter.class);
     @Test
-    void getGoal() {
+    void getDesc() {
 
-        assertEquals("this",staticFieldValueChecker.getGoal());
+        assertEquals("this",staticFieldValueChecker.getDesc());
     }
 
     @Test
