@@ -2,18 +2,21 @@ package com.ten10.training.javaparsons.runner;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 
 public interface SolutionRunner {
-                                         //An extra class with EntryPointBuilderImplementation
+    //An extra class with EntryPointBuilderImplementation
     interface EntryPointBuilder {
         EntryPointBuilder className(String className);
+
         EntryPointBuilder methodName(String methodName);
+
         EntryPointBuilder parameterTypesList(Class<?>... parameterTypes);
+
         EntryPointBuilder getParameter(Object[] parameterList);
+
         EntryPoint build();
     }
 
@@ -35,21 +38,22 @@ public interface SolutionRunner {
 
     interface LoadedEntryPoint {
         RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
+
         public void setTimeout(long count, TimeUnit timeUnit);
     }
 
     /**
-    interface EntryPoint {
+     interface EntryPoint {
 
-        String getEntryPointClass();
+     String getEntryPointClass();
 
-        String getEntryPointMethod();
+     String getEntryPointMethod();
 
-        Class<?>[] getParameterTypes();
+     Class<?>[] getParameterTypes();
 
-        Object[] getParameters();
+     Object[] getParameters();
 
-    }
+     }
      **/
 
     /**
@@ -61,7 +65,9 @@ public interface SolutionRunner {
 
     interface RunResult {
         boolean isSuccess();
+
         boolean hasReturnValue();
+
         Object getReturnValue();
     }
 
@@ -80,6 +86,6 @@ public interface SolutionRunner {
      * @throws InterruptedException
      */
     RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
-//    EntryPointBuilder entryPoint();
+    //EntryPointBuilder entryPoint();
 }
 

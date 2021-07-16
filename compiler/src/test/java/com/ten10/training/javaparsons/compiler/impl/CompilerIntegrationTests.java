@@ -25,6 +25,7 @@ class CompilerIntegrationTests {
 
     private static final JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
     ProgressReporter progressReporter = mock(ProgressReporter.class);
+
     @ParameterizedTest
     @EnumSource(TestData.class)
     void compilerFun(TestData data) {
@@ -66,14 +67,11 @@ class CompilerIntegrationTests {
 
         @SuppressWarnings("unused") WORKING_CLASS("HelloWorld", true, "public class HelloWorld { " +
             "public static void main(String[] args) {" +
-            "System.out.println(\"Hello World\");" +
-            "}" +
-            "}"),
+            "System.out.println(\"Hello World\");" + "}" + "}"),
+
         @SuppressWarnings("unused") ERROR_CLASS("HelloWorld", false, "public class HelloWorld { " +
             "public static void main(String[] args) {" +
-            "System.out.println(\"Hello World\")" + // Missing Semicolon
-            "}" +
-            "}");
+            "System.out.println(\"Hello World\")" + "}" + "}");
 
         private final String className;
         private final boolean shouldPass;

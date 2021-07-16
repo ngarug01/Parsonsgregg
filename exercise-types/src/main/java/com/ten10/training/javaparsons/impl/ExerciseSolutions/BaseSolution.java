@@ -8,12 +8,7 @@ import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
-import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
-
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -21,41 +16,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BaseSolution implements Solution, SolutionCompiler.CompilableSolution {
-//
-//    private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
-//
-//        @Override
-//        public String getEntryPointClass() {
-//            return "Main";
-//        }
-//
-//        @Override
-//        public String getEntryPointMethod() {
-//            return "main";
-//        }
-//
-//        @Override
-//        public Class<?>[] getParameterTypes() {
-//            return new Class<?>[]{String[].class};
-//        }
-//
-//        @Override
-//        public Object[] getParameters() {
-//            return new Object[]{new String[]{}};
-//        }
 
-
-
-    private static EntryPoint entryPoint = new EntryPointBuilderImpl()
-        .className("Main")
-        .methodName("main")
-        .parameterTypesList( new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
-        .build();
-
-    private LoadedEntryPoint loadedEntryPoint=entryPoint.load(getClassLoader());
-
-
+    private final EntryPoint entryPoint;
 
     private final SolutionCompiler compiler;
     private final SolutionRunner runner;
@@ -83,7 +45,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
                         List<MethodReturnValueChecker> methodReturnValueCheckers,
-                        ProgressReporter progressReporter) throws ClassNotFoundException {
+                        ProgressReporter progressReporter, EntryPoint entryPoint) throws ClassNotFoundException {
 
         this.compiler = compiler;
         this.runner = runner;
@@ -92,7 +54,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
         this.classCheckers = classCheckers;
         this.methodReturnValueCheckers = methodReturnValueCheckers;
         this.progressReporter = progressReporter;
-
+        this.entryPoint = entryPoint;
     }
 
     /**
@@ -102,6 +64,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @throws Exception Exceptions when
      */
     ArrayList<Boolean> results = new ArrayList<>();
+
     @Override
     public boolean evaluate() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if (!compile()) {
@@ -146,7 +109,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      */
     @Override
     public String getClassName() {
-        return "Main";
+        return entryPoint.getEntryPointClass();
     }
 
     /**
@@ -183,7 +146,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         captureConsoleOutput.start();
         try {
-            return loadedEntryPoint.run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
+            return entryPoint.load(getClassLoader()).run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);
@@ -196,8 +159,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
             klassFields = klass.getFields();
             if (klassFields.length != 0) {
                 return true;
-            }
-            else{
+            } else {
                 progressReporter.reportRunnerError("There is no fields here.");
                 results.add(false);
             }

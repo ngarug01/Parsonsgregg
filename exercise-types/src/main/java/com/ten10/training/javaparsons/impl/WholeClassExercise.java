@@ -6,12 +6,12 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.LineNumberTranslationProgressReporter;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 
 import java.util.List;
-
 
 import static java.util.Objects.isNull;
 
@@ -25,12 +25,19 @@ import static java.util.Objects.isNull;
     private final List<CapturedOutputChecker> capturedOutputCheckers;
     private final List<ClassChecker> classCheckers;
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
+    private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
+        .className("Main")
+        .methodName("main")
+        .parameterTypesList(new Class<?>[]{String[].class})
+        .getParameter(new Object[]{new String[]{}})
+        .build();
+
 
     /**
      * Creates a new WholeClassExercise.
      *
      * @param compiler     Prepares an user input to be run.
-     * @param runner       Runs the user input.
+     * @param runner       Runs the solution
      * @param exerciseName Description of the exercise.
      * @param id           The unique identifier of an exercise.
      */
@@ -53,18 +60,20 @@ import static java.util.Objects.isNull;
         this.prefixCode = prefixCode;
         this.suffixCode = suffixCode;
     }
-    public WholeClassExercise(CreateExercise buildedExercise){
-        this.compiler=buildedExercise.getCompiler();
-        this.runner=buildedExercise.getRunner();
-        this.exerciseName=buildedExercise.getName();
-        this.id=buildedExercise.getId();
-        this.capturedOutputCheckers=buildedExercise.getCapturedOutputCheckers();
-        this.classCheckers=buildedExercise.getClassCheckers();
-        this.methodReturnValueCheckers=buildedExercise.getMethodReturnValueCheckers();
-        this.prefixCode=buildedExercise.getPrefixCode();
-        this.suffixCode=buildedExercise.getSuffixCode();
+
+    public WholeClassExercise(CreateExercise buildedExercise) {
+        this.compiler = buildedExercise.getCompiler();
+        this.runner = buildedExercise.getRunner();
+        this.exerciseName = buildedExercise.getName();
+        this.id = buildedExercise.getId();
+        this.capturedOutputCheckers = buildedExercise.getCapturedOutputCheckers();
+        this.classCheckers = buildedExercise.getClassCheckers();
+        this.methodReturnValueCheckers = buildedExercise.getMethodReturnValueCheckers();
+        this.prefixCode = buildedExercise.getPrefixCode();
+        this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
         this.suffixCode =  normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.entryPoint = buildedExercise.getEntryPoint();
 
 
     }
@@ -110,7 +119,8 @@ import static java.util.Objects.isNull;
             /**
              * @return The unique identifier of an exercise.
              */
-            private int getIdentifier() {
+            @Override
+            public Integer getIdentifier() {
                 return id;
             }
 
@@ -145,18 +155,17 @@ import static java.util.Objects.isNull;
         };
     }
 
-        /**
-         * @param userInput        The input provided by the user.
-         * @param progressReporter The callback object to use when reporting compilation and test results.
-         * @return A new PrintOutExerciseSolution from user input.
-         */
-
+    /**
+     * @param userInput        The input provided by the user.
+     * @param progressReporter The callback object to use when reporting compilation and test results.
+     * @return A new PrintOutExerciseSolution from user input.
+     */
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter);
+        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
     }
 
 }

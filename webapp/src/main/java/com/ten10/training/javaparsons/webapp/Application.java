@@ -11,10 +11,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+
+import static java.lang.Integer.parseInt;
 
 @SpringBootApplication
 public class Application {
@@ -32,13 +35,13 @@ public class Application {
         /**
          * if Exercise convert is called the user types a string in to get the exercise they require
          *
-         * @param //identifier is for the id of the exercise
-         *                     the exercise identifier is stored as an integer
+         * @param identifier is for the id of the exercise
+         *                   the exercise identifier is stored as an integer
          * @return the exercise that has been requested
          */
         @Override
-        public Exercise convert(String identifier) {
-            return repository.getExerciseByIdentifier(Integer.valueOf(identifier));
+        public Exercise convert(@NonNull String identifier) {
+            return repository.getExerciseByIdentifier(parseInt(identifier));
         }
     }
 
@@ -55,7 +58,7 @@ public class Application {
     /**
      * When {@link SpringBootApplication} requires a new {@link SolutionCompiler} this method is called to create it.
      *
-     * @param //compiler will compile the solution.
+     * @param compiler will compile the solution.
      * @return a new {@link SolutionCompiler}.
      */
     @Bean
@@ -66,7 +69,6 @@ public class Application {
     /**
      * When {@link SpringBootApplication} requires a new {@link ExerciseRepository} this method is called to create it.
      *
-     * @param //compiler will compile the solution.
      * @return a new {@link ExerciseRepository}.
      */
     @Bean
@@ -77,8 +79,8 @@ public class Application {
     /**
      * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
      *
-     * @param compiler Prepares a user input to be run.
-     * @param runner Runs user input.
+     * @param compiler Prepares an user input to be run.
+     * @param runner   Used to run a solution
      */
     @Bean
     public ExerciseRepository exerciseRepository(SolutionCompiler compiler, SolutionRunner runner) {
@@ -109,6 +111,15 @@ public class Application {
             .checkOutputIs("Hello World!")
             .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
             .withSuffixCode("}\n}"));
+
+        repository.addExercise(builder -> builder
+            .named("Use a method called squaresTwo to find the square of 2")
+            .checkReturnValueIs(4)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("squaresTwo")
+                .parameterTypesList(new Class<?>[]{String[].class})
+                .getParameter(new Object[]{new String[]{}})));
 
         return repository;
     }
