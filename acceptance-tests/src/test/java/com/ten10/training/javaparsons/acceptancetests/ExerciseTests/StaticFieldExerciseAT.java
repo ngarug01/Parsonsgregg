@@ -26,7 +26,7 @@ public class StaticFieldExerciseAT {
     private static final String INCORRECT_NOT_STATIC_FIELD_ANSWER = "public class Main{ \n public int x = 3; \n public String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
     private static final String CORRECT_MULTIPLE_FIELDS_ANSWER = "public class Main{\n public int z = 7; \n static int w = 3; \n public static int x = 3;\n static String a=\"helloo\"; \n public static String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
     public static final String NAMES_ERROR_MESSAGE = "[The runner error description was: Either your variables have incorrect access modifiers and/or names, or one isn't there!]";
-    public static final String NOT_STATIC_ERROR = "[The runner error description was: x and y need to be static!]";
+    public static final String NOT_STATIC_ERROR = "[The runner error description was: your variable(s) need to be static!]";
     public static final String X_NOT_INITIALISED_PROPERLY_ERROR = "[The runner error description was: The x variable has not been initialised correctly!]";
     private ExercisePage page;
 

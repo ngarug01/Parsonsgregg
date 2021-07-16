@@ -52,16 +52,16 @@ public class StaticFieldValueChecker implements ClassChecker {
     public Boolean validate(Field[] klassFields, ProgressReporter progressReporter) {
         {
             try {
-                Field xField = findFirstField(klassFields).get();
-                Field yField = findSecondField(klassFields).get();
-                yField.setAccessible(true);
-                xField.setAccessible(true);
-                if (!xField.get(xField).equals(answer)) {
-                    progressReporter.reportRunnerError("The x variable has not been initialised correctly!");
+                Field FirstField = findFirstField(klassFields).get();
+                Field SecondField = findSecondField(klassFields).get();
+                SecondField.setAccessible(true);
+                FirstField.setAccessible(true);
+                if (!FirstField.get(FirstField).equals(answer)) {
+                    progressReporter.reportRunnerError("The " +FirstField.getName()+ " variable has not been initialised correctly!");
                     return false;
                 }
-                if (!yField.get(yField).equals(secondanswer)) {
-                    progressReporter.reportRunnerError("The y variable has not been initialised correctly!");
+                if (!SecondField.get(SecondField).equals(secondanswer)) {
+                    progressReporter.reportRunnerError("The" +SecondField.getName()+ "variable has not been initialised correctly!");
                     return false;
                 } else {
                     return true;
@@ -69,7 +69,7 @@ public class StaticFieldValueChecker implements ClassChecker {
             } catch (NoSuchElementException e) {
                 progressReporter.reportRunnerError("Either your variables have incorrect access modifiers and/or names, or one isn't there!");
             } catch (IllegalArgumentException e) {
-                progressReporter.reportRunnerError("x and y need to be static!");
+                progressReporter.reportRunnerError("your variable(s) need to be static!");
             } catch (IllegalAccessException e) {
                 progressReporter.reportRunnerError("No access to a field");
             }
