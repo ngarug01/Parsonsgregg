@@ -57,11 +57,11 @@ public class StaticFieldValueChecker implements ClassChecker {
                 SecondField.setAccessible(true);
                 FirstField.setAccessible(true);
                 if (!FirstField.get(FirstField).equals(answer)) {
-                    progressReporter.reportRunnerError("The " +FirstField.getName()+ " variable has not been initialised correctly!");
+                    progressReporter.reportRunnerError("The " + FirstField.getName() + " variable has not been initialised correctly!");
                     return false;
                 }
                 if (!SecondField.get(SecondField).equals(secondanswer)) {
-                    progressReporter.reportRunnerError("The" +SecondField.getName()+ "variable has not been initialised correctly!");
+                    progressReporter.reportRunnerError("The" + SecondField.getName() + "variable has not been initialised correctly!");
                     return false;
                 } else {
                     return true;
