@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SeleniumExtension.class)
@@ -19,9 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("Tests for feature 4: Two Squared")
 public class TwoSquaredAT {
 
-//    private static final String TWO_SQUARED_CORRECT = "public class Main {public static Integer main(String[] args) {return 2*2;}}";
     private static final String TWO_SQUARED_CORRECT = "public class Main {public static Integer main(String[] args) {return 2*2;}}";
-
 
     private final ExercisePage page;
 
@@ -46,7 +42,7 @@ public class TwoSquaredAT {
     @Test
     @Tag("acceptance-tests")
     void descriptionChanges() {
-        assertTrue(page.getDescription().contains("The returned value is 4"));
+        assertTrue(page.getDescription().contains("the returned value is 4"));
     }
 
 }

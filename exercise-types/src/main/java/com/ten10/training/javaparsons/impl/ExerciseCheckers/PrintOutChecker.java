@@ -13,7 +13,7 @@ public class PrintOutChecker implements CapturedOutputChecker {
 
     @Override
     public String getGoal() {
-        return "The program prints out "+answer + "\n";
+        return "the program prints out "+answer + "\n";
     }
 
     @Override

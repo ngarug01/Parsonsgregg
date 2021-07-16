@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -42,6 +43,11 @@ class WholeClassExerciseTest {
 
     @Test
     void getDescription() {
-        assertEquals("Create a Java class that: \nThe program prints out Answer\n", wholeClassExercise.getInformation().getDescription());
+        ExerciseBuilder exerciseBuilder = new CreateExercise(null, null)
+            .named("Whole Class \"Hello world\"")
+            .checkOutputIs("Hello World!");
+        Exercise exercise = ((CreateExercise) exerciseBuilder).build();
+        String description = exercise.getInformation().getDescription();
+        assertThat(description, startsWith("Create a Java class"));
     }
 }

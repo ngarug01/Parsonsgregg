@@ -1,23 +1,24 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 class CreateExercise implements ExerciseBuilder {
 
-
     private final SolutionCompiler compiler;
     private final SolutionRunner runner;
-    private ProgressReporter progressReporter;
-    private List<CapturedOutputChecker> capturedOutputCheckers;
-    private List<ClassChecker> classCheckers;
-    private List<MethodReturnValueChecker> methodReturnValueCheckers;
+    private final List<CapturedOutputChecker> capturedOutputCheckers = new ArrayList<>();
+    private final List<ClassChecker> classCheckers = new ArrayList<>();
+    private final List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private String name;
     private int id;
     private String prefixCode;
@@ -25,8 +26,8 @@ class CreateExercise implements ExerciseBuilder {
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypesList(new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
+        .parameterTypes(new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}})
         .build();
     private Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner;
 
@@ -41,10 +42,6 @@ class CreateExercise implements ExerciseBuilder {
 
     public SolutionRunner getRunner() {
         return runner;
-    }
-
-    public ProgressReporter getProgressReporter() {
-        return progressReporter;
     }
 
     public List<CapturedOutputChecker> getCapturedOutputCheckers() {
@@ -75,60 +72,44 @@ class CreateExercise implements ExerciseBuilder {
         return suffixCode;
     }
 
-
-
+    public SolutionRunner.EntryPoint getEntryPoint() {
+        return entryPoint;
+    }
 
     @Override
-    public ExerciseBuilder setCapturedOutputCheckers(List<CapturedOutputChecker> capturedOutputCheckers) {
-        this.capturedOutputCheckers = capturedOutputCheckers;
+    public ExerciseBuilder checkOutputIs(String output) {
+        this.capturedOutputCheckers.add(new PrintOutChecker(output));
         return this;
     }
 
     @Override
-    public ExerciseBuilder setClassCheckers(List<ClassChecker> classCheckers) {
-        this.classCheckers = classCheckers;
-
+    public ExerciseBuilder checkReturnValueIs(Object expectedReturnValue) {
+        this.methodReturnValueCheckers.add(new ReturnTypeChecker(expectedReturnValue));
         return this;
     }
 
     @Override
-    public ExerciseBuilder setMethodReturnValueChecker(List<MethodReturnValueChecker> methodReturnValueCheckers) {
-        this.methodReturnValueCheckers = methodReturnValueCheckers;
-        return this;
-
-    }
-
-    @Override
-    public ExerciseBuilder setProgressReporter(ProgressReporter progressReporter) {
-        this.progressReporter = progressReporter;
-        return this;
-    }
-
-    @Override
-    public ExerciseBuilder setName(String name) {
+    public ExerciseBuilder named(String name) {
         this.name = name;
         return this;
     }
 
-    public CreateExercise setId(int id) {
-        this.id = id;
+    @Override
+    public ExerciseBuilder checkStaticField(int expectedValue) {
+        this.classCheckers.add(new StaticFieldValueChecker("has a static int field with a value of " + (expectedValue), expectedValue));
         return this;
     }
 
     @Override
-    public ExerciseBuilder setPrefixCode(String prefixCode) {
+    public ExerciseBuilder withPrefixCode(String prefixCode) {
         this.prefixCode = prefixCode;
         return this;
     }
 
     @Override
-    public ExerciseBuilder setSuffixCode(String suffixCode) {
+    public ExerciseBuilder withSuffixCode(String suffixCode) {
         this.suffixCode = suffixCode;
         return this;
-    }
-
-    public Exercise build() {
-        return new WholeClassExercise(this);
     }
 
     @Override
@@ -139,10 +120,14 @@ class CreateExercise implements ExerciseBuilder {
         return this;
     }
 
-    public SolutionRunner.EntryPoint getEntryPoint() {
-        return entryPoint;
+    public CreateExercise setId(int id) {
+        this.id = id;
+        return this;
     }
 
+    public Exercise build() {
+        return new WholeClassExercise(this);
+    }
 }
 
 

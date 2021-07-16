@@ -4,8 +4,8 @@
 //
 // EntryPointBuilder className(String className);
 // EntryPointBuilder methodName(String methodName);
-// EntryPointBuilder parameterTypesList(Class<?>... parameterTypes);
-// EntryPointBuilder getParameter(Object[] parameterList);
+// EntryPointBuilder parameterTypes(Class<?>... parameterTypes);
+// EntryPointBuilder parameters(Object[] parameterList);
 //
 // EntryPoint build();
 //

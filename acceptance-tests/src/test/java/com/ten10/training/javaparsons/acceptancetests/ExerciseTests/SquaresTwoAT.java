@@ -63,7 +63,7 @@ public class SquaresTwoAT {
     @Test
     @Tag("acceptance-tests")
     void descriptionChanges() {
-        assertTrue(page.getDescription().contains("The returned value is 4"));
+        assertTrue(page.getDescription().contains("the returned value is 4"));
     }
 
     @Test

@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
 class BaseSolutionIT {
@@ -28,8 +29,8 @@ class BaseSolutionIT {
     private static SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypesList( new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
+        .parameterTypes(new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}})
         .build();
 
 
@@ -42,17 +43,17 @@ class BaseSolutionIT {
     private List<ClassChecker> classCheckers = new ArrayList<>();
     private List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final BaseSolution baseSolution = new BaseSolution(mockCompiler, mockRunner, USER_INPUT, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+    private final BaseSolution baseSolution = new BaseSolution(mockCompiler, USER_INPUT, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypesList(new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
+        .parameterTypes(new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}})
         .build());
     private ClassLoader classLoader = mock(ClassLoader.class);
-//    private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
+    //    private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
     private final SolutionRunner.RunResult runResult = mock(SolutionRunner.RunResult.class);
-//    private SolutionRunner.LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
-    private SolutionRunner.LoadedEntryPoint loadedClassRunner=mock(SolutionRunner.LoadedEntryPoint.class);
+    //    private SolutionRunner.LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
+    private SolutionRunner.LoadedEntryPoint loadedClassRunner = mock(SolutionRunner.LoadedEntryPoint.class);
 
     BaseSolutionIT() throws ClassNotFoundException {
     }
@@ -130,11 +131,11 @@ class BaseSolutionIT {
     void evaluateFailsOnCompileClassNameIncorrect() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic Integer main(String[] args){return 12;}}";
-        BaseSolution baseSolution = new BaseSolution(compiler, runner, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+        BaseSolution baseSolution = new BaseSolution(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
             .className("Main")
             .methodName("main")
-            .parameterTypesList(new Class<?>[]{String[].class})
-            .getParameter(new Object[]{new String[]{}})
+            .parameterTypes(new Class<?>[]{String[].class})
+            .parameters(new Object[]{new String[]{}})
             .build());
         baseSolution.evaluate();
         verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
@@ -148,11 +149,11 @@ class BaseSolutionIT {
         String userInput =
             "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){while(true){}}}";
         BaseSolution baseSolution =
-            new BaseSolution(compiler, runner, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+            new BaseSolution(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
                 .className("Main")
                 .methodName("main")
-                .parameterTypesList(new Class<?>[]{String[].class})
-                .getParameter(new Object[]{new String[]{}})
+                .parameterTypes(new Class<?>[]{String[].class})
+                .parameters(new Object[]{new String[]{}})
                 .build());
         //ACT
         boolean evaluateResult = baseSolution.evaluate();

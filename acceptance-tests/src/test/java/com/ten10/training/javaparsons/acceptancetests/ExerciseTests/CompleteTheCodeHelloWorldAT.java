@@ -51,7 +51,7 @@ class CompleteTheCodeHelloWorldAT {
     @Tag("acceptance-tests")
     void descriptionChanges() {
 
-        assertTrue(page.getDescription().contains("The program prints out Hello World!"));
+        assertTrue(page.getDescription().contains("the program prints out Hello World!"));
     }
 
     @Test

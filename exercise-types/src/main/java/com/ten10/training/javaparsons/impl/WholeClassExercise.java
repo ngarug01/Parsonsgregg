@@ -28,10 +28,9 @@ import static java.util.Objects.isNull;
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypesList(new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
+        .parameterTypes(new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}})
         .build();
-
 
 
     /**
@@ -120,6 +119,7 @@ import static java.util.Objects.isNull;
             /**
              * @return The unique identifier of an exercise.
              */
+            @Override
             public Integer getIdentifier() {
                 return id;
             }
@@ -160,13 +160,12 @@ import static java.util.Objects.isNull;
      * @param progressReporter The callback object to use when reporting compilation and test results.
      * @return A new PrintOutExerciseSolution from user input.
      */
-
     @Override
     public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
+        return new BaseSolution(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
     }
 
 }

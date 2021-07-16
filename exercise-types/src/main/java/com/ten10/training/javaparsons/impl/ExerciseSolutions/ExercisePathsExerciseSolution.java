@@ -36,8 +36,8 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
     private static SolutionRunner.EntryPointBuilder entryPointBuilder = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("method")
-        .parameterTypesList( new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}});
+        .parameterTypes( new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}});
 
 
     private SolutionRunner.EntryPoint entryPoint = entryPointBuilder.build();

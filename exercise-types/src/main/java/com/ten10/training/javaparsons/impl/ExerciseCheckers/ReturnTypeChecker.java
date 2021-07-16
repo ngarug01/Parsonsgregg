@@ -6,18 +6,16 @@ import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 public class ReturnTypeChecker implements MethodReturnValueChecker {
 
-    private final String goal;
     private final Object answer;
 
-    public ReturnTypeChecker(String goal, Object answer) {
+    public ReturnTypeChecker(Object answer) {
         this.answer = answer;
-        this.goal = goal;
     }
 
 
     @Override
     public String getGoal() {
-        return "The returned value is " + answer.toString();
+        return "the returned value is " + answer;
     }
 
     @Override
