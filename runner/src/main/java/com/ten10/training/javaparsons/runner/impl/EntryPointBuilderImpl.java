@@ -6,7 +6,6 @@ import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
-import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -23,13 +22,13 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
 
 
     @Override
-    public EntryPointBuilder parameterTypesList(Class<?>... parameterTypes) {
+    public EntryPointBuilder parameterTypes(Class<?>... parameterTypes) {
         this.parameterTypes = parameterTypes;
         return this;
     }
 
     @Override
-    public EntryPointBuilder getParameter(Object[] parameterList) {
+    public EntryPointBuilder parameters(Object... parameterList) {
         this.parameters = parameterList;
         return this;
     }

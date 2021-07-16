@@ -7,7 +7,6 @@ import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 
 import java.lang.reflect.Field;
@@ -20,7 +19,6 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     private final EntryPoint entryPoint;
 
     private final SolutionCompiler compiler;
-    private final SolutionRunner runner;
     private final String userInput;
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
@@ -35,12 +33,10 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
      *
      * @param compiler         SolutionCompiler to compile the user input.
-     * @param runner           ThreadSolutionRunner to run the compiled code.
      * @param userInput        The user input as a String.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
     public BaseSolution(SolutionCompiler compiler,
-                        SolutionRunner runner,
                         String userInput,
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
@@ -48,7 +44,6 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                         ProgressReporter progressReporter, EntryPoint entryPoint) throws ClassNotFoundException {
 
         this.compiler = compiler;
-        this.runner = runner;
         this.userInput = userInput;
         this.capturedOutputCheckers = capturedOutputCheckers;
         this.classCheckers = classCheckers;

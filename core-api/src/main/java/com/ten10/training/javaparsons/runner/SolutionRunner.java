@@ -13,9 +13,9 @@ public interface SolutionRunner {
 
         EntryPointBuilder methodName(String methodName);
 
-        EntryPointBuilder parameterTypesList(Class<?>... parameterTypes);
+        EntryPointBuilder parameterTypes(Class<?>... parameterTypes);
 
-        EntryPointBuilder getParameter(Object[] parameterList);
+        EntryPointBuilder parameters(Object... parameterList);
 
         EntryPoint build();
     }

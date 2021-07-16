@@ -26,8 +26,8 @@ class CreateExercise implements ExerciseBuilder {
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypesList(new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
+        .parameterTypes(new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}})
         .build();
     private Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner;
 

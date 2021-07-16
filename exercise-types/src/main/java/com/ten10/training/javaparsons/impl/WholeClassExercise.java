@@ -28,8 +28,8 @@ import static java.util.Objects.isNull;
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypesList(new Class<?>[]{String[].class})
-        .getParameter(new Object[]{new String[]{}})
+        .parameterTypes(new Class<?>[]{String[].class})
+        .parameters(new Object[]{new String[]{}})
         .build();
 
 
@@ -165,7 +165,7 @@ import static java.util.Objects.isNull;
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        return new BaseSolution(compiler, runner, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
+        return new BaseSolution(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
     }
 
 }

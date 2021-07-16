@@ -118,8 +118,8 @@ public class Application {
             .setEntryPoint(ep -> ep
                 .className("Methods")
                 .methodName("squaresTwo")
-                .parameterTypesList(new Class<?>[]{String[].class})
-                .getParameter(new Object[]{new String[]{}})));
+                .parameterTypes(new Class<?>[]{String[].class})
+                .parameters(new Object[]{new String[]{}})));
 
         return repository;
     }
