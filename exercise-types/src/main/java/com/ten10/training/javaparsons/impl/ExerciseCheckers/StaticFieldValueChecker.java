@@ -1,52 +1,67 @@
 package com.ten10.training.javaparsons.impl.ExerciseCheckers;
-;
+
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Optional;
 
 public class StaticFieldValueChecker implements ClassChecker {
-
+    private final String desc;
     private final String goal;
     private final Object answer;
 
-    public StaticFieldValueChecker(String goal, Object answer) {
-
+    public StaticFieldValueChecker(String desc, String goal, Object answer) {
+        this.desc = desc;
         this.goal = goal;
         this.answer = answer;
     }
 
-    @Override
-    public String getGoal() {
-        return goal;
+    public String getDesc() {
+        return desc;
+    }
+
+    Optional<Field> findField(Field[] fields) {
+        {
+            for (Field field : fields) {
+                if (field.getName().equals(goal)) {
+                    return Optional.of(field);
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
     public Boolean validate(Field[] klassFields, ProgressReporter progressReporter) {
+        {
 
-            if (!(klassFields.length == 1)) { //In this iteration of the Static Field exercise we only expect 1 field.
-                progressReporter.reportRunnerError("Incorrect number of fields");
+            Optional<Field> optionalField = findField(klassFields);
+            if (!optionalField.isPresent()) {
+                progressReporter.reportRunnerError("Either your variables have incorrect access modifiers and/or names, or one isn't there!");
                 return false;
-            } else if (!(Modifier.isStatic(klassFields[0].getModifiers()))) {
-                progressReporter.reportRunnerError("Field not static");
-                return false;
-            } else {
-                Field field = klassFields[0];
-                field.setAccessible(true);
-                try {
-                    if (field.get(field).equals(answer)) {
-                        progressReporter.storeCapturedOutput(field.get(field).toString());
-                        return true;
-                    }
-                    if (!field.get(field).equals(answer)) {
-                        progressReporter.reportRunnerError("Expected int " + answer);
-                        return false;
-                    }
-                } catch (IllegalAccessException e) {
-                    progressReporter.reportRunnerError("No access to field: " + field.getName());
-                }
             }
-            return false;
+            Field field = optionalField.get();
+            try {
+                field.setAccessible(true);
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    progressReporter.reportRunnerError("your variable(s) need to be static!");
+                    return false;
+                }
+                if (!field.get(null).equals(answer)) {
+                    progressReporter.reportRunnerError("The " + field.getName() + " variable has not been initialised correctly!");
+                    return false;
+                }
+            } catch (IllegalArgumentException e) {
+                progressReporter.reportRunnerError("your variable(s) need to be static!");
+                return false;
+            } catch (IllegalAccessException e) {
+                progressReporter.reportRunnerError("No access to a field");
+                return false;
+            }
         }
+        return true;
     }
+}
+

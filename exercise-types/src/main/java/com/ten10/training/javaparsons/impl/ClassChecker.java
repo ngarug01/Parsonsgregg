@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 
 public interface ClassChecker {
 
-    String getGoal();
+    String getDesc();
 
     Boolean validate(Field[] klassFields, ProgressReporter progressReporter);
 }

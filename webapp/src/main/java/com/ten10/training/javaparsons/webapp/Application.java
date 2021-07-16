@@ -96,8 +96,9 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .named("Static Field")
-            .checkStaticField(3));
-
+            .checkStaticField("x", 3)
+            .checkStaticField("y", "hello"));
+        
         repository.addExercise(builder -> builder
             .named("Two Squared")
             .checkReturnValueIs(4));

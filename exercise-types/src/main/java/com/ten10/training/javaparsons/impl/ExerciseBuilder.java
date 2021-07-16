@@ -9,7 +9,7 @@ public interface ExerciseBuilder {
 
     ExerciseBuilder named(String name);
 
-    ExerciseBuilder checkStaticField(int expectedValue);
+    ExerciseBuilder checkStaticField(String goal, Object expectedValue);
 
     ExerciseBuilder checkReturnValueIs(Object expectedReturnValue);
 

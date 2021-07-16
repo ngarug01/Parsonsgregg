@@ -95,8 +95,8 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
-    public ExerciseBuilder checkStaticField(int expectedValue) {
-        this.classCheckers.add(new StaticFieldValueChecker("has a static int field with a value of " + (expectedValue), expectedValue));
+        public ExerciseBuilder checkStaticField(String goal, Object expectedValue) {
+        this.classCheckers.add(new StaticFieldValueChecker("has a static int field x with a value of " + (expectedValue), goal,  expectedValue));
         return this;
     }
 
