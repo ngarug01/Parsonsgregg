@@ -110,7 +110,9 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(Arrays.asList(new StaticFieldValueChecker("Has a static int field x with value 3, and a static string field y that contains only the word \"hello\" inside it.", "x", 3, "y", "hello")))
+            .setClassCheckers(Arrays.asList(
+                new StaticFieldValueChecker("Has a static int field x with value 3", "x", 3),
+                new StaticFieldValueChecker("Has a static string field y that contains only the word \"hello\" inside it.", "y", "hello")))
             .setMethodReturnValueChecker(new ArrayList<>())
             .setName("Static Field")
             .setPrefixCode(null)

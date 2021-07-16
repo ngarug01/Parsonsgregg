@@ -11,7 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SeleniumExtension.class)
@@ -25,8 +25,8 @@ public class StaticFieldExerciseAT {
     private static final String INCORRECT_VARIABLE_NAMES_ANSWER = "public class Main{\n public static int z = 2; \n public static String w = \"hello\"; \npublic static void main(String[] args){\n}\n}";
     private static final String INCORRECT_NOT_STATIC_FIELD_ANSWER = "public class Main{ \n public int x = 3; \n public String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
     private static final String CORRECT_MULTIPLE_FIELDS_ANSWER = "public class Main{\n public int z = 7; \n static int w = 3; \n public static int x = 3;\n static String a=\"helloo\"; \n public static String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
-    public static final String NAMES_ERROR_MESSAGE = "[The runner error description was: Either your variables have incorrect access modifiers and/or names, or one isn't there!]";
-    public static final String NOT_STATIC_ERROR = "[The runner error description was: your variable(s) need to be static!]";
+    public static final String NAMES_ERROR_MESSAGE = "Either your variables have incorrect access modifiers and/or names, or one isn't there!";
+    public static final String NOT_STATIC_ERROR = "your variable(s) need to be static!";
     public static final String X_NOT_INITIALISED_PROPERLY_ERROR = "[The runner error description was: The x variable has not been initialised correctly!]";
     private ExercisePage page;
 
@@ -67,7 +67,7 @@ public class StaticFieldExerciseAT {
     @Tag("acceptance-tests")
     void fieldsNotStaticErrorMessage() {
         page.trySolution(INCORRECT_NOT_STATIC_FIELD_ANSWER);
-        assertEquals(NOT_STATIC_ERROR, page.getErrors().toString());
+        assertThat(page.getErrors().toString(), containsString(NOT_STATIC_ERROR));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class StaticFieldExerciseAT {
     @Tag("acceptance-tests")
     void variableNamesWrongError() {
         page.trySolution(INCORRECT_VARIABLE_NAMES_ANSWER);
-        assertEquals(NAMES_ERROR_MESSAGE, page.getErrors().toString());
+        assertThat(page.getErrors().toString(), containsString(NAMES_ERROR_MESSAGE));
 
     }
 }
