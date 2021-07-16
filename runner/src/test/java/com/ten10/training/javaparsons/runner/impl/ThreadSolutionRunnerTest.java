@@ -1,11 +1,12 @@
 package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
+import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
@@ -15,15 +16,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
-import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
-import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 
 class ThreadSolutionRunnerTest {
@@ -67,8 +59,8 @@ class ThreadSolutionRunnerTest {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("exampleMethod")
-            .parameterTypesList(new Class<?>[0])
-            .getParameter(new Object[0]);
+            .parameterTypes(new Class<?>[0])
+            .parameters(new Object[0]);
 
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
@@ -86,8 +78,8 @@ class ThreadSolutionRunnerTest {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("exampleMethod")
-            .parameterTypesList(new Class<?>[2])
-            .getParameter(new Object[1]);
+            .parameterTypes(new Class<?>[2])
+            .parameters(new Object[1]);
         EntryPoint entryPoint = entryPointBuilder.build();
 
         //Act
@@ -109,8 +101,8 @@ class ThreadSolutionRunnerTest {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("blockForever")
-            .parameterTypesList(new Class<?>[0])
-            .getParameter(new Object[0]);
+            .parameterTypes(new Class<?>[0])
+            .parameters(new Object[0]);
 
         EntryPoint callInformation = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
@@ -127,8 +119,8 @@ class ThreadSolutionRunnerTest {
 //       EntryPoint entryPoint = new EntryPointBuilderImpl()
 //            .className("Main")
 //            .methodName("main")
-//            .parameterTypesList( new Class<?>[]{String[].class})
-//            .getParameter(new Object[]{new String[]{}})
+//            .parameterTypes( new Class<?>[]{String[].class})
+//            .parameters(new Object[]{new String[]{}})
 //            .build();
 //
 //        LoadedEntryPoint loadedEntryPoint=entryPoint.load(null);
@@ -144,8 +136,8 @@ class ThreadSolutionRunnerTest {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("takesArgs")
-            .parameterTypesList(new Class<?>[]{int.class, int.class})
-            .getParameter(new Object[]{1, 3});
+            .parameterTypes(new Class<?>[]{int.class, int.class})
+            .parameters(new Object[]{1, 3});
 
         EntryPoint callInformation = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
@@ -199,8 +191,8 @@ class ThreadSolutionRunnerTest {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("instanceMethod")
-            .parameterTypesList(new Class<?>[0])
-            .getParameter(new Object[0]);
+            .parameterTypes(new Class<?>[0])
+            .parameters(new Object[0]);
 
         EntryPoint callInformation = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);

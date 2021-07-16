@@ -7,8 +7,6 @@ import com.ten10.training.javaparsons.webapp.Application;
 import com.ten10.training.javaparsons.webapp.views.ExerciseDetails;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 

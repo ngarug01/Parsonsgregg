@@ -48,11 +48,9 @@ public class ExerciseRepositoryImpl implements ExerciseRepository {
     public void addExercise(Consumer<ExerciseBuilder> builderConsumer) {
         CreateExercise builder = new CreateExercise(compiler, runner);
         builderConsumer.accept(builder);
-        Exercise exercise = builder
-            .setId(exercises.size() + 1)  // Ids are one-based, not zero-based
-            .build();
+        builder.setId(exercises.size() + 1);  // Ids are one-based, not zero-based
+        Exercise exercise = builder.build();
         exercises.add(exercise);
-
     }
 
 

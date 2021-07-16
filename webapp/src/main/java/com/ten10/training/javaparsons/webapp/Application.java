@@ -4,9 +4,6 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
-import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
-import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
-import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
 import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
@@ -19,11 +16,8 @@ import org.springframework.stereotype.Component;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static java.lang.Integer.parseInt;
-import static java.util.Collections.singletonList;
 
 @SpringBootApplication
 public class Application {
@@ -93,67 +87,41 @@ public class Application {
 
         ExerciseRepositoryImpl repository = new ExerciseRepositoryImpl(compiler, runner);
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Hello World!")))
-            .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(new ArrayList<>())
-            .setName("Whole Class \"Hello world\"")
-            .setPrefixCode(null)
-            .setSuffixCode(null));
+            .named("Whole Class \"Hello world\"")
+            .checkOutputIs("Hello World!"));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Goodbye Cruel World!")))
-            .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(new ArrayList<>())
-            .setName("Goodbye Cruel World!")
-            .setPrefixCode(null)
-            .setSuffixCode(null));
+            .named("Goodbye Cruel World!")
+            .checkOutputIs("Goodbye Cruel World!"));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(Arrays.asList(
-                new StaticFieldValueChecker("Has a static int field x with value 3", "x", 3),
-                new StaticFieldValueChecker("Has a static string field y that contains only the word \"hello\" inside it.", "y", "hello")))
-            .setMethodReturnValueChecker(new ArrayList<>())
-            .setName("Static Field")
-            .setPrefixCode(null)
-            .setSuffixCode(null));
+            .named("Static Field")
+            .checkStaticField("x", 3)
+            .checkStaticField("y", "hello"));
+        
+        repository.addExercise(builder -> builder
+            .named("Two Squared")
+            .checkReturnValueIs(4));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4)))
-            .setName("Two Squared")
-            .setPrefixCode(null)
-            .setSuffixCode(null));
+            .named("Return Char A")
+            .checkReturnValueIs('A'));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns a Char with value 'A'", 'A')))
-            .setName("Return Char A")
-            .setPrefixCode(null)
-            .setSuffixCode(null));
+            .named("Complete the code - Hello World!")
+            .checkOutputIs("Hello World!")
+            .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
+            .withSuffixCode("}\n}"));
 
         repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(singletonList(new PrintOutChecker("Hello World!")))
-            .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(new ArrayList<>())
-            .setName("Complete the code - Hello World!")
-            .setPrefixCode("public class Main { \npublic static void main (String[] args) {")
-            .setSuffixCode("}\n}"));
-
-        repository.addExercise(builder -> builder
-            .setCapturedOutputCheckers(new ArrayList<>())
-            .setClassCheckers(new ArrayList<>())
-            .setMethodReturnValueChecker(singletonList(new ReturnTypeChecker("Returns an int with the value of 2 squared", 4)))
-            .setName("Use a method called squaresTwo to find the square of 2")
-            .setPrefixCode(null)
-            .setSuffixCode(null)
+            .named("Use a method called squaresTwo to find the square of 2")
+            .checkReturnValueIs(4)
             .setEntryPoint(ep -> ep
                 .className("Methods")
                 .methodName("squaresTwo")
-                .parameterTypesList(new Class<?>[]{String[].class})
-                .getParameter(new Object[]{new String[]{}})));
+                .parameterTypes(new Class<?>[]{String[].class})
+                .parameters(new Object[]{new String[]{}})));
+
         return repository;
     }
 
@@ -165,4 +133,3 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 }
-

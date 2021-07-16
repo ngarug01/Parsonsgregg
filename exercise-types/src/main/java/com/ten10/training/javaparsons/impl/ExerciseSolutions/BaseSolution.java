@@ -7,45 +7,18 @@ import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BaseSolution implements Solution, SolutionCompiler.CompilableSolution {
-//
-//    private static SolutionRunner.EntryPoint entryPoint = new SolutionRunner.EntryPoint() {
-//
-//        @Override
-//        public String getEntryPointClass() {
-//            return "Main";
-//        }
-//
-//        @Override
-//        public String getEntryPointMethod() {
-//            return "main";
-//        }
-//
-//        @Override
-//        public Class<?>[] getParameterTypes() {
-//            return new Class<?>[]{String[].class};
-//        }
-//
-//        @Override
-//        public Object[] getParameters() {
-//            return new Object[]{new String[]{}};
-//        }
 
-
-
-
-    private EntryPoint entryPoint;
-
+    private final EntryPoint entryPoint;
 
     private final SolutionCompiler compiler;
-    private final SolutionRunner runner;
     private final String userInput;
     private final ProgressReporter progressReporter;
     private CaptureConsoleOutput captureConsoleOutput = new CaptureConsoleOutput();
@@ -60,12 +33,10 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
      *
      * @param compiler         SolutionCompiler to compile the user input.
-     * @param runner           ThreadSolutionRunner to run the compiled code.
      * @param userInput        The user input as a String.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
     public BaseSolution(SolutionCompiler compiler,
-                        SolutionRunner runner,
                         String userInput,
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
@@ -73,7 +44,6 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                         ProgressReporter progressReporter, EntryPoint entryPoint) throws ClassNotFoundException {
 
         this.compiler = compiler;
-        this.runner = runner;
         this.userInput = userInput;
         this.capturedOutputCheckers = capturedOutputCheckers;
         this.classCheckers = classCheckers;
@@ -89,6 +59,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @throws Exception Exceptions when
      */
     ArrayList<Boolean> results = new ArrayList<>();
+
     @Override
     public boolean evaluate() throws InterruptedException, ExecutionException, ReflectiveOperationException {
         if (!compile()) {
@@ -183,8 +154,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
             klassFields = klass.getFields();
             if (klassFields.length != 0) {
                 return true;
-            }
-            else{
+            } else {
                 progressReporter.reportRunnerError("There is no fields here.");
                 results.add(false);
             }

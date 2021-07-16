@@ -10,12 +10,12 @@ import static org.mockito.Mockito.*;
 
 class ReturnTypeCheckerTest {
     private int answer = 4;
-    ReturnTypeChecker returnTypeChecker = new ReturnTypeChecker("this", answer);
+    ReturnTypeChecker returnTypeChecker = new ReturnTypeChecker(answer);
     ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test
     void getGoal() {
-        assertEquals("The returned value is " + answer, returnTypeChecker.getGoal());
+        assertEquals("the returned value is " + answer, returnTypeChecker.getGoal());
     }
 
     @Test
