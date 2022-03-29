@@ -1,7 +1,5 @@
 package com.ten10.training.javaparsons;
 
-import java.util.List;
-
 public interface ProgressReporter {
 
     /**
