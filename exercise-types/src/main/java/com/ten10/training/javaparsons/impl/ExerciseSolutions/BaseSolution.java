@@ -61,7 +61,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
     ArrayList<Boolean> results = new ArrayList<>();
 
     @Override
-    public boolean evaluate() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    public boolean evaluate() {
         if (!compile()) {
             return false;
         }
@@ -138,10 +138,13 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run(){
         captureConsoleOutput.start();
         try {
             return entryPoint.load(getClassLoader()).run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
+        } catch (ClassNotFoundException e) {
+            progressReporter.reportRunnerError("Class Not Found Exception");
+            return false;
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

@@ -2,12 +2,9 @@ package com.ten10.training.javaparsons.webapp.controllers;
 
 
 import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ExerciseRepository;
-import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
