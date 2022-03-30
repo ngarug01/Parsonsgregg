@@ -70,14 +70,14 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
         return compiler.compile(this, progressReporter);
     }
 
-    private boolean canRun() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean canRun(){
         if(byteCode != null) {
             return run();
         }
         return false;
     }
 
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() {
         captureConsoleOutput.start();
         try {
             return loadedEntryPoint.run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
@@ -89,7 +89,7 @@ public class ExercisePathsExerciseSolution implements Solution, SolutionCompiler
 
 
     @Override
-    public boolean evaluate() throws Exception {
+    public boolean evaluate() {
         if(compile()){
             if(canRun()){
                 return output.trim().equals(answer);

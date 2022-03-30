@@ -17,5 +17,5 @@ public interface Exercise {
      * @param progressReporter The callback object to use when reporting compilation and test results.
      * @return a {@see Solution} object representing the input provided.
      */
-    Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws Exception;
+    Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter);
 }
