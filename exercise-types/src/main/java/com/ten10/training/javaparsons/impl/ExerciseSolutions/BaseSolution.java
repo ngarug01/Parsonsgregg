@@ -41,7 +41,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
                         List<MethodReturnValueChecker> methodReturnValueCheckers,
-                        ProgressReporter progressReporter, EntryPoint entryPoint) throws ClassNotFoundException {
+                        ProgressReporter progressReporter, EntryPoint entryPoint){
 
         this.compiler = compiler;
         this.userInput = userInput;
@@ -143,7 +143,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
         try {
             return entryPoint.load(getClassLoader()).run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
         } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("Class Not Found Exception");
+            progressReporter.reportRunnerError("Error loading class: " + e.getMessage());
             return false;
         } finally {
             this.output = captureConsoleOutput.stop();
