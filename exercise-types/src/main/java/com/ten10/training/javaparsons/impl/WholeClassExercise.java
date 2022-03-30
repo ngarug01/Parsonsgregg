@@ -165,12 +165,7 @@ import static java.util.Objects.isNull;
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        try {
             return new BaseSolution(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
-        return null;
     }
 
-}

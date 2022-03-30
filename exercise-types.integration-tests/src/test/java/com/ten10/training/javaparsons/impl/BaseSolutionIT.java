@@ -19,8 +19,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BaseSolutionIT {
@@ -161,6 +160,7 @@ class BaseSolutionIT {
         //ASSERT
         assertFalse(evaluateResult, "Infinite Loop should cause runtime error.");
     }
+
 }
 
 
