@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class BaseSolution implements Solution, SolutionCompiler.CompilableSolution {
+public class SolutionImpl implements Solution, SolutionCompiler.CompilableSolution {
 
     private final EntryPoint entryPoint;
 
@@ -36,7 +36,7 @@ public class BaseSolution implements Solution, SolutionCompiler.CompilableSoluti
      * @param userInput        The user input as a String.
      * @param progressReporter ProgressReporter for storing the result of compiling and running the user input.
      */
-    public BaseSolution(SolutionCompiler compiler,
+    public SolutionImpl(SolutionCompiler compiler,
                         String userInput,
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,

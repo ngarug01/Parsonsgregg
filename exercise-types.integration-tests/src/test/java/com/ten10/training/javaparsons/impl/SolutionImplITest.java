@@ -4,7 +4,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.SolutionImpl;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
-class BaseSolutionIT {
+class SolutionImplITest {
 
 
     private static SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
@@ -43,7 +43,7 @@ class BaseSolutionIT {
     private List<ClassChecker> classCheckers = new ArrayList<>();
     private List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final BaseSolution baseSolution = new BaseSolution(mockCompiler, USER_INPUT, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+    private final SolutionImpl solutionImpl = new SolutionImpl(mockCompiler, USER_INPUT, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
         .parameterTypes(new Class<?>[]{String[].class})
@@ -55,7 +55,7 @@ class BaseSolutionIT {
     //    private SolutionRunner.LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
     private SolutionRunner.LoadedEntryPoint loadedClassRunner = mock(SolutionRunner.LoadedEntryPoint.class);
 
-    BaseSolutionIT() throws ClassNotFoundException {
+    SolutionImplITest() throws ClassNotFoundException {
     }
 
     @BeforeEach
@@ -87,9 +87,9 @@ class BaseSolutionIT {
 //    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
 //    void evaluateCallsCompiler() throws Exception {
 //        // Act
-//        baseSolution.evaluate();
+//        solutionImpl.evaluate();
 //        // Assert
-//        verify(mockCompiler).compile(baseSolution, progressReporter);
+//        verify(mockCompiler).compile(solutionImpl, progressReporter);
 //    }
 
 
@@ -97,19 +97,19 @@ class BaseSolutionIT {
     @DisplayName("Calling getFullClassText() should return the provided text")
         // TODO: Should build the text from template!
     void getFullClassText() {
-        assertEquals(USER_INPUT, baseSolution.getFullClassText());
+        assertEquals(USER_INPUT, solutionImpl.getFullClassText());
     }
 
     @Test
     void getClassName() {  // TODO: Should probably get this from the entrypoint!
-        assertEquals("Main", baseSolution.getClassName());
+        assertEquals("Main", solutionImpl.getClassName());
     }
 
 
 //    @Test //Test does not work
 //    void correctCheckerCalledPrintOut() throws Exception {
 //        // Act
-//        baseSolution.evaluate();
+//        solutionImpl.evaluate();
 //        // Assert
 //        verify(printOutChecker).validate("", progressReporter);
 //    }
@@ -117,13 +117,13 @@ class BaseSolutionIT {
 //    @Test //Test does not work
 //    void correctCheckerCalledPrintOutReturnsTrue() throws Exception {
 //        when(printOutChecker.validate("", progressReporter)).thenReturn(true);
-//        assertTrue(baseSolution.evaluate());
+//        assertTrue(solutionImpl.evaluate());
 //    }
 
     @Test
     void earlyReturnWhenCompileFails() throws Exception {
         when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
-        baseSolution.evaluate();
+        solutionImpl.evaluate();
         verify(loadedClassRunner, never()).run(classLoader, entryPoint, progressReporter);
     }
 
@@ -131,13 +131,13 @@ class BaseSolutionIT {
     void evaluateFailsOnCompileClassNameIncorrect() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic Integer main(String[] args){return 12;}}";
-        BaseSolution baseSolution = new BaseSolution(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+        SolutionImpl solutionImpl = new SolutionImpl(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
             .className("Main")
             .methodName("main")
             .parameterTypes(new Class<?>[]{String[].class})
             .parameters(new Object[]{new String[]{}})
             .build());
-        baseSolution.evaluate();
+        solutionImpl.evaluate();
         verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
     }
 
@@ -148,15 +148,15 @@ class BaseSolutionIT {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput =
             "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){while(true){}}}";
-        BaseSolution baseSolution =
-            new BaseSolution(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+        SolutionImpl solutionImpl =
+            new SolutionImpl(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
                 .className("Main")
                 .methodName("main")
                 .parameterTypes(new Class<?>[]{String[].class})
                 .parameters(new Object[]{new String[]{}})
                 .build());
         //ACT
-        boolean evaluateResult = baseSolution.evaluate();
+        boolean evaluateResult = solutionImpl.evaluate();
 
         //ASSERT
         assertFalse(evaluateResult, "Infinite Loop should cause runtime error.");
