@@ -2,8 +2,8 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
-import com.ten10.training.javaparsons.compiler.SolutionCompiler;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
+import compiler.SolutionCompiler;
+import runner.SolutionRunner;
 
 import java.util.ArrayList;
 import java.util.Iterator;

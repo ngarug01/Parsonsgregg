@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.impl;
 
 
-import com.ten10.training.javaparsons.runner.SolutionRunner;
+import runner.SolutionRunner;
 
 import java.util.function.Consumer;
 

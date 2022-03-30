@@ -162,6 +162,8 @@
         <module>bootstrap</module>
         <module>acceptance-tests</module>
         <module>runner</module>
+        <module>runner-api</module>
+        <module>compiler-api</module>
     </modules>
 
     <dependencyManagement>

@@ -1,4 +1,4 @@
-package com.ten10.training.javaparsons.runner;
+package runner;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 

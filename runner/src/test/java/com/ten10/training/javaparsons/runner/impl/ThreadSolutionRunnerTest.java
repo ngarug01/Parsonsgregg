@@ -1,10 +1,10 @@
 package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
-import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
+import runner.SolutionRunner.EntryPoint;
+import runner.SolutionRunner.EntryPointBuilder;
+import runner.SolutionRunner.LoadedEntryPoint;
+import runner.SolutionRunner.RunResult;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 

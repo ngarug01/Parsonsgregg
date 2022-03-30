@@ -1,14 +1,10 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
-import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import compiler.SolutionCompiler;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
-
-import static com.ten10.training.javaparsons.compiler.impl.CompilerIntegrationTests.*;
 
 
 import static org.mockito.Mockito.mock;
