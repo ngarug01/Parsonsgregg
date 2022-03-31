@@ -1,11 +1,11 @@
 package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
-import compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
-import runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 import java.util.ArrayList;

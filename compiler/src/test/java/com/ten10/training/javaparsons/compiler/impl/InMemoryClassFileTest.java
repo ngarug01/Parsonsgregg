@@ -1,6 +1,6 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
-import compiler.SolutionCompiler.CompilableSolution;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

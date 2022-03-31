@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import compiler.SolutionCompiler.CompilableSolution;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

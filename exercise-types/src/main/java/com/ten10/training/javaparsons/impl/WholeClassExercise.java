@@ -4,10 +4,10 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
-import compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.LineNumberTranslationProgressReporter;
 import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
-import runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
 

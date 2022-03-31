@@ -1,4 +1,4 @@
-package compiler;
+package com.ten10.training.javaparsons.compiler;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 

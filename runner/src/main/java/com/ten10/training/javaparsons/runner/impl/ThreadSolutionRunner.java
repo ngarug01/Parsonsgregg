@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

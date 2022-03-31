@@ -1,6 +1,6 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
-import compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 
 import javax.tools.SimpleJavaFileObject;
 import java.io.ByteArrayOutputStream;

@@ -1,7 +1,7 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class JavaSolutionCompiler implements SolutionCompiler {
      * @param compiler {@link javax.tools.JavaCompiler} used to compile user solutions.
      */
     public JavaSolutionCompiler(JavaCompiler compiler) {
-        this.compiler = Objects.requireNonNull(compiler, "compiler");
+        this.compiler = Objects.requireNonNull(compiler, "com/ten10/training/javaparsons/compiler");
     }
 
 

@@ -1,8 +1,8 @@
 package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.ten10.training.javaparsons.ExerciseRepository;
-import compiler.SolutionCompiler;
-import runner.SolutionRunner;
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.webapp.Application;
 import com.ten10.training.javaparsons.webapp.views.ExerciseDetails;
 import org.junit.jupiter.api.BeforeEach;
