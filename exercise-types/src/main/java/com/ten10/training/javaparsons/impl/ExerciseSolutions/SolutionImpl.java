@@ -41,7 +41,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
                         List<MethodReturnValueChecker> methodReturnValueCheckers,
-                        ProgressReporter progressReporter, EntryPoint entryPoint) throws ClassNotFoundException {
+                        ProgressReporter progressReporter, EntryPoint entryPoint) {
 
         this.compiler = compiler;
         this.userInput = userInput;
@@ -61,7 +61,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     ArrayList<Boolean> results = new ArrayList<>();
 
     @Override
-    public boolean evaluate() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    public boolean evaluate() {
         if (!compile()) {
             return false;
         }
@@ -138,10 +138,13 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
 
     private String output = "";
 
-    private boolean run() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    private boolean run() {
         captureConsoleOutput.start();
         try {
             return entryPoint.load(getClassLoader()).run(entryPoint.getClassLoader(), entryPoint, progressReporter).isSuccess();
+        } catch (ClassNotFoundException e) {
+            progressReporter.reportRunnerError("Error loading class: " + e.getMessage());
+            return false;
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

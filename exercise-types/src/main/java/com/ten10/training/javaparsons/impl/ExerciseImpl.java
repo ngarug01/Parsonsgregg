@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
- class ExerciseImpl implements Exercise{
+class ExerciseImpl implements Exercise {
     private final String exerciseName;
     private String prefixCode;
     private String suffixCode;
@@ -72,7 +72,7 @@ import static java.util.Objects.isNull;
         this.prefixCode = buildedExercise.getPrefixCode();
         this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
-        this.suffixCode =  normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.suffixCode = normalizeSuffixCode(buildedExercise.getSuffixCode());
         this.entryPoint = buildedExercise.getEntryPoint();
 
 
@@ -161,11 +161,11 @@ import static java.util.Objects.isNull;
      * @return A new PrintOutExerciseSolution from user input.
      */
     @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
         return new SolutionImpl(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
     }
-
 }
+
