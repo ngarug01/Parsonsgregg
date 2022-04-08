@@ -126,7 +126,7 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     public Exercise build() {
-        return new WholeClassExercise(this);
+        return new ExerciseImpl(this);
     }
 }
 

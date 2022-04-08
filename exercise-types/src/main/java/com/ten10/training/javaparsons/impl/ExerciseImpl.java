@@ -6,7 +6,7 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseList.LineNumberTranslationProgressReporter;
-import com.ten10.training.javaparsons.impl.ExerciseSolutions.BaseSolution;
+import com.ten10.training.javaparsons.impl.ExerciseSolutions.SolutionImpl;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.util.Objects.isNull;
 
- class WholeClassExercise implements Exercise{
+class ExerciseImpl implements Exercise {
     private final String exerciseName;
     private String prefixCode;
     private String suffixCode;
@@ -34,22 +34,22 @@ import static java.util.Objects.isNull;
 
 
     /**
-     * Creates a new WholeClassExercise.
+     * Creates a new ExerciseImpl.
      *
      * @param compiler     Prepares an user input to be run.
      * @param runner       Runs the solution
      * @param exerciseName Description of the exercise.
      * @param id           The unique identifier of an exercise.
      */
-    public WholeClassExercise(SolutionCompiler compiler,
-                              SolutionRunner runner,
-                              List<CapturedOutputChecker> capturedOutputCheckers,
-                              List<ClassChecker> classCheckers,
-                              List<MethodReturnValueChecker> methodReturnValueCheckers,
-                              String exerciseName,
-                              int id,
-                              String prefixCode,
-                              String suffixCode) {
+    public ExerciseImpl(SolutionCompiler compiler,
+                        SolutionRunner runner,
+                        List<CapturedOutputChecker> capturedOutputCheckers,
+                        List<ClassChecker> classCheckers,
+                        List<MethodReturnValueChecker> methodReturnValueCheckers,
+                        String exerciseName,
+                        int id,
+                        String prefixCode,
+                        String suffixCode) {
         this.compiler = compiler;
         this.runner = runner;
         this.exerciseName = exerciseName;
@@ -61,7 +61,7 @@ import static java.util.Objects.isNull;
         this.suffixCode = suffixCode;
     }
 
-    public WholeClassExercise(CreateExercise buildedExercise) {
+    public ExerciseImpl(CreateExercise buildedExercise) {
         this.compiler = buildedExercise.getCompiler();
         this.runner = buildedExercise.getRunner();
         this.exerciseName = buildedExercise.getName();
@@ -72,7 +72,7 @@ import static java.util.Objects.isNull;
         this.prefixCode = buildedExercise.getPrefixCode();
         this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
-        this.suffixCode =  normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.suffixCode = normalizeSuffixCode(buildedExercise.getSuffixCode());
         this.entryPoint = buildedExercise.getEntryPoint();
 
 
@@ -161,11 +161,11 @@ import static java.util.Objects.isNull;
      * @return A new PrintOutExerciseSolution from user input.
      */
     @Override
-    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) throws ClassNotFoundException {
+    public Solution getSolutionFromUserInput(String userInput, ProgressReporter progressReporter) {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        return new BaseSolution(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
+        return new SolutionImpl(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
     }
-
 }
+
