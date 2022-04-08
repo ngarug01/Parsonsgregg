@@ -6,7 +6,7 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
-import com.ten10.training.javaparsons.webapp.Application;
+import com.ten10.training.javaparsons.webapp.WebApp;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@ContextConfiguration(classes = Application.class)
+@ContextConfiguration(classes = WebApp.class)
 @AutoConfigureMockMvc
 class ExerciseControllerTest {
     // TODO: Fix

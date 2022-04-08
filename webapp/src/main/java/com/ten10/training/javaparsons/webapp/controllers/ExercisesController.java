@@ -18,6 +18,7 @@ import java.util.stream.StreamSupport;
 @RequestMapping("/exercises/")
 public class ExercisesController {
 
+    @Autowired
     ExerciseRepository exerciseRepository;
 
     @Autowired

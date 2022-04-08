@@ -1,9 +1,12 @@
 package com.ten10.training.javaparsons;
 
+import org.springframework.stereotype.Repository;
+
 /**
  * An object implementing this interface is used to fetch {@link Exercise} objects.
  *
  */
+@Repository
 public interface ExerciseRepository extends Iterable<Exercise> {
     /**
      * @param identifier The unique identifier for an exercise
