@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
 public class GoodbyeWorldAT {
-    private static final String GOODBYE_WORLD_CORRECT = "public class Main {public static void main(String[] args) {System.out.println(\"Goodbye Cruel World!\");}}";
+    private static final String GOODBYE_WORLD_CORRECT = "System.out.println(\"Goodbye Cruel World!\");";
 
 
     private final ExercisePage page;

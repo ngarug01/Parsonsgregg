@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("Tests for feature 4: Two Squared")
 public class TwoSquaredAT {
 
-    private static final String TWO_SQUARED_CORRECT = "public class Main {public static Integer main(String[] args) {return 2*2;}}";
+    private static final String TWO_SQUARED_CORRECT = "return 2*2;";
 
     private final ExercisePage page;
 

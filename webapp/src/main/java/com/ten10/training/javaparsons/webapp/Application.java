@@ -92,20 +92,28 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .named("Goodbye Cruel World!")
-            .checkOutputIs("Goodbye Cruel World!"));
+            .checkOutputIs("Goodbye Cruel World!")
+            .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
+            .withSuffixCode("}\n}"));
 
         repository.addExercise(builder -> builder
             .named("Static Field")
             .checkStaticField("x", 3)
-            .checkStaticField("y", "hello"));
+            .checkStaticField("y", "hello")
+            .withPrefixCode("public class Main { \n")
+            .withSuffixCode("public static void main(String[] args){}\n}"));
         
         repository.addExercise(builder -> builder
             .named("Two Squared")
-            .checkReturnValueIs(4));
+            .checkReturnValueIs(4)
+            .withPrefixCode("public class Main {public static Integer main(String[] args) {")
+            .withSuffixCode("}}"));
 
         repository.addExercise(builder -> builder
             .named("Return Char A")
-            .checkReturnValueIs('A'));
+            .checkReturnValueIs('A')
+            .withPrefixCode("public class Main{public static char main(String[] args){")
+            .withSuffixCode("}}"));
 
         repository.addExercise(builder -> builder
             .named("Complete the code - Hello World!")
