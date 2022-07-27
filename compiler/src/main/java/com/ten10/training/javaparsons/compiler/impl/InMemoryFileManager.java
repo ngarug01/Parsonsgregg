@@ -40,7 +40,7 @@ class InMemoryFileManager extends ForwardingJavaFileManager<StandardJavaFileMana
 
     /**
      * @inheritDoc
-     * @return a new {@link InMemoryClassFile} with the {@code className} and {@link com.ten10.training.javaparsons.compiler.SolutionCompiler.CompilableSolution}.
+     * @return a new {@link InMemoryClassFile} with the {@code className} and {@link SolutionCompiler.CompilableSolution}.
      */
     @Override
     public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind, FileObject sibling) {

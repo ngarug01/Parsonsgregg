@@ -22,7 +22,7 @@ class ExerciseRepositoryImplTest {
             .named("Whole Class \"Hello world\"")
             .checkOutputIs("Hello World!"));
         Exercise exercise = exerciseRepository.getExerciseByIdentifier(1);
-        assertThat(exercise, is(instanceOf(WholeClassExercise.class)));
+        assertThat(exercise, is(instanceOf(ExerciseImpl.class)));
     }
 
 }
