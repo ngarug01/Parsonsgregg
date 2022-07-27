@@ -1,7 +1,6 @@
 package com.ten10.training.javaparsons.webapp.views;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.impl.ExerciseList.LineNumberTranslationProgressReporter;
 
 import java.util.ArrayList;
 import java.util.List;

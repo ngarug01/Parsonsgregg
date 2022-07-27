@@ -48,7 +48,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.ten10.training.javaparsons.webapp.WebApp</mainClass>
+                    <mainClass>com.ten10.training.javaparsons.Application</mainClass>
                     <useTestClasspath>true</useTestClasspath>
                 </configuration>
                 <executions>
@@ -91,7 +91,7 @@
         </dependency>
         <dependency>
             <groupId>com.ten10.training</groupId>
-            <artifactId>webapp</artifactId>
+            <artifactId>bootstrap</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

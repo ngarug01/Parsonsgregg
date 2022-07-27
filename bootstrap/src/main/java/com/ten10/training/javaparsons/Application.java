@@ -1,0 +1,99 @@
+package com.ten10.training.javaparsons;
+
+import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
+@SpringBootApplication
+public class Application {
+
+    /**
+     * When {@link SpringBootApplication} requires a new {@link JavaCompiler} this method is called to create it.
+     *
+     * @return a new {@link JavaCompiler}.
+     */
+    @Bean
+    public JavaCompiler javaCompiler() {
+        return ToolProvider.getSystemJavaCompiler();
+    }
+
+    /**
+     * When {@link SpringBootApplication} requires a new {@link SolutionCompiler} this method is called to create it.
+     *
+     * @param compiler will compile the solution.
+     * @return a new {@link SolutionCompiler}.
+     */
+    @Bean
+    public SolutionCompiler solutionCompiler(JavaCompiler compiler) {
+        return new JavaSolutionCompiler(compiler);
+    }
+
+    /**
+     * When {@link SpringBootApplication} requires a new {@link ExerciseRepository} this method is called to create it.
+     *
+     * @return a new {@link ExerciseRepository}.
+     */
+    @Bean
+    public SolutionRunner solutionRunner() {
+        return new ThreadSolutionRunner();
+    }
+
+    @Bean
+    public ExerciseRepository exerciseRepository(SolutionCompiler compiler, SolutionRunner runner) {
+
+        ExerciseRepositoryImpl repository = new ExerciseRepositoryImpl(compiler, runner);
+        repository.addExercise(builder -> builder
+            .named("Whole Class \"Hello world\"")
+            .checkOutputIs("Hello World!"));
+
+        repository.addExercise(builder -> builder
+            .named("Goodbye Cruel World!")
+            .checkOutputIs("Goodbye Cruel World!"));
+
+        repository.addExercise(builder -> builder
+            .named("Static Field")
+            .checkStaticField("x", 3)
+            .checkStaticField("y", "hello"));
+
+        repository.addExercise(builder -> builder
+            .named("Two Squared")
+            .checkReturnValueIs(4));
+
+        repository.addExercise(builder -> builder
+            .named("Return Char A")
+            .checkReturnValueIs('A'));
+
+        repository.addExercise(builder -> builder
+            .named("Complete the code - Hello World!")
+            .checkOutputIs("Hello World!")
+            .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
+            .withSuffixCode("}\n}"));
+
+        repository.addExercise(builder -> builder
+            .named("Use a method called squaresTwo to find the square of 2")
+            .checkReturnValueIs(4)
+            .setEntryPoint(ep -> ep
+                .className("Methods")
+                .methodName("squaresTwo")
+                .parameterTypes(new Class<?>[]{String[].class})
+                .parameters(new Object[]{new String[]{}})));
+
+        return repository;
+    }
+
+
+    /**
+     * Runs the {@link SpringBootApplication} with this {@code class} as a parameter.
+     */
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
