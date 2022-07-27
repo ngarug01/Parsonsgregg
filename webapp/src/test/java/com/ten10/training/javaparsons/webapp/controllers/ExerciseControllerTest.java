@@ -2,13 +2,22 @@ package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ten10.training.javaparsons.Exercise;
+import com.ten10.training.javaparsons.ExerciseRepository;
+import com.ten10.training.javaparsons.ProgressReporter;
+import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +31,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,17 +42,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ExerciseControllerTest {
-    // TODO: Fix
+
+    @SpringBootApplication
+    @ComponentScan("com.ten10.training.javaparsons.webapp")
+    public static class Config{}
+
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
     private static final String TRIVIAL_OUTPUT = "{}";
-
 
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    ExerciseRepository exerciseRepository;
+
+    @BeforeEach
+    void setup() throws Exception {
+        Exercise exercise1 = mock(Exercise.class);
+        when(exerciseRepository.getExerciseByIdentifier(1)).thenReturn(exercise1);
+        when(exercise1.getSolutionFromUserInput(anyString(), any(ProgressReporter.class))).thenAnswer((Answer<Solution>) invocationOnMock -> {
+            ProgressReporter progressReporter = invocationOnMock.getArgument(1);
+            return () -> {
+                progressReporter.storeCapturedOutput(TRIVIAL_OUTPUT);
+                return true;
+            };
+        });
+
+    }
 
     @Test
     void trivialInputShouldLoad() throws IOException {
@@ -64,13 +96,11 @@ class ExerciseControllerTest {
 
     @Test
     void submitExerciseSuccessfully() throws Exception {
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/exercise/1")
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TRIVIAL_INPUT);
-
         mvc.perform(requestBuilder)
             .andExpect(status().isOk())
             .andExpect(content().json(TRIVIAL_OUTPUT));
