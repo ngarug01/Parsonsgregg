@@ -19,6 +19,8 @@ public interface ExerciseBuilder {
 
     ExerciseBuilder withSuffixCode(String suffixCode);
 
+    ExerciseBuilder withExerciseHint(String exerciseHint);
+
     ExerciseBuilder setEntryPoint(Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner);
 }
 

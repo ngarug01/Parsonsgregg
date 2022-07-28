@@ -24,4 +24,8 @@ public interface ExerciseInformation {
         return null;
     }
 
+    default String getExerciseHint () {
+        return null;
+    }
+
 }

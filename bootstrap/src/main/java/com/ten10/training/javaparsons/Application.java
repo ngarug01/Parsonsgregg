@@ -52,42 +52,50 @@ public class Application {
         ExerciseRepositoryImpl repository = new ExerciseRepositoryImpl(compiler, runner);
         repository.addExercise(builder -> builder
             .named("Whole Class \"Hello world\"")
-            .checkOutputIs("Hello World!"));
+            .checkOutputIs("Hello World!")
+            .withExerciseHint("Try including public static Main"));
 
         repository.addExercise(builder -> builder
             .named("Goodbye Cruel World!")
             .checkOutputIs("Goodbye Cruel World!")
             .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
-            .withSuffixCode("}\n}"));
+            .withSuffixCode("}\n}")
+            .withExerciseHint("Try using System.out.println()"));
+
 
         repository.addExercise(builder -> builder
             .named("Static Field")
             .checkStaticField("Int","x", 3)
             .checkStaticField("String","y", "hello")
             .withPrefixCode("public class Main { \n")
-            .withSuffixCode("public static void main (String[] args) {}}\n"));
+            .withSuffixCode("public static void main (String[] args) {}}\n")
+            .withExerciseHint("Try assigning a value to Int x and String y"));
 
         repository.addExercise(builder -> builder
             .named("Two Squared")
             .checkReturnValueIs(4)
             .withPrefixCode("public class Main { \npublic static Integer main (String[] args) {")
-            .withSuffixCode("}\n}"));
+            .withSuffixCode("}\n}")
+            .withExerciseHint("Try using return"));
 
         repository.addExercise(builder -> builder
             .named("Return Char A")
             .checkReturnValueIs('A')
             .withPrefixCode("public class Main { \npublic static char main (String[] args) {")
-            .withSuffixCode("}\n}"));
+            .withSuffixCode("}\n}")
+            .withExerciseHint("Try using return with \'  \'"));
 
         repository.addExercise(builder -> builder
             .named("Complete the code - Hello World!")
             .checkOutputIs("Hello World!")
             .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
-            .withSuffixCode("}\n}"));
+            .withSuffixCode("}\n}")
+            .withExerciseHint("Try using System.out.println()"));
 
         repository.addExercise(builder -> builder
             .named("Use a method called squaresTwo to find the square of 2")
             .checkReturnValueIs(4)
+            .withExerciseHint("Name the class squaresTwo with an Integer return")
             .setEntryPoint(ep -> ep
                 .className("Methods")
                 .methodName("squaresTwo")

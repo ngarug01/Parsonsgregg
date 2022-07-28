@@ -23,6 +23,7 @@ class CreateExercise implements ExerciseBuilder {
     private int id;
     private String prefixCode;
     private String suffixCode;
+    private String exerciseHint;
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
@@ -72,6 +73,8 @@ class CreateExercise implements ExerciseBuilder {
         return suffixCode;
     }
 
+    public String getExerciseHint() { return exerciseHint; }
+
     public SolutionRunner.EntryPoint getEntryPoint() {
         return entryPoint;
     }
@@ -117,6 +120,12 @@ class CreateExercise implements ExerciseBuilder {
     @Override
     public ExerciseBuilder withSuffixCode(String suffixCode) {
         this.suffixCode = suffixCode;
+        return this;
+    }
+
+    @Override
+    public ExerciseBuilder withExerciseHint(String exerciseHint) {
+        this.exerciseHint = exerciseHint;
         return this;
     }
 
