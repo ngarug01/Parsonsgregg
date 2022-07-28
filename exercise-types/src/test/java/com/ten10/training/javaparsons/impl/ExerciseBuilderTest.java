@@ -4,33 +4,31 @@ import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 
 class ExerciseBuilderTest {
 
-    public static final SolutionCompiler COMPILER = mock(SolutionCompiler.class);
-    public static final SolutionRunner RUNNER = mock(SolutionRunner.class);
-    public static final CreateExercise BUILDER = new CreateExercise(COMPILER, RUNNER);
+    private final SolutionCompiler compiler = mock(SolutionCompiler.class);
+    private final SolutionRunner runner = mock(SolutionRunner.class);
+    private final CreateExercise builder = new CreateExercise(compiler, runner);
 
-    @Test @Disabled
+    @Test
     void checkStaticField() {
-        String varName = RandomStringUtils.randomAlphabetic(6,12);
-        String value = RandomStringUtils.randomAlphabetic(3,6);
+        String varName = "thisIsTheVariableName";
+        String value = "thisIsTheValue";
 
-        BUILDER.checkStaticField(varName,value);
-        Exercise product = BUILDER.build();
+        builder.checkStaticField(varName, value);
+        Exercise product = builder.build();
         ExerciseInformation info = product.getInformation();
-        
+
         String expected = new StringBuilder()
             .append("has a static String field ")
             .append(varName)
             .append(" with a value of ")
             .append(value).toString();
-        Assertions.assertEquals(expected,info.getDescription());
+        Assertions.assertEquals(expected, info.getDescription());
     }
 }
