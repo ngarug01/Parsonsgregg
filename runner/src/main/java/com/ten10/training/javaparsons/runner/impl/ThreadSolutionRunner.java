@@ -34,7 +34,8 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
 
 
-    public RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter) {
+    public RunResult run(EntryPoint solution, ProgressReporter progressReporter) {
+        ClassLoader classLoader = solution.getClassLoader();
 //         Pull data out of the entry point object
         String entryPointClassName = solution.getEntryPointClass();
         String entryPointMethodName = solution.getEntryPointMethod();
