@@ -1,7 +1,5 @@
-package com.ten10.training.javaparsons.webapp;
+package com.ten10.training.javaparsons;
 
-import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ExerciseRepository;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
 import com.ten10.training.javaparsons.impl.ExerciseRepositoryImpl;
@@ -10,40 +8,12 @@ import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import static java.lang.Integer.parseInt;
-
 @SpringBootApplication
 public class Application {
-
-
-    @Component
-    public static class ExerciseConverter implements Converter<String, Exercise> {
-
-        private final ExerciseRepository repository;
-
-        ExerciseConverter(ExerciseRepository repository) {
-            this.repository = repository;
-        }
-
-        /**
-         * if Exercise convert is called the user types a string in to get the exercise they require
-         *
-         * @param identifier is for the id of the exercise
-         *                   the exercise identifier is stored as an integer
-         * @return the exercise that has been requested
-         */
-        @Override
-        public Exercise convert(@NonNull String identifier) {
-            return repository.getExerciseByIdentifier(parseInt(identifier));
-        }
-    }
 
     /**
      * When {@link SpringBootApplication} requires a new {@link JavaCompiler} this method is called to create it.
@@ -76,12 +46,6 @@ public class Application {
         return new ThreadSolutionRunner();
     }
 
-    /**
-     * Creates an ExerciseRepositoryImpl constructor that takes in a compiler.
-     *
-     * @param compiler Prepares an user input to be run.
-     * @param runner   Used to run a solution
-     */
     @Bean
     public ExerciseRepository exerciseRepository(SolutionCompiler compiler, SolutionRunner runner) {
 
@@ -92,28 +56,20 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .named("Goodbye Cruel World!")
-            .checkOutputIs("Goodbye Cruel World!")
-            .withPrefixCode("public class Main { \npublic static void main (String[] args) {")
-            .withSuffixCode("}\n}"));
+            .checkOutputIs("Goodbye Cruel World!"));
 
         repository.addExercise(builder -> builder
             .named("Static Field")
             .checkStaticField("x", 3)
-            .checkStaticField("y", "hello")
-            .withPrefixCode("public class Main { \n")
-            .withSuffixCode("public static void main(String[] args){}\n}"));
-        
+            .checkStaticField("y", "hello"));
+
         repository.addExercise(builder -> builder
             .named("Two Squared")
-            .checkReturnValueIs(4)
-            .withPrefixCode("public class Main {public static Integer main(String[] args) {")
-            .withSuffixCode("}}"));
+            .checkReturnValueIs(4));
 
         repository.addExercise(builder -> builder
             .named("Return Char A")
-            .checkReturnValueIs('A')
-            .withPrefixCode("public class Main{public static char main(String[] args){")
-            .withSuffixCode("}}"));
+            .checkReturnValueIs('A'));
 
         repository.addExercise(builder -> builder
             .named("Complete the code - Hello World!")
