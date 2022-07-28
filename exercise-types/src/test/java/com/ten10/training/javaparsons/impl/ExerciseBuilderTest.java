@@ -25,6 +25,7 @@ class ExerciseBuilderTest {
         ExerciseInformation info = product.getInformation();
 
         String expected = new StringBuilder()
+            .append("Create a Java class that: \n")
             .append("has a static String field ")
             .append(varName)
             .append(" with a value of ")
