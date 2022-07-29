@@ -99,8 +99,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
 
     private class LoadedEntryPointImpl implements LoadedEntryPoint {
         private long timeoutMillis = 500;
-        private ExecutorService executor;
-        private Future<Object> future;
         private final RunResult FAILURE = new RunResult() {
             @Override
             public boolean isSuccess() {
@@ -173,8 +171,8 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             }
             final Object finalInstance = instance;
 
-            executor = Executors.newSingleThreadExecutor();
-            future = executor.submit(() -> method.invoke(finalInstance, parameters));
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<Object> future = executor.submit(() -> method.invoke(finalInstance, parameters));
             try {
                 if (timeoutMillis != 0) {
                     returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
