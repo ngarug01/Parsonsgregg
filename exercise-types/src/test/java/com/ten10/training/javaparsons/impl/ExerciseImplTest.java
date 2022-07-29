@@ -23,7 +23,7 @@ class ExerciseImplTest {
     private final List<ClassChecker> classCheckers = new ArrayList<>();
     private final List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private final SolutionCompiler compiler = mock(SolutionCompiler.class);
-    private final Exercise wholeClassExercise = new ExerciseImpl(compiler, null, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, "MY NAME", 1, null, null);
+    private final Exercise wholeClassExercise = new ExerciseImpl(compiler, null, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, "MY NAME", 1, null, null, null);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
 
     @Test

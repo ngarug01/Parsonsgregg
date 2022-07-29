@@ -21,18 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ReturnCharAAT {
 
 
-    private final String INCORRECT_PROGRAM = "public class Main{ \n" +
-        "public static char main(String[] args){\n" +
+    private final String INCORRECT_PROGRAM =
         "   char[] x = {'A','B'};\n" +
-        "   return (x[1]);\n" +
-        "}\n" +
-        "}";
-    private final String CORRECT_PROGRAM_THAT_PRINTS_CHAR_A = "public class Main{ \n" +
-        "public static char main(String[] args){\n" +
+        "   return (x[1]);";
+    private final String CORRECT_PROGRAM_THAT_PRINTS_CHAR_A =
         "   char[] x = {'A'};\n" +
-        "   return (x[0]);\n" +
-        "}\n" +
-        "}";
+        "   return (x[0]);";
 
     private final ExercisePage page;
 

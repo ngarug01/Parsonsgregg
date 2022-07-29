@@ -81,6 +81,11 @@ let exercises = null;
             textbox.style.display = "block";
             dropdowns.style.display = "none";
         }
+
+        const hintbox = document.getElementById("modal-content");
+        if(selectedExerciseProperties.exerciseHint) {
+            hintbox.innerHTML = selectedExerciseProperties.exerciseHint;
+        }
     }
 
     function onSelectedExerciseChange() {
@@ -281,6 +286,25 @@ let exercises = null;
         document.getElementById("enter-answer-epe").onclick = postAnswerEPE;
         setNotLoading();
         loadExercises();
+    }
+
+    // Get the modal
+    var modal = document.getElementById("hint-modal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("open-hint");
+
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
     }
     
     window.onload = onLoad;
