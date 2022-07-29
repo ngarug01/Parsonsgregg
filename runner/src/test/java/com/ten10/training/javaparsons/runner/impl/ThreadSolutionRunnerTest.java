@@ -64,7 +64,7 @@ class ThreadSolutionRunnerTest {
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint = entryPoint.load(currentThread().getContextClassLoader());
-        RunResult myResults = loadedEntryPoint.run( progressReporter);
+        RunResult myResults = loadedEntryPoint.run(progressReporter);
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
@@ -85,7 +85,7 @@ class ThreadSolutionRunnerTest {
         LoadedEntryPoint loadedEntryPoint = entryPoint.load(currentThread().getContextClassLoader());
 
         //Assert
-        assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run( progressReporter));
+        assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run(progressReporter));
     }
 
 
@@ -108,7 +108,7 @@ class ThreadSolutionRunnerTest {
 
 
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run( progressReporter));
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
     }
 //
 //    @Test     //call information parameter does not exist.
@@ -146,7 +146,7 @@ class ThreadSolutionRunnerTest {
         // Act
         //Assert
 //        assertTrue(result, "run() should have completed successfully");
-        loadedEntryPoint.run( progressReporter);
+        loadedEntryPoint.run(progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -197,7 +197,7 @@ class ThreadSolutionRunnerTest {
         LoadedEntryPoint loadedEntryPoint = callInformation.load(currentThread().getContextClassLoader());
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
-        loadedEntryPoint.run( progressReporter);
+        loadedEntryPoint.run(progressReporter);
         //Assert
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
