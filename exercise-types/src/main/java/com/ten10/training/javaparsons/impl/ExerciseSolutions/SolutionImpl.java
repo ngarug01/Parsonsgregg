@@ -8,6 +8,7 @@ import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import sun.tools.java.ClassNotFound;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -141,10 +142,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         captureConsoleOutput.start();
         try {
             return entryPoint.load(getClassLoader()).run(progressReporter).isSuccess();
-        } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("Error loading class: " + e.getMessage());
-            return false;
-        } finally {
+        }  finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);
         }

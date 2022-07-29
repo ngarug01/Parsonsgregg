@@ -88,7 +88,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
 
         }
 
-        //throws ClassNotFoundException
         @Override
         public LoadedEntryPoint load(ClassLoader classLoader) {
             this.classLoader = classLoader;
@@ -119,8 +118,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         public LoadedEntryPointImpl(EntryPoint entryPoint){
             this.entryPoint = entryPoint;
         }
-
-
 
 
         @Override
