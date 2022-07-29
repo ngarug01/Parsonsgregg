@@ -87,5 +87,7 @@ public interface SolutionRunner {
      */
     RunResult run(EntryPoint solution, ProgressReporter progressReporter);
     //EntryPointBuilder entryPoint();
+
+    LoadedEntryPoint load( ClassLoader loader, EntryPoint entryPoint , ProgressReporter reporter );
 }
 

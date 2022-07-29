@@ -136,6 +136,11 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
     }
 
+    @Override
+    public LoadedEntryPoint load(ClassLoader loader, EntryPoint entryPoint, ProgressReporter reporter) {
+        return entryPoint.load( loader );
+    }
+
     private boolean isStatic(Method method) {
         return Modifier.isStatic(method.getModifiers());
     }
