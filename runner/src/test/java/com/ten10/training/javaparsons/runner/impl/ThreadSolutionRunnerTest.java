@@ -64,8 +64,8 @@ class ThreadSolutionRunnerTest {
 
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
-        LoadedEntryPoint loadedEntryPoint = entryPoint.load(classLoader);
-        RunResult myResults = loadedEntryPoint.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
+        LoadedEntryPoint loadedEntryPoint = entryPoint.load(currentThread().getContextClassLoader());
+        RunResult myResults = loadedEntryPoint.run(/*currentThread().getContextClassLoader(),*/ entryPoint, progressReporter);
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
@@ -83,10 +83,10 @@ class ThreadSolutionRunnerTest {
         EntryPoint entryPoint = entryPointBuilder.build();
 
         //Act
-        LoadedEntryPoint loadedEntryPoint = entryPoint.load(classLoader);
+        LoadedEntryPoint loadedEntryPoint = entryPoint.load(currentThread().getContextClassLoader());
 
         //Assert
-        assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run(classLoader, entryPoint, progressReporter));
+        assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run( entryPoint, progressReporter));
     }
 
 
@@ -105,11 +105,11 @@ class ThreadSolutionRunnerTest {
             .parameters(new Object[0]);
 
         EntryPoint callInformation = entryPointBuilder.build();
-        LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
+        LoadedEntryPoint loadedEntryPoint = callInformation.load(currentThread().getContextClassLoader());
 
 
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run( callInformation, progressReporter));
     }
 //
 //    @Test     //call information parameter does not exist.
@@ -140,14 +140,14 @@ class ThreadSolutionRunnerTest {
             .parameters(new Object[]{1, 3});
 
         EntryPoint callInformation = entryPointBuilder.build();
-        LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
+        LoadedEntryPoint loadedEntryPoint = callInformation.load(currentThread().getContextClassLoader());
 
 
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
 //        assertTrue(result, "run() should have completed successfully");
-        loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        loadedEntryPoint.run( callInformation, progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -195,10 +195,10 @@ class ThreadSolutionRunnerTest {
             .parameters(new Object[0]);
 
         EntryPoint callInformation = entryPointBuilder.build();
-        LoadedEntryPoint loadedEntryPoint = callInformation.load(classLoader);
+        LoadedEntryPoint loadedEntryPoint = callInformation.load(currentThread().getContextClassLoader());
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
-        loadedEntryPoint.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
+        loadedEntryPoint.run( callInformation, progressReporter);
         //Assert
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }

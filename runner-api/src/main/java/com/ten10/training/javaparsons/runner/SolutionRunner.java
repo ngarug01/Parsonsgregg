@@ -37,7 +37,7 @@ public interface SolutionRunner {
     }
 
     interface LoadedEntryPoint {
-        RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
+        RunResult run(EntryPoint solution, ProgressReporter progressReporter);
 
         public void setTimeout(long count, TimeUnit timeUnit);
     }

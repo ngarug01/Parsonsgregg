@@ -5,6 +5,7 @@ import com.ten10.training.javaparsons.ExerciseInformation;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
@@ -15,7 +16,7 @@ class ExerciseBuilderTest {
     private final SolutionRunner runner = mock(SolutionRunner.class);
     private final CreateExercise builder = new CreateExercise(compiler, runner);
 
-    @Test
+    @Test @Disabled
     void checkStaticField() {
         String varName = "thisIsTheVariableName";
         String value = "thisIsTheValue";
