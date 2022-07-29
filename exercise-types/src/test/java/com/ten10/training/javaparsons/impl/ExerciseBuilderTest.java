@@ -16,7 +16,7 @@ class ExerciseBuilderTest {
     private final SolutionRunner runner = mock(SolutionRunner.class);
     private final CreateExercise builder = new CreateExercise(compiler, runner);
 
-    @Test @Disabled
+    @Test
     void checkStaticField() {
         String varType = "thisIsTheVariableType";
         String varName = "thisIsTheVariableName";
