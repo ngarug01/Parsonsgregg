@@ -32,12 +32,12 @@ public interface SolutionRunner {
 
         Object[] getParameters();
 
-        LoadedEntryPoint load(ClassLoader classLoader) throws ClassNotFoundException;
+        LoadedEntryPoint load(ClassLoader classLoader);
 
     }
 
     interface LoadedEntryPoint {
-        RunResult run(EntryPoint solution, ProgressReporter progressReporter);
+        RunResult run(ProgressReporter progressReporter);
 
         public void setTimeout(long count, TimeUnit timeUnit);
     }

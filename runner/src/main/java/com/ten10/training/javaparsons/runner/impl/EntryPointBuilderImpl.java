@@ -15,6 +15,7 @@ import java.util.concurrent.*;
 
 
 public class EntryPointBuilderImpl implements EntryPointBuilder {
+
     private String className;
     private String methodName;
     private Class<?>[] parameterTypes;
@@ -58,23 +59,23 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         private Object[] parameters;
         private ClassLoader classLoader;
 
-
+        @Override
         public String getEntryPointClass() {
             return className;
         }
-
+        @Override
         public String getEntryPointMethod() {
             return methodName;
         }
-
+        @Override
         public Class<?>[] getParameterTypes() {
             return parameterTypes;
         }
-
+        @Override
         public Object[] getParameters() {
             return parameters;
         }
-
+        @Override
         public ClassLoader getClassLoader() {
             return classLoader;
         }
@@ -91,16 +92,14 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         @Override
         public LoadedEntryPoint load(ClassLoader classLoader) {
             this.classLoader = classLoader;
-            return new LoadedEntryPointImpl();
-//            return null;
+            return new LoadedEntryPointImpl(this);
         }
     }
 
 
     private class LoadedEntryPointImpl implements LoadedEntryPoint {
+        private final EntryPoint entryPoint;
         private long timeoutMillis = 500;
-        private ExecutorService executor;
-        private Future<Object> future;
         private final RunResult FAILURE = new RunResult() {
             @Override
             public boolean isSuccess() {
@@ -117,14 +116,20 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
                 throw new IllegalStateException();
             }
         };
+        public LoadedEntryPointImpl(EntryPoint entryPoint){
+            this.entryPoint = entryPoint;
+        }
+
+
+
 
         @Override
-        public RunResult run(SolutionRunner.EntryPoint solution, ProgressReporter progressReporter) {
-            ClassLoader classLoader = solution.getClassLoader();
-            String entryPointClassName = solution.getEntryPointClass();
-            String entryPointMethodName = solution.getEntryPointMethod();
-            Class<?>[] parameterTypes = solution.getParameterTypes();
-            Object[] parameters = solution.getParameters();
+        public RunResult run(ProgressReporter progressReporter) {
+            ClassLoader classLoader = entryPoint.getClassLoader();
+            String entryPointClassName = entryPoint.getEntryPointClass();
+            String entryPointMethodName = entryPoint.getEntryPointMethod();
+            Class<?>[] parameterTypes = entryPoint.getParameterTypes();
+            Object[] parameters = entryPoint.getParameters();
             // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
             if (parameters.length != parameterTypes.length) {
                 throw new IllegalArgumentException("Parameter types and parameters must be the same length");
@@ -173,8 +178,9 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             }
             final Object finalInstance = instance;
 
-            executor = Executors.newSingleThreadExecutor();
-            future = executor.submit(() -> method.invoke(finalInstance, parameters));
+
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<Object> future = executor.submit(() -> method.invoke(finalInstance, parameters));
             try {
                 if (timeoutMillis != 0) {
                     returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
