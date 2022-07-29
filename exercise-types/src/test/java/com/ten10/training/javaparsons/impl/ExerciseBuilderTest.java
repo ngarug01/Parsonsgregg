@@ -18,19 +18,23 @@ class ExerciseBuilderTest {
 
     @Test @Disabled
     void checkStaticField() {
+        String varType = "thisIsTheVariableType";
         String varName = "thisIsTheVariableName";
         String value = "thisIsTheValue";
 
-        builder.checkStaticField(varName, value);
+        builder.checkStaticField(varType,varName, value);
         Exercise product = builder.build();
         ExerciseInformation info = product.getInformation();
 
         String expected = new StringBuilder()
             .append("Create a Java class that: \n")
-            .append("has a static String field ")
+            .append("has a static ")
+            .append(varType)
+            .append(" field ")
             .append(varName)
             .append(" with a value of ")
-            .append(value).toString();
+            .append(value)
+            .append(" ").toString();
         Assertions.assertEquals(expected, info.getDescription());
     }
 }

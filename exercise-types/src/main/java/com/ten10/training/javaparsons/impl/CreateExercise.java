@@ -23,6 +23,7 @@ class CreateExercise implements ExerciseBuilder {
     private int id;
     private String prefixCode;
     private String suffixCode;
+    private String exerciseHint;
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
@@ -72,6 +73,8 @@ class CreateExercise implements ExerciseBuilder {
         return suffixCode;
     }
 
+    public String getExerciseHint() { return exerciseHint; }
+
     public SolutionRunner.EntryPoint getEntryPoint() {
         return entryPoint;
     }
@@ -95,8 +98,16 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
-        public ExerciseBuilder checkStaticField(String goal, Object expectedValue) {
-        this.classCheckers.add(new StaticFieldValueChecker("has a static int field x with a value of " + (expectedValue), goal,  expectedValue));
+        public ExerciseBuilder checkStaticField(String expectedVariableType, String expectedVariableInput, Object expectedValue) {
+        String exerciseDescription = new StringBuilder()
+            .append("has a static ")
+            .append(expectedVariableType)
+            .append(" field ")
+            .append(expectedVariableInput)
+            .append(" with a value of ")
+            .append(expectedValue)
+            .append(" ").toString();
+        this.classCheckers.add(new StaticFieldValueChecker(exerciseDescription, expectedVariableInput,  expectedValue));
         return this;
     }
 
@@ -109,6 +120,12 @@ class CreateExercise implements ExerciseBuilder {
     @Override
     public ExerciseBuilder withSuffixCode(String suffixCode) {
         this.suffixCode = suffixCode;
+        return this;
+    }
+
+    @Override
+    public ExerciseBuilder withExerciseHint(String exerciseHint) {
+        this.exerciseHint = exerciseHint;
         return this;
     }
 

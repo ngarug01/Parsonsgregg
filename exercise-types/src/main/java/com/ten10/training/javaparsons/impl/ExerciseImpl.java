@@ -17,6 +17,7 @@ import static java.util.Objects.isNull;
 
 class ExerciseImpl implements Exercise {
     private final String exerciseName;
+    private final String exerciseHints;
     private String prefixCode;
     private String suffixCode;
     private final SolutionCompiler compiler;
@@ -49,7 +50,8 @@ class ExerciseImpl implements Exercise {
                         String exerciseName,
                         int id,
                         String prefixCode,
-                        String suffixCode) {
+                        String suffixCode,
+                        String exerciseHints) {
         this.compiler = compiler;
         this.runner = runner;
         this.exerciseName = exerciseName;
@@ -59,6 +61,7 @@ class ExerciseImpl implements Exercise {
         this.methodReturnValueCheckers = methodReturnValueCheckers;
         this.prefixCode = prefixCode;
         this.suffixCode = suffixCode;
+        this.exerciseHints = exerciseHints;
     }
 
     public ExerciseImpl(CreateExercise buildedExercise) {
@@ -73,6 +76,7 @@ class ExerciseImpl implements Exercise {
         this.suffixCode = buildedExercise.getSuffixCode();
         this.prefixCode = normalizePrefixCode(buildedExercise.getPrefixCode());
         this.suffixCode = normalizeSuffixCode(buildedExercise.getSuffixCode());
+        this.exerciseHints = buildedExercise.getExerciseHint();
         this.entryPoint = buildedExercise.getEntryPoint();
 
 
@@ -114,6 +118,11 @@ class ExerciseImpl implements Exercise {
             public String getFollowingCode() {
 
                 return suffixCode;
+            }
+
+            @Override
+            public String getExerciseHint() {
+                return exerciseHints;
             }
 
             /**

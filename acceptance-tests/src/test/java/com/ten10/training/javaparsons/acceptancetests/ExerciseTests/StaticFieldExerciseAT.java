@@ -19,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("Tests for Feature 3: 42 (Static Field Exercise)")
 public class StaticFieldExerciseAT {
 
-    private static final String CORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int x = 3; \n public static String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
-    private static final String INCORRECT_STATIC_FIELD_ANSWER = "public class Main{ \n public static int i = 40; \npublic static void main(String[] args){\n}\n}";
-    private static final String INCORRECT_X_VARIABLE_VALUE_ANSWER = "public class Main{\n public static int x = 2; \n public static String y = \"hello\"; \npublic static void main(String[] args){\n}\n}";
-    private static final String INCORRECT_VARIABLE_NAMES_ANSWER = "public class Main{\n public static int z = 2; \n public static String w = \"hello\"; \npublic static void main(String[] args){\n}\n}";
-    private static final String INCORRECT_NOT_STATIC_FIELD_ANSWER = "public class Main{ \n public int x = 3; \n public String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
-    private static final String CORRECT_MULTIPLE_FIELDS_ANSWER = "public class Main{\n public int z = 7; \n static int w = 3; \n public static int x = 3;\n static String a=\"helloo\"; \n public static String y=\"hello\"; \npublic static void main(String[] args){\n}\n}";
+    private static final String CORRECT_STATIC_FIELD_ANSWER = "public static int x = 3; \n public static String y=\"hello\";";
+    private static final String INCORRECT_STATIC_FIELD_ANSWER = "public static int i = 40;";
+    private static final String INCORRECT_X_VARIABLE_VALUE_ANSWER = "public static int x = 2; \n public static String y = \"hello\";";
+    private static final String INCORRECT_VARIABLE_NAMES_ANSWER = "public static int z = 2; \n public static String w = \"hello\";";
+    private static final String INCORRECT_NOT_STATIC_FIELD_ANSWER = "public int x = 3; \n public String y=\"hello\";";
+    private static final String CORRECT_MULTIPLE_FIELDS_ANSWER = "public int z = 7; \n static int w = 3; \n public static int x = 3;\n static String a=\"helloo\"; \n public static String y=\"hello\";";
     public static final String NAMES_ERROR_MESSAGE = "Either your variables have incorrect access modifiers and/or names, or one isn't there!";
     public static final String NOT_STATIC_ERROR = "your variable(s) need to be static!";
     public static final String X_NOT_INITIALISED_PROPERLY_ERROR = "[The runner error description was: The x variable has not been initialised correctly!]";
