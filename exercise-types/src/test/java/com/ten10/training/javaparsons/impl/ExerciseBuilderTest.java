@@ -17,19 +17,16 @@ class ExerciseBuilderTest {
 
     @Test
     void checkStaticField() {
-        String varType = "thisIsTheVariableType";
         String varName = "thisIsTheVariableName";
         String value = "thisIsTheValue";
 
-        builder.checkStaticField(varType, varName, value);
+        builder.checkStaticField(varName, value);
         Exercise product = builder.build();
         ExerciseInformation info = product.getInformation();
 
         String expected = new StringBuilder()
             .append("Create a Java class that: \n")
-            .append("has a static ")
-            .append(varType)
-            .append(" field ")
+            .append("has a static String field ")
             .append(varName)
             .append(" with a value of ")
             .append(value)

@@ -100,10 +100,10 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
-    public ExerciseBuilder checkStaticField(String expectedVariableType, String expectedVariableInput, Object expectedValue) {
+    public ExerciseBuilder checkStaticField(String expectedVariableInput, Object expectedValue) {
         String exerciseDescription = new StringBuilder()
             .append("has a static ")
-            .append(expectedVariableType)
+            .append(expectedValue.getClass().getName().split("^((?!([^.]*)+$).)*")[1])
             .append(" field ")
             .append(expectedVariableInput)
             .append(" with a value of ")
