@@ -95,13 +95,13 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         @Override
         public LoadedEntryPoint load(ClassLoader classLoader) {
             this.classLoader = classLoader;
-            return new LoadedEntryPointImpl();
-//            return null;
+            return new LoadedEntryPointImpl(this);
         }
     }
 
 
     private class LoadedEntryPointImpl implements LoadedEntryPoint {
+        private final EntryPoint entryPoint;
         private long timeoutMillis = 500;
         private final RunResult FAILURE = new RunResult() {
             @Override
@@ -120,13 +120,17 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             }
         };
 
+        public LoadedEntryPointImpl(SolutionRunner.EntryPoint entryPoint){
+            this.entryPoint = entryPoint;
+        }
+
         @Override
         public RunResult run(SolutionRunner.EntryPoint solution, ProgressReporter progressReporter) {
-            ClassLoader classLoader = solution.getClassLoader();
-            String entryPointClassName = solution.getEntryPointClass();
-            String entryPointMethodName = solution.getEntryPointMethod();
-            Class<?>[] parameterTypes = solution.getParameterTypes();
-            Object[] parameters = solution.getParameters();
+            ClassLoader classLoader = entryPoint.getClassLoader();
+            String entryPointClassName = entryPoint.getEntryPointClass();
+            String entryPointMethodName = entryPoint.getEntryPointMethod();
+            Class<?>[] parameterTypes = entryPoint.getParameterTypes();
+            Object[] parameters = entryPoint.getParameters();
             // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
             if (parameters.length != parameterTypes.length) {
                 throw new IllegalArgumentException("Parameter types and parameters must be the same length");
