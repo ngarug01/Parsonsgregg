@@ -5,18 +5,16 @@ public interface ExerciseInformation {
     Integer getIdentifier();
 
     /**
-     *
      * @return the stored title of this exercise.
      */
     String getTitle();
 
     /**
-     *
      * @return the stored Description of this exercise.
      */
     String getDescription();
 
-    default String getPrecedingCode(){
+    default String getPrecedingCode() {
         return null;
     }
 
@@ -24,7 +22,7 @@ public interface ExerciseInformation {
         return null;
     }
 
-    default String getExerciseHint () {
+    default String getExerciseHint() {
         return null;
     }
 

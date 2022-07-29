@@ -25,13 +25,14 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
 
     /**
      * Take the stored content of the {@link Logger} and store the information in the {@link ProgressReporter}.
+     *
      * @param diagnostic an imported tool for checking code and finding compiler/runner errors
      */
     @Override
     public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
         LOGGER.debug("Received diagnostic: {}", diagnostic);
         lineNumber = diagnostic.getLineNumber();
-        switch(diagnostic.getKind()) {
+        switch (diagnostic.getKind()) {
             case ERROR:
                 progressReporter.reportCompilerError(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
                 break;

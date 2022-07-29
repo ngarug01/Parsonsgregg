@@ -7,7 +7,7 @@ public class LineNumberTranslationProgressReporter extends AbstractProgressRepor
 
     private final int prefixLines;
 
-    public LineNumberTranslationProgressReporter(String prefixCode, ProgressReporter progressReporter ) {
+    public LineNumberTranslationProgressReporter(String prefixCode, ProgressReporter progressReporter) {
         super(progressReporter);
         prefixLines = prefixCode.split("\\R").length;
     }

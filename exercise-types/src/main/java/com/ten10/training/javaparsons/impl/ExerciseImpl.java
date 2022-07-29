@@ -10,7 +10,6 @@ import com.ten10.training.javaparsons.impl.ExerciseSolutions.SolutionImpl;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 
-
 import java.util.List;
 
 import static java.util.Objects.isNull;

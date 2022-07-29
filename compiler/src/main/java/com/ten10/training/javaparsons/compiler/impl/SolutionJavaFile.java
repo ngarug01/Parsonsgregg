@@ -11,9 +11,9 @@ class SolutionJavaFile extends SimpleJavaFileObject {
 
     private static URI uriFromSolution(CompilableSolution solution) {
         return URI.create(
-                "string:///"
-                        + solution.getClassName().replace('.', '/')
-                        + Kind.SOURCE.extension);
+            "string:///"
+                + solution.getClassName().replace('.', '/')
+                + Kind.SOURCE.extension);
     }
 
     /**
@@ -26,6 +26,7 @@ class SolutionJavaFile extends SimpleJavaFileObject {
 
     /**
      * Get the content of the {@link CompilableSolution} as a {@code CharSequence}.
+     *
      * @param ignoreEncodingErrors Unused by this {@code @Override} - exists because of {@code super}.
      * @return {@code CharSequence} of the user input.
      */

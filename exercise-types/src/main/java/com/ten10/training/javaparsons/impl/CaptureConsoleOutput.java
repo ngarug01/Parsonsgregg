@@ -38,6 +38,7 @@ public class CaptureConsoleOutput {
 
     /**
      * Stop recording the System output and return what has been stored.
+     *
      * @return A String of everything outputted to the System since start() was called.
      */
     public String stop() {
@@ -70,41 +71,41 @@ public class CaptureConsoleOutput {
         }
 
         public void flush() throws IOException {
-            IOException ioException=null;
+            IOException ioException = null;
             RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
                 try {
                     os.flush();
-                } catch(IOException e) {
-                    ioException=e;
+                } catch (IOException e) {
+                    ioException = e;
                 } catch (RuntimeException e) {
-                    runtimeException =e;
+                    runtimeException = e;
                 }
             }
-            if (null!=ioException){
+            if (null != ioException) {
                 throw ioException;
             }
-            if (null!=runtimeException){
+            if (null != runtimeException) {
                 throw runtimeException;
             }
         }
 
         public void close() throws IOException {
-            IOException ioException=null;
+            IOException ioException = null;
             RuntimeException runtimeException = null;
             for (OutputStream os : outputStreams) {
                 try {
                     os.close();
-                } catch(IOException e) {
-                    ioException=e;
+                } catch (IOException e) {
+                    ioException = e;
                 } catch (RuntimeException e) {
-                    runtimeException =e;
+                    runtimeException = e;
                 }
             }
-            if (null!=ioException){
+            if (null != ioException) {
                 throw ioException;
             }
-            if (null!=runtimeException){
+            if (null != runtimeException) {
                 throw runtimeException;
             }
         }

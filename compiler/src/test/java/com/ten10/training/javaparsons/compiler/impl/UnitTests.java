@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 

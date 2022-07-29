@@ -65,8 +65,8 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .named("Static Field")
-            .checkStaticField("Int","x", 3)
-            .checkStaticField("String","y", "hello")
+            .checkStaticField("Int", "x", 3)
+            .checkStaticField("String", "y", "hello")
             .withPrefixCode("public class Main { \n")
             .withSuffixCode("public static void main (String[] args) {}}\n")
             .withExerciseHint("Try assigning a value to Int x and String y"));

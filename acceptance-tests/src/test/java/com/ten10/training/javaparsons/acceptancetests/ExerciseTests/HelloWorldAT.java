@@ -4,7 +4,6 @@ package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
 import io.github.bonigarcia.seljup.SeleniumExtension;
 import io.github.bonigarcia.seljup.SingleSession;
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;

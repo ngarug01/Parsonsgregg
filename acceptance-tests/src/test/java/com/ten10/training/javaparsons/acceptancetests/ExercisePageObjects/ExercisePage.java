@@ -27,7 +27,6 @@ public class ExercisePage extends BasePage {
     private static final By SUFFIX_CODE_BOX = By.cssSelector("#following-code-box");
 
 
-
     // Conditions
     private static final ExpectedCondition<WebElement> OUTPUT_BOX_IS_VISIBLE
         = ExpectedConditions.visibilityOfElementLocated(OUTPUT_BOX);
@@ -63,9 +62,9 @@ public class ExercisePage extends BasePage {
 
     private void clearSolutionBoxEPE() {
         Select select;
-        int i=1;
-        while(driver.findElements(By.id("epe"+i)).size()!=0){
-            select = new Select(driver.findElement(By.id("epe"+(i))));
+        int i = 1;
+        while (driver.findElements(By.id("epe" + i)).size() != 0) {
+            select = new Select(driver.findElement(By.id("epe" + (i))));
             select.selectByIndex(0);
             i++;
         }
@@ -124,7 +123,7 @@ public class ExercisePage extends BasePage {
         return result;
     }
 
-    public String getErrorLine(){
+    public String getErrorLine() {
         String text = wait.until(INCORRECT_BOX_IS_VISIBLE).getText();
         final String prefix = "Incorrect answer\n";
         assert text.startsWith(prefix);
@@ -134,7 +133,7 @@ public class ExercisePage extends BasePage {
         for (String line : lines) {
             // Exclude lines that just state the line number of the following line
             if (line.matches("^Error on line:\\s+\\d+$")) {
-                result+=line;
+                result += line;
             }
         }
         return result;
@@ -164,8 +163,8 @@ public class ExercisePage extends BasePage {
 
     public void dropdownSelect(int[] input) {
         Select select;
-        for(int i=0; i<input.length; i++){
-            select = new Select(driver.findElement(By.id("epe"+(i+1))));
+        for (int i = 0; i < input.length; i++) {
+            select = new Select(driver.findElement(By.id("epe" + (i + 1))));
             select.selectByIndex(input[i]);
         }
     }

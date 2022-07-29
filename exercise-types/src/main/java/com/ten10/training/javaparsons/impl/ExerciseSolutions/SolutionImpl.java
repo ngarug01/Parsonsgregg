@@ -12,7 +12,6 @@ import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class SolutionImpl implements Solution, SolutionCompiler.CompilableSolution {
 

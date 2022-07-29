@@ -33,7 +33,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private Future<Object> future;
 
 
-
     public RunResult run(EntryPoint solution, ProgressReporter progressReporter) {
         ClassLoader classLoader = solution.getClassLoader();
 //         Pull data out of the entry point object

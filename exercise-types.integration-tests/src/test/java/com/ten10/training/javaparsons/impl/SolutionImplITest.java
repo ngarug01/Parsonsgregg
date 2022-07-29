@@ -124,7 +124,7 @@ class SolutionImplITest {
     void earlyReturnWhenCompileFails() throws Exception {
         when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
         solutionImpl.evaluate();
-        verify(loadedClassRunner, never()).run( entryPoint, progressReporter);
+        verify(loadedClassRunner, never()).run(entryPoint, progressReporter);
     }
 
     @Test

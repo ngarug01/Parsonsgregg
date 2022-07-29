@@ -4,9 +4,9 @@ import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 class ReturnTypeCheckerTest {
     private int answer = 4;

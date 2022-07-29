@@ -73,7 +73,9 @@ class CreateExercise implements ExerciseBuilder {
         return suffixCode;
     }
 
-    public String getExerciseHint() { return exerciseHint; }
+    public String getExerciseHint() {
+        return exerciseHint;
+    }
 
     public SolutionRunner.EntryPoint getEntryPoint() {
         return entryPoint;
@@ -98,7 +100,7 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
-        public ExerciseBuilder checkStaticField(String expectedVariableType, String expectedVariableInput, Object expectedValue) {
+    public ExerciseBuilder checkStaticField(String expectedVariableType, String expectedVariableInput, Object expectedValue) {
         String exerciseDescription = new StringBuilder()
             .append("has a static ")
             .append(expectedVariableType)
@@ -107,7 +109,7 @@ class CreateExercise implements ExerciseBuilder {
             .append(" with a value of ")
             .append(expectedValue)
             .append(" ").toString();
-        this.classCheckers.add(new StaticFieldValueChecker(exerciseDescription, expectedVariableInput,  expectedValue));
+        this.classCheckers.add(new StaticFieldValueChecker(exerciseDescription, expectedVariableInput, expectedValue));
         return this;
     }
 

@@ -21,7 +21,7 @@ class ExerciseBuilderTest {
         String varName = "thisIsTheVariableName";
         String value = "thisIsTheValue";
 
-        builder.checkStaticField(varType,varName, value);
+        builder.checkStaticField(varType, varName, value);
         Exercise product = builder.build();
         ExerciseInformation info = product.getInformation();
 

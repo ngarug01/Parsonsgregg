@@ -28,9 +28,9 @@ class InMemoryFileManager extends ForwardingJavaFileManager<StandardJavaFileMana
     }
 
     /**
-     * @inheritDoc
      * @return a new {@link FileObject} with the parameters provided.
      * @throws IOException
+     * @inheritDoc
      */
     @Override
     public FileObject getFileForInput(Location location, String packageName, String relativeName) throws IOException {
@@ -39,8 +39,8 @@ class InMemoryFileManager extends ForwardingJavaFileManager<StandardJavaFileMana
     }
 
     /**
-     * @inheritDoc
      * @return a new {@link InMemoryClassFile} with the {@code className} and {@link SolutionCompiler.CompilableSolution}.
+     * @inheritDoc
      */
     @Override
     public JavaFileObject getJavaFileForOutput(Location location, String className, JavaFileObject.Kind kind, FileObject sibling) {

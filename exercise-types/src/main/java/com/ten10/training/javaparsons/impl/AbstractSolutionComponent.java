@@ -9,6 +9,7 @@ import static java.util.Collections.unmodifiableList;
 
 /**
  * Abstract baseclass for Solution components that delegate to other solution components
+ *
  * @param <I> The input type
  * @param <O> The output type - the type passed down the chain.
  */
@@ -22,7 +23,9 @@ public abstract class AbstractSolutionComponent<I, O> implements SolutionCompone
 
     final boolean feedValueDown(O value, ProgressReporter progressReporter) {
         for (SolutionComponent<O> successor : successors) {
-            if(!successor.evaluate(value, progressReporter)) { return false;}
+            if (!successor.evaluate(value, progressReporter)) {
+                return false;
+            }
         }
         return true;
     }

@@ -2,8 +2,8 @@ package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 
@@ -225,7 +225,9 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             timeoutMillis = timeUnit.toMillis(count);
         }
     }
+
     static Object returnValue;
+
     public static Object getReturnValue() {
         return returnValue;
 

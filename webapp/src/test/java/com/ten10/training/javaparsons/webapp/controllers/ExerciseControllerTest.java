@@ -45,7 +45,8 @@ class ExerciseControllerTest {
 
     @SpringBootApplication
     @ComponentScan("com.ten10.training.javaparsons.webapp")
-    public static class Config{}
+    public static class Config {
+    }
 
     private static final String TRIVIAL_INPUT = "{\"input\": \"foo\"}";
     private static final String TRIVIAL_OUTPUT = "{}";

@@ -24,6 +24,7 @@ public class JavaSolutionCompiler implements SolutionCompiler {
 
     /**
      * Prepares a {@link javax.tools.JavaCompiler} to compile {@link SolutionCompiler.CompilableSolution}.
+     *
      * @param compiler {@link javax.tools.JavaCompiler} used to compile user solutions.
      */
     public JavaSolutionCompiler(JavaCompiler compiler) {
@@ -34,7 +35,8 @@ public class JavaSolutionCompiler implements SolutionCompiler {
     /**
      * Uses the {@link javax.tools.JavaCompiler} provided in the constructor to compile the {@link SolutionCompiler.CompilableSolution}.
      * Errors and progress are stored in the {@link ProgressReporter} through a {@link Logger}.
-     * @param solution The submitted solution to be compiled. This will not be modified.
+     *
+     * @param solution         The submitted solution to be compiled. This will not be modified.
      * @param progressReporter An object which will collect errors. This is modified.
      * @return {@code True} if the {@link SolutionCompiler.CompilableSolution} compiles successfully. {@code False} if the
      * {@code CompilableSolution} fails to compile.

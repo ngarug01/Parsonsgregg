@@ -2,7 +2,6 @@ package com.ten10.training.javaparsons;
 
 /**
  * An object implementing this interface is used to fetch {@link Exercise} objects.
- *
  */
 public interface ExerciseRepository extends Iterable<Exercise> {
     /**

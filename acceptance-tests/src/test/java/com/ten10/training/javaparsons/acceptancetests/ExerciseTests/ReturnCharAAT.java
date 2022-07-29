@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SeleniumExtension.class)
 @SingleSession
@@ -23,10 +22,10 @@ public class ReturnCharAAT {
 
     private final String INCORRECT_PROGRAM =
         "   char[] x = {'A','B'};\n" +
-        "   return (x[1]);";
+            "   return (x[1]);";
     private final String CORRECT_PROGRAM_THAT_PRINTS_CHAR_A =
         "   char[] x = {'A'};\n" +
-        "   return (x[0]);";
+            "   return (x[0]);";
 
     private final ExercisePage page;
 

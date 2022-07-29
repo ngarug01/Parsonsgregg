@@ -20,7 +20,7 @@ public class Results implements ProgressReporter {
             this.message = message;
         }
 
-        Information(String message){
+        Information(String message) {
             this.message = message;
         }
 
@@ -75,6 +75,7 @@ public class Results implements ProgressReporter {
 
     /**
      * Set whether the provided solution was correct or not.
+     *
      * @param answer {@code True} if successful, {@code False} if unsuccessful.
      */
     public void setSuccessfulSolution(boolean answer) {

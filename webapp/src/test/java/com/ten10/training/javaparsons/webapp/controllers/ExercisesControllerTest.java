@@ -32,7 +32,7 @@ class ExercisesControllerTest {
         when(exercises.getExercisesSize()).thenReturn(2);
         when(exercises.getExerciseByIdentifier(1)).thenReturn(exercise1);
         when(exercises.getExerciseByIdentifier(2)).thenReturn(exercise2);
-        when(exercises.spliterator()).thenReturn(asList(exercise1,exercise2).spliterator());
+        when(exercises.spliterator()).thenReturn(asList(exercise1, exercise2).spliterator());
     }
 
     @Test
