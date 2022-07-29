@@ -58,23 +58,27 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         private Object[] parameters;
         private ClassLoader classLoader;
 
-
+        @Override
         public String getEntryPointClass() {
             return className;
         }
 
+        @Override
         public String getEntryPointMethod() {
             return methodName;
         }
 
+        @Override
         public Class<?>[] getParameterTypes() {
             return parameterTypes;
         }
 
+        @Override
         public Object[] getParameters() {
             return parameters;
         }
 
+        @Override
         public ClassLoader getClassLoader() {
             return classLoader;
         }
