@@ -37,7 +37,7 @@ public interface SolutionRunner {
     }
 
     interface LoadedEntryPoint {
-        RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
+        RunResult run(EntryPoint solution, ProgressReporter progressReporter);
 
         public void setTimeout(long count, TimeUnit timeUnit);
     }
@@ -85,7 +85,7 @@ public interface SolutionRunner {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    RunResult run(ClassLoader classLoader, EntryPoint solution, ProgressReporter progressReporter);
+    RunResult run(EntryPoint solution, ProgressReporter progressReporter);
     //EntryPointBuilder entryPoint();
 }
 
