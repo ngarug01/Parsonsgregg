@@ -140,10 +140,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     private boolean run() {
         captureConsoleOutput.start();
         try {
-            return entryPoint.load(getClassLoader()).run(entryPoint, progressReporter).isSuccess();
-        } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("Error loading class: " + e.getMessage());
-            return false;
+            return entryPoint.load(getClassLoader()).run(progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

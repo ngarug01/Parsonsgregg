@@ -79,7 +79,7 @@ class SolutionImplITest {
             });
 
         when(runResult.isSuccess()).thenReturn(true);
-        when(loadedClassRunner.run(any(SolutionRunner.EntryPoint.class), any(ProgressReporter.class))).thenReturn(runResult);
+        when(loadedClassRunner.run(any(ProgressReporter.class))).thenReturn(runResult);
     }
 
 
@@ -124,7 +124,7 @@ class SolutionImplITest {
     void earlyReturnWhenCompileFails() throws Exception {
         when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
         solutionImpl.evaluate();
-        verify(loadedClassRunner, never()).run(entryPoint, progressReporter);
+        verify(loadedClassRunner, never()).run(progressReporter);
     }
 
     @Test

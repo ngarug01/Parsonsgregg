@@ -32,7 +32,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private ExecutorService executor;
     private Future<Object> future;
 
-
+    @Override
     public RunResult run(EntryPoint solution, ProgressReporter progressReporter) {
         ClassLoader classLoader = solution.getClassLoader();
 //         Pull data out of the entry point object
