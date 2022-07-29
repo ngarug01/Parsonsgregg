@@ -26,7 +26,6 @@ class ThreadSolutionRunnerTest {
     private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesNoArgsCalled = new AtomicBoolean(false);
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private static ClassLoader classLoader = mock(ClassLoader.class);
     private static EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
 
 
@@ -65,7 +64,7 @@ class ThreadSolutionRunnerTest {
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
         LoadedEntryPoint loadedEntryPoint = entryPoint.load(currentThread().getContextClassLoader());
-        RunResult myResults = loadedEntryPoint.run(/*currentThread().getContextClassLoader(),*/ entryPoint, progressReporter);
+        RunResult myResults = loadedEntryPoint.run(entryPoint, progressReporter);
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
