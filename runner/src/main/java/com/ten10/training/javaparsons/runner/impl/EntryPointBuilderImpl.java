@@ -125,7 +125,7 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         }
 
         @Override
-        public RunResult run(SolutionRunner.EntryPoint solution, ProgressReporter progressReporter) {
+        public RunResult run( ProgressReporter progressReporter) {
             ClassLoader classLoader = entryPoint.getClassLoader();
             String entryPointClassName = entryPoint.getEntryPointClass();
             String entryPointMethodName = entryPoint.getEntryPointMethod();
