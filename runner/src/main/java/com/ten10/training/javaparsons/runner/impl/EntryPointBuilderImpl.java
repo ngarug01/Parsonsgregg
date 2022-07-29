@@ -1,7 +1,6 @@
 package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
@@ -63,18 +62,22 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         public String getEntryPointClass() {
             return className;
         }
+
         @Override
         public String getEntryPointMethod() {
             return methodName;
         }
+
         @Override
         public Class<?>[] getParameterTypes() {
             return parameterTypes;
         }
+
         @Override
         public Object[] getParameters() {
             return parameters;
         }
+
         @Override
         public ClassLoader getClassLoader() {
             return classLoader;
@@ -115,7 +118,8 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
                 throw new IllegalStateException();
             }
         };
-        public LoadedEntryPointImpl(EntryPoint entryPoint){
+
+        public LoadedEntryPointImpl(EntryPoint entryPoint) {
             this.entryPoint = entryPoint;
         }
 
