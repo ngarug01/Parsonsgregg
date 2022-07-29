@@ -90,8 +90,7 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             parameters = builder.parameters;
 
         }
-
-        //throws ClassNotFoundException
+        
         @Override
         public LoadedEntryPoint load(ClassLoader classLoader) {
             this.classLoader = classLoader;

@@ -32,7 +32,7 @@ public interface SolutionRunner {
 
         Object[] getParameters();
 
-        LoadedEntryPoint load(ClassLoader classLoader) throws ClassNotFoundException;
+        LoadedEntryPoint load(ClassLoader classLoader);
 
     }
 
