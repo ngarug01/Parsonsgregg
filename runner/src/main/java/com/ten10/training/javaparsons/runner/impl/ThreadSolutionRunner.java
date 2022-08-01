@@ -9,7 +9,6 @@ import java.lang.reflect.Modifier;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
@@ -31,7 +30,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
     };
 
 
-    private long timeoutMillis = 500;
     private ExecutorService executor;
     private Future<Object> future;
 
@@ -40,11 +38,11 @@ public class ThreadSolutionRunner implements SolutionRunner {
                                                   Class<?> klass,
                                                   Method method,
                                                   ProgressReporter progressReporter) {
-        ClassInstance instance ;
+        ClassInstance instance;
         if (!Modifier.isStatic(method.getModifiers())) {
             if (!entryPointMethodName.equals("main")) {
                 try {
-                    instance = ClassInstance.of( klass.getDeclaredConstructor().newInstance() );
+                    instance = ClassInstance.of(klass.getDeclaredConstructor().newInstance());
                 } catch (InstantiationException e) {
                     instance = ClassInstance.neededButNotAvailable();
                     //TODO this should be a load error now --Hannah
@@ -67,8 +65,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
                 //TODO this should be a load error now --Hannah
                 progressReporter.reportRunnerError("main method should be static");
             }
-        }
-        else{
+        } else {
             instance = ClassInstance.notNeeded();
         }
         return instance;
@@ -79,7 +76,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
                                               Class<?>[] parameterTypes,
                                               ProgressReporter progressReporter) {
         try {
-            return Optional.of( klass.getMethod(entryPointMethodName, parameterTypes));
+            return Optional.of(klass.getMethod(entryPointMethodName, parameterTypes));
         } catch (NoSuchMethodException e) {
             progressReporter.reportRunnerError("No such method " + entryPointMethodName);
             return Optional.empty();
@@ -91,7 +88,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
                                                ProgressReporter progressReporter) {
         String entryPointClassName = entryPoint.getEntryPointClass();
         try {
-            return Optional.of( classLoader.loadClass(entryPointClassName) ) ;
+            return Optional.of(classLoader.loadClass(entryPointClassName));
         } catch (ClassNotFoundException e) {
             progressReporter.reportRunnerError("No such class " + entryPointClassName);
             return Optional.empty();
@@ -104,7 +101,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
         // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
         if (parameters.length != parameterTypes.length) {
             reporter.reportLoadError("Parameter types and parameters must be the same length");
-            return false ;
+            return false;
         }
         //TODO could use streams here. --Hannah
         for (int i = 0; i < parameters.length; i++) {
@@ -112,41 +109,37 @@ public class ThreadSolutionRunner implements SolutionRunner {
             String b = parameterTypes[i].toString().toLowerCase();
             if (!a.contains(b)) {
                 reporter.reportLoadError("The types must match the parameters");
-                return false ;
+                return false;
             }
         }
         return true;
     }
 
-
     @Override
     public Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter) {
         Class<?>[] parameterTypes = entryPoint.getParameterTypes();
         Object[] parameters = entryPoint.getParameters();
-        final boolean validParameters = parametersAreValid(parameterTypes, parameters,reporter);
-        if( validParameters ){
-            Optional<Class<?>> klass = getClass(entryPoint,loader,reporter);
-            if(klass.isPresent() ){
-                String entryPointMethodName = entryPoint.getEntryPointMethod();
-                Optional<Method> method = getMethod(entryPointMethodName, klass.get(), parameterTypes, reporter);
-                if( method.isPresent() ){
-                    ClassInstance instance = getClassInstance(entryPointMethodName, klass.get(), method.get(), reporter);
-                    if(!instance.hasFailed()){
-                        //TODO get rid of all these if statements, should just be able to map...--Hannah
-                        return Optional.of(new LoadedEntryPointImpl(instance.getInstance(), method.get(), parameters));
-                    }
-                }
-            }
+        final boolean validParameters = parametersAreValid(parameterTypes, parameters, reporter);
+        if (!validParameters) {
+            return Optional.empty();
         }
-        return Optional.empty();
-    }
 
-    private boolean isStatic(Method method) {
-        return Modifier.isStatic(method.getModifiers());
-    }
+        Optional<Class<?>> klass = getClass(entryPoint, loader, reporter);
+        if (klass.isEmpty()) {
+            return Optional.empty();
+        }
 
-    void setTimeout(long count, TimeUnit timeUnit) {
-        timeoutMillis = timeUnit.toMillis(count);
+        String entryPointMethodName = entryPoint.getEntryPointMethod();
+        Optional<Method> method = getMethod(entryPointMethodName, klass.get(), parameterTypes, reporter);
+        if (method.isEmpty()) {
+            return Optional.empty();
+        }
+
+        ClassInstance instance = getClassInstance(entryPointMethodName, klass.get(), method.get(), reporter);
+        if (instance.hasFailed()) {
+            return Optional.empty();
+        }
+        return Optional.of(new LoadedEntryPointImpl(instance.getInstance(), method.get(), parameters));
     }
 }
 

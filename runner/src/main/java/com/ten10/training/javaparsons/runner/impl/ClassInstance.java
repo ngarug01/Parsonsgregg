@@ -13,24 +13,19 @@ public class ClassInstance {
         return new ClassInstance(false, null);
     }
 
-    static ClassInstance neededButNotAvailable(){
-        return new ClassInstance(true,null);
+    static ClassInstance neededButNotAvailable() {
+        return new ClassInstance(true, null);
     }
 
-    static ClassInstance of( Object instance )
-    {
-        return new ClassInstance( true,instance );
-    }
-
-    public boolean isNeeded() {
-        return needed;
+    static ClassInstance of(Object instance) {
+        return new ClassInstance(true, instance);
     }
 
     public Object getInstance() {
         return instance;
     }
 
-    public boolean hasFailed(){
+    public boolean hasFailed() {
         return needed && (instance == null);
     }
 }

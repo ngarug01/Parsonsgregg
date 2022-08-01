@@ -3,10 +3,7 @@ package com.ten10.training.javaparsons.runner.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Optional;
 import java.util.concurrent.*;
 
 public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
@@ -33,8 +30,8 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
     };
 
     public LoadedEntryPointImpl(Object instance,
-                                 Method method,
-                                 Object[] parameters){
+                                Method method,
+                                Object[] parameters) {
         this.instance = instance;
         this.method = method;
         this.parameters = parameters;

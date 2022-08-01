@@ -95,7 +95,7 @@ public class Results implements ProgressReporter {
 
     @Override
     public void reportLoadError(String message) {
-        loadErrors.add(new Information( message ));
+        loadErrors.add(new Information(message));
     }
 
     public boolean isSuccessfulSolution() {

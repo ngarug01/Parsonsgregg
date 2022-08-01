@@ -5,7 +5,6 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.currentThread;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -69,7 +69,7 @@ class ThreadSolutionRunnerTest {
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
         Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.map(x->x.run(progressReporter));
+        loadedEntryPoint.map(x -> x.run(progressReporter));
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
@@ -90,7 +90,7 @@ class ThreadSolutionRunnerTest {
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
         var loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.map(x->x.run(reporter));
+        loadedEntryPoint.map(x -> x.run(reporter));
         //Assert
         verify(reporter).reportLoadError("Parameter types and parameters must be the same length");
     }
@@ -115,7 +115,7 @@ class ThreadSolutionRunnerTest {
         ProgressReporter reporter = mock(ProgressReporter.class);
         var loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.map(x->x.run(progressReporter)));
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.map(x -> x.run(progressReporter)));
     }
 //
 //    @Test     //call information parameter does not exist.

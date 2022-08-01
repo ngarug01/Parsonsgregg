@@ -7,14 +7,12 @@ import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
-import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class SolutionImpl implements Solution, SolutionCompiler.CompilableSolution {
 
@@ -144,9 +142,9 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         captureConsoleOutput.start();
         try {
             return new ThreadSolutionRunner()
-                .load( entryPoint, getClassLoader() , progressReporter )
-                .map( x->x.run(progressReporter) )
-                .map( x->x.isSuccess() )
+                .load(entryPoint, getClassLoader(), progressReporter)
+                .map(x -> x.run(progressReporter))
+                .map(x -> x.isSuccess())
                 .orElse(false);
         } finally {
             this.output = captureConsoleOutput.stop();
