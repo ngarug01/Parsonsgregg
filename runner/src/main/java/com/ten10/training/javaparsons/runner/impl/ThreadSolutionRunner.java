@@ -38,37 +38,35 @@ public class ThreadSolutionRunner implements SolutionRunner {
                                                   Class<?> klass,
                                                   Method method,
                                                   ProgressReporter progressReporter) {
-        ClassInstance instance;
-        if (!Modifier.isStatic(method.getModifiers())) {
-            if (!entryPointMethodName.equals("main")) {
-                try {
-                    instance = ClassInstance.of(klass.getDeclaredConstructor().newInstance());
-                } catch (InstantiationException e) {
-                    instance = ClassInstance.neededButNotAvailable();
-                    //TODO this should be a load error now --Hannah
-                    progressReporter.reportRunnerError("Class object cannot be instantiated because it is an interface or an abstract class");
-                } catch (IllegalAccessException e) {
-                    instance = ClassInstance.neededButNotAvailable();
-                    //TODO this should be a load error now --Hannah
-                    progressReporter.reportRunnerError("Cannot access method due to visibility qualifiers");
-                } catch (InvocationTargetException e) {
-                    instance = ClassInstance.neededButNotAvailable();
-                    //TODO this should be a load error now --Hannah
-                    progressReporter.reportRunnerError("Exception thrown by an invoked method or constructor");
-                } catch (NoSuchMethodException e) {
-                    instance = ClassInstance.neededButNotAvailable();
-                    //TODO this should be a load error now --Hannah
-                    progressReporter.reportRunnerError("No such method");
-                }
-            } else {
-                instance = ClassInstance.neededButNotAvailable();
-                //TODO this should be a load error now --Hannah
-                progressReporter.reportRunnerError("main method should be static");
-            }
-        } else {
-            instance = ClassInstance.notNeeded();
+        if (Modifier.isStatic(method.getModifiers())) {
+            return ClassInstance.notNeeded();
         }
-        return instance;
+
+        if (entryPointMethodName.equals("main")) {
+            //TODO this should be a load error now --Hannah
+            progressReporter.reportRunnerError("main method should be static");
+            return ClassInstance.neededButNotAvailable();
+        }
+
+        try {
+            return ClassInstance.of(klass.getDeclaredConstructor().newInstance());
+        } catch (InstantiationException e) {
+            //TODO this should be a load error now --Hannah
+            progressReporter.reportRunnerError("Class object cannot be instantiated because it is an interface or an abstract class");
+            return ClassInstance.neededButNotAvailable();
+        } catch (IllegalAccessException e) {
+            //TODO this should be a load error now --Hannah
+            progressReporter.reportRunnerError("Cannot access method due to visibility qualifiers");
+            return ClassInstance.neededButNotAvailable();
+        } catch (InvocationTargetException e) {
+            //TODO this should be a load error now --Hannah
+            progressReporter.reportRunnerError("Exception thrown by an invoked method or constructor");
+            return ClassInstance.neededButNotAvailable();
+        } catch (NoSuchMethodException e) {
+            //TODO this should be a load error now --Hannah
+            progressReporter.reportRunnerError("No such method");
+            return ClassInstance.neededButNotAvailable();
+        }
     }
 
     private static Optional<Method> getMethod(String entryPointMethodName,
