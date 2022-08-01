@@ -102,6 +102,14 @@ public class Application {
                 .parameterTypes(new Class<?>[]{String[].class})
                 .parameters(new Object[]{new String[]{}})));
 
+        repository.addExercise(builder -> builder
+            .named("Array tester")
+            .checkOutputIsArray(new Object[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
+            .withPrefixCode("public class Main { \npublic static int[] main (String[] args) {")
+            .withSuffixCode("}\n}")
+            .withExerciseHint("int[] x = new int[10];\n" +
+                "for(int i = 0; i < 10; i++){"));
+
         return repository;
     }
 

@@ -15,6 +15,8 @@ public interface ExerciseBuilder {
 
     ExerciseBuilder checkOutputIs(String output);
 
+    ExerciseBuilder checkOutputIsArray(Object[] expectedReturnArray);
+
     ExerciseBuilder withPrefixCode(String prefixCode);
 
     ExerciseBuilder withSuffixCode(String suffixCode);

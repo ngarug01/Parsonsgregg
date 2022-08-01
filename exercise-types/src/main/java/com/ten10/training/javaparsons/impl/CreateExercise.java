@@ -2,6 +2,7 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.ArrayReturnChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
@@ -84,6 +85,12 @@ class CreateExercise implements ExerciseBuilder {
     @Override
     public ExerciseBuilder checkOutputIs(String output) {
         this.capturedOutputCheckers.add(new PrintOutChecker(output));
+        return this;
+    }
+
+    @Override
+    public ExerciseBuilder checkOutputIsArray(Object[] expectedReturnArray) {
+        this.methodReturnValueCheckers.add(new ArrayReturnChecker(expectedReturnArray));
         return this;
     }
 

@@ -55,7 +55,6 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         this.entryPoint = entryPoint;
         this.solutionRunner = solutionRunner;
     }
-
     /**
      * Compile and Run the stored user input then compares the output to the expected output.
      *
@@ -63,6 +62,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
      * @throws Exception Exceptions when
      */
     ArrayList<Boolean> results = new ArrayList<>();
+
 
     @Override
     public boolean evaluate() {
@@ -80,7 +80,6 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             if (getClassFields(getClassLoader())) {
                 results.add(checker.validate(klassFields, progressReporter));
             }
-
         }
         for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
             results.add(checker.validate(output, progressReporter));
@@ -139,8 +138,8 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             }
         };
     }
-
     private String output = "";
+
 
     private boolean run() {
         captureConsoleOutput.start();
