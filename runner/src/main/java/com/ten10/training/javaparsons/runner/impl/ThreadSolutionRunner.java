@@ -34,7 +34,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private Future<Object> future;
 
     @Override
-    public LoadedEntryPoint load(ClassLoader loader, EntryPoint entryPoint, ProgressReporter reporter) {
+    public LoadedEntryPoint load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter) {
         return new LoadedEntryPointImpl(loader, entryPoint);
     }
 

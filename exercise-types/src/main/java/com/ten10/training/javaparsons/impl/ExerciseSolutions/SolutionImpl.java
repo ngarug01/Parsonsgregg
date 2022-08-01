@@ -143,7 +143,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         captureConsoleOutput.start();
         try {
             SolutionRunner runner = new ThreadSolutionRunner();
-            return runner.load(getClassLoader(), entryPoint, progressReporter).run(progressReporter).isSuccess();
+            return runner.load(entryPoint, getClassLoader(), progressReporter).run(progressReporter).isSuccess();
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

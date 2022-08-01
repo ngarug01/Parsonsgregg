@@ -66,7 +66,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), entryPoint, reporter);
+        LoadedEntryPoint loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
         RunResult myResults = loadedEntryPoint.run(progressReporter);
 
         //Assert
@@ -87,7 +87,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), entryPoint, reporter);
+        LoadedEntryPoint loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
 
         //Assert
         assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run(progressReporter));
@@ -111,7 +111,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), callInformation, reporter);
+        LoadedEntryPoint loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
 
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
@@ -147,7 +147,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), callInformation, reporter);
+        LoadedEntryPoint loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
@@ -202,7 +202,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), callInformation, reporter);
+        LoadedEntryPoint loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
         loadedEntryPoint.run(progressReporter);
