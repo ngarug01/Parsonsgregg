@@ -7,6 +7,10 @@ import java.util.List;
 
 public class Results implements ProgressReporter {
 
+    public List<Information> getLoadErrors() {
+        return loadErrors;
+    }
+
     /**
      * Nested class that sets the structure for information captured in results
      */
@@ -41,6 +45,8 @@ public class Results implements ProgressReporter {
     private final List<Information> compilerErrors = new ArrayList<>();
     private final List<Information> compilerInfo = new ArrayList<>();
     private final List<Information> runnerErrors = new ArrayList<>();
+
+    private final List<Information> loadErrors = new ArrayList<>();
 
     public String getOutput() {
         return output;
@@ -85,6 +91,11 @@ public class Results implements ProgressReporter {
     @Override
     public void reportRunnerError(String message) {
         runnerErrors.add(new Information(message));
+    }
+
+    @Override
+    public void reportLoadError(String message) {
+        loadErrors.add(new Information( message ));
     }
 
     public boolean isSuccessfulSolution() {

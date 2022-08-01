@@ -5,6 +5,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -34,8 +35,8 @@ public class ThreadSolutionRunner implements SolutionRunner {
     private Future<Object> future;
 
     @Override
-    public LoadedEntryPoint load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter) {
-        return new LoadedEntryPointImpl(loader, entryPoint);
+    public Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter) {
+        return LoadedEntryPointImpl.load( entryPoint,loader,reporter);
     }
 
     private boolean isStatic(Method method) {

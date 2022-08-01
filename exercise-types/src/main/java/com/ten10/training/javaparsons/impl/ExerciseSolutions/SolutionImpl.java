@@ -14,6 +14,7 @@ import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SolutionImpl implements Solution, SolutionCompiler.CompilableSolution {
 
@@ -142,8 +143,11 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     private boolean run() {
         captureConsoleOutput.start();
         try {
-            SolutionRunner runner = new ThreadSolutionRunner();
-            return runner.load(entryPoint, getClassLoader(), progressReporter).run(progressReporter).isSuccess();
+            return new ThreadSolutionRunner()
+                .load( entryPoint, getClassLoader() , progressReporter )
+                .map( x->x.run(progressReporter) )
+                .map( x->x.isSuccess() )
+                .orElse(false);
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

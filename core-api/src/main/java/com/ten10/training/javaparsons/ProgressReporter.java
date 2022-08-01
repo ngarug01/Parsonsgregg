@@ -32,5 +32,6 @@ public interface ProgressReporter {
      */
     void reportRunnerError(String message);
 
+    void reportLoadError(String message);
 
 }

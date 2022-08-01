@@ -2,6 +2,7 @@ package com.ten10.training.javaparsons.runner;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -84,6 +85,6 @@ public interface SolutionRunner {
      */
     //EntryPointBuilder entryPoint();
 
-    LoadedEntryPoint load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter);
+    Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter);
 }
 
