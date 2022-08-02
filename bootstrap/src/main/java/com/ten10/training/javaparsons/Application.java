@@ -83,7 +83,7 @@ public class Application {
             .checkReturnValueIs('A')
             .withPrefixCode("public class Main { \npublic static char main (String[] args) {")
             .withSuffixCode("}\n}")
-            .withExerciseHint("Try using return with \'  \'"));
+            .withExerciseHint("Try using return with '  '"));
 
         repository.addExercise(builder -> builder
             .named("Complete the code - Hello World!")
@@ -102,13 +102,17 @@ public class Application {
                 .parameterTypes(new Class<?>[]{String[].class})
                 .parameters(new Object[]{new String[]{}})));
 
+        Integer[] outputArray = new Integer[100];
+        for (int i = 0; i < 100; i++) {
+            outputArray[i] = i + 1;
+        }
         repository.addExercise(builder -> builder
             .named("Array tester")
-            .checkOutputIsArray(new Object[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
-            .withPrefixCode("public class Main { \npublic static int[] main (String[] args) {")
+            .checkOutputIsArray(outputArray)
+            .withPrefixCode("public class Main { \npublic static String[] main (String[] args) {")
             .withSuffixCode("}\n}")
-            .withExerciseHint("int[] x = new int[10];\n" +
-                "for(int i = 0; i < 10; i++){"));
+            .withExerciseHint("int[] x = new int[100];\n" +
+                "for(int i = 0; i < 100; i++){"));
 
         return repository;
     }
