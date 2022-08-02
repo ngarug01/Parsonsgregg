@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.webapp.views;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 
 import java.util.ArrayList;
@@ -95,7 +96,22 @@ public class Results implements ProgressReporter {
 
     @Override
     public void reportLoadError(String message) {
-        loadErrors.add(new Information(message));
+        loadErrors.add(new Information( message ));
+    }
+
+    @Override
+    public void reportError(Phase phase, long linenumber, String message) {
+        switch (phase){
+            case LOADER:
+                loadErrors.add(new Information(message));
+                break;
+            case RUNNER:
+                runnerErrors.add(new Information(message));
+                break;
+            case COMPILER:
+                compilerErrors.add(new Information(linenumber, message));
+                break;
+        }
     }
 
     public boolean isSuccessfulSolution() {
