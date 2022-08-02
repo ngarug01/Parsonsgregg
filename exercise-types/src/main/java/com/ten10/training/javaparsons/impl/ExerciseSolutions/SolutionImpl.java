@@ -55,6 +55,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         this.entryPoint = entryPoint;
         this.solutionRunner = solutionRunner;
     }
+
     /**
      * Compile and Run the stored user input then compares the output to the expected output.
      *
@@ -138,6 +139,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             }
         };
     }
+
     private String output = "";
 
 
