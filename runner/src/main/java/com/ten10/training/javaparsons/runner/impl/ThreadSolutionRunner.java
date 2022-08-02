@@ -104,8 +104,8 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
         final boolean allParameterTypesMatch = IntStream.range(0, parameters.length)
             .allMatch(i -> {
-                Class a = parameters[i].getClass();
-                Class b = parameterTypes[i];
+                Class<?> a = parameters[i].getClass();
+                Class<?> b = parameterTypes[i];
                 String sa = a.toString().toLowerCase();
                 String sb = b.toString().toLowerCase();
                 //TODO should use something like isInstance or isAssignable here
@@ -131,13 +131,13 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
 
         Optional<Class<?>> klass = getClass(entryPoint, loader, reporter);
-        if (klass.isEmpty()) {
+        if (!klass.isPresent()) {
             return Optional.empty();
         }
 
         String entryPointMethodName = entryPoint.getEntryPointMethod();
         Optional<Method> method = getMethod(entryPointMethodName, klass.get(), parameterTypes, reporter);
-        if (method.isEmpty()) {
+        if (!method.isPresent()) {
             return Optional.empty();
         }
 
