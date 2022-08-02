@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.impl.ExerciseList.AbstractProgressReporterDecorator;
 import org.junit.jupiter.params.ParameterizedTest;
