@@ -29,4 +29,9 @@ public class AbstractProgressReporterDecorator implements ProgressReporter {
     public void reportRunnerError(String message) {
         this.wrapped.reportRunnerError(message);
     }
+
+    @Override
+    public void reportLoadError(String message) {
+        this.wrapped.reportLoadError(message);
+    }
 }

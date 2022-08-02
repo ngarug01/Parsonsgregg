@@ -86,7 +86,7 @@ class ExerciseControllerTest {
         Results results = new Results();
         results.storeCapturedOutput("Foo");
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Foo\",\"successfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[]}"));
+        assertThat(output, is("{\"output\":\"Foo\",\"successfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[],\"loadErrors\":[]}"));
     }
 
     @Test
@@ -114,7 +114,7 @@ class ExerciseControllerTest {
         results.storeCapturedOutput("Null");
         results.reportCompilerError(3, "incorrect Method");
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Null\",\"successfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[]}"));
+        assertThat(output, is("{\"output\":\"Null\",\"successfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[],\"loadErrors\":[]}"));
     }
 
 

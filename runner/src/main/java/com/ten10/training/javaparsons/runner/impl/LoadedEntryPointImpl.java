@@ -3,15 +3,15 @@ package com.ten10.training.javaparsons.runner.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.concurrent.*;
 
 public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
-    private final ClassLoader classLoader;
-    private final SolutionRunner.EntryPoint entryPoint;
+    private final Object instance;
+    private final Method method;
+    private final Object[] parameters;
     private long timeoutMillis = 500;
+
     private final SolutionRunner.RunResult FAILURE = new SolutionRunner.RunResult() {
         @Override
         public boolean isSuccess() {
@@ -29,69 +29,18 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
         }
     };
 
-    public LoadedEntryPointImpl(ClassLoader classLoader, SolutionRunner.EntryPoint entryPoint) {
-        this.classLoader = classLoader;
-        this.entryPoint = entryPoint;
+    public LoadedEntryPointImpl(Object instance,
+                                Method method,
+                                Object[] parameters) {
+        this.instance = instance;
+        this.method = method;
+        this.parameters = parameters;
     }
-
 
     @Override
     public SolutionRunner.RunResult run(ProgressReporter progressReporter) {
-        String entryPointClassName = entryPoint.getEntryPointClass();
-        String entryPointMethodName = entryPoint.getEntryPointMethod();
-        Class<?>[] parameterTypes = entryPoint.getParameterTypes();
-        Object[] parameters = entryPoint.getParameters();
-        // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
-        if (parameters.length != parameterTypes.length) {
-            throw new IllegalArgumentException("Parameter types and parameters must be the same length");
-        }
-        for (int i = 0; i < parameters.length; i++) {
-            String a = parameters[i].getClass().toString().toLowerCase();
-            String b = parameterTypes[i].toString().toLowerCase();
-            if (!a.contains(b)) {
-                throw new IllegalArgumentException("The types must match the parameters");
-            }
-        }
-
-        Class<?> klass = null;
-        try {
-            klass = this.classLoader.loadClass(entryPointClassName);
-        } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("No such class " + entryPointClassName);
-            return FAILURE;
-        }
-        Method method;
-        try {
-            method = klass.getMethod(entryPointMethodName, parameterTypes);
-        } catch (NoSuchMethodException e) {
-            progressReporter.reportRunnerError("No such method " + entryPointMethodName);
-            return FAILURE;
-        }
-
-        Object instance = null;
-        if (!Modifier.isStatic(method.getModifiers())) {
-            if (!entryPointMethodName.equals("main")) {
-                try {
-                    instance = klass.getDeclaredConstructor().newInstance();
-                } catch (InstantiationException e) {
-                    progressReporter.reportRunnerError("Class object cannot be instantiated because it is an interface or an abstract class");
-                } catch (IllegalAccessException e) {
-                    progressReporter.reportRunnerError("Cannot access method due to visibility qualifiers");
-                } catch (InvocationTargetException e) {
-                    progressReporter.reportRunnerError("Exception thrown by an invoked method or constructor");
-                } catch (NoSuchMethodException e) {
-                    progressReporter.reportRunnerError("No such method");
-                }
-            } else {
-                progressReporter.reportRunnerError("main method should be static");
-                return FAILURE;
-            }
-        }
-        final Object finalInstance = instance;
-
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Object> future = executor.submit(() -> method.invoke(finalInstance, parameters));
+        Future<Object> future = executor.submit(() -> method.invoke(instance, parameters));
         try {
             if (timeoutMillis != 0) {
                 EntryPointBuilderImpl.returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
@@ -135,7 +84,6 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
             executor.shutdownNow();
         }
     }
-
 
     @Override
     public void setTimeout(long count, TimeUnit timeUnit) {

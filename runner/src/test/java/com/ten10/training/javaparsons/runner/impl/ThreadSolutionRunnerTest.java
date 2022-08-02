@@ -5,18 +5,20 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
-import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.currentThread;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 
 class ThreadSolutionRunnerTest {
@@ -66,8 +68,8 @@ class ThreadSolutionRunnerTest {
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), entryPoint, reporter);
-        RunResult myResults = loadedEntryPoint.run(progressReporter);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
+        loadedEntryPoint.map(x -> x.run(progressReporter));
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
@@ -75,7 +77,7 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    void runThrowsExceptionWhenParameterListArentEqual() throws ClassNotFoundException {
+    void runReportsErrorWhenParameterListArentEqual() throws ClassNotFoundException {
         //Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
@@ -87,10 +89,10 @@ class ThreadSolutionRunnerTest {
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), entryPoint, reporter);
-
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
+        loadedEntryPoint.map(x -> x.run(reporter));
         //Assert
-        assertThrows(IllegalArgumentException.class, () -> loadedEntryPoint.run(progressReporter));
+        verify(reporter).reportLoadError("Parameter types and parameters must be the same length");
     }
 
 
@@ -111,10 +113,9 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), callInformation, reporter);
-
-        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
+        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.map(x -> x.run(progressReporter)));
     }
 //
 //    @Test     //call information parameter does not exist.
@@ -147,12 +148,12 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), callInformation, reporter);
-        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
+        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
 //        assertTrue(result, "run() should have completed successfully");
-        loadedEntryPoint.run(progressReporter);
+        loadedEntryPoint.get().run(progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -202,10 +203,10 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner.load(currentThread().getContextClassLoader(), callInformation, reporter);
-        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
+        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
-        loadedEntryPoint.run(progressReporter);
+        loadedEntryPoint.get().run(progressReporter);
         //Assert
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
