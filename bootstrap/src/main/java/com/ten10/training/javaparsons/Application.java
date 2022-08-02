@@ -107,11 +107,11 @@ public class Application {
             outputArray[i] = i + 1;
         }
         repository.addExercise(builder -> builder
-            .named("Array tester")
+            .named("Array Tester")
             .checkOutputIsArray(outputArray)
-            .withPrefixCode("public class Main { \npublic static String[] main (String[] args) {")
+            .withPrefixCode("public class Main { \npublic static Integer[] main (String[] args) {")
             .withSuffixCode("}\n}")
-            .withExerciseHint("int[] x = new int[100];\n" +
+            .withExerciseHint("Integer[] x = new Integer[100];\n" +
                 "for(int i = 0; i < 100; i++){"));
 
         return repository;
