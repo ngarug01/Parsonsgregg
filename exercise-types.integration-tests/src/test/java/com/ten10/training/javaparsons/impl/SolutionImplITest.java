@@ -37,18 +37,24 @@ class SolutionImplITest {
     private static final String USER_INPUT = "Answer ";
     private SolutionCompiler mockCompiler = mock(SolutionCompiler.class);
     private ThreadSolutionRunner runner = new ThreadSolutionRunner();
-    private ThreadSolutionRunner mockRunner = mock(ThreadSolutionRunner.class);
     private PrintOutChecker printOutChecker = mock(PrintOutChecker.class);
     private List<CapturedOutputChecker> capturedOutputCheckers = singletonList(printOutChecker);
     private List<ClassChecker> classCheckers = new ArrayList<>();
     private List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
     private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private final SolutionImpl solutionImpl = new SolutionImpl(mockCompiler, USER_INPUT, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+    private final SolutionImpl solutionImpl = new SolutionImpl(mockCompiler,
+        USER_INPUT,
+        capturedOutputCheckers,
+        classCheckers,
+        methodReturnValueCheckers,
+        progressReporter,
+        new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
         .parameterTypes(new Class<?>[]{String[].class})
         .parameters(new Object[]{new String[]{}})
-        .build());
+        .build(),
+        runner);
     private ClassLoader classLoader = mock(ClassLoader.class);
     //    private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
     private final SolutionRunner.RunResult runResult = mock(SolutionRunner.RunResult.class);
@@ -131,12 +137,19 @@ class SolutionImplITest {
     void evaluateFailsOnCompileClassNameIncorrect() throws Exception {
         SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput = "public class ain{\npublic Integer main(String[] args){return 12;}}";
-        SolutionImpl solutionImpl = new SolutionImpl(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+        SolutionImpl solutionImpl = new SolutionImpl(compiler,
+            userInput,
+            capturedOutputCheckers,
+            classCheckers,
+            methodReturnValueCheckers,
+            progressReporter,
+            new EntryPointBuilderImpl()
             .className("Main")
             .methodName("main")
             .parameterTypes(new Class<?>[]{String[].class})
             .parameters(new Object[]{new String[]{}})
-            .build());
+            .build(),
+            runner);
         solutionImpl.evaluate();
         verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
     }
@@ -149,12 +162,19 @@ class SolutionImplITest {
         String userInput =
             "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){while(true){}}}";
         SolutionImpl solutionImpl =
-            new SolutionImpl(compiler, userInput, capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, new EntryPointBuilderImpl()
+            new SolutionImpl(compiler,
+                userInput,
+                capturedOutputCheckers,
+                classCheckers,
+                methodReturnValueCheckers,
+                progressReporter,
+                new EntryPointBuilderImpl()
                 .className("Main")
                 .methodName("main")
                 .parameterTypes(new Class<?>[]{String[].class})
                 .parameters(new Object[]{new String[]{}})
-                .build());
+                .build(),
+                runner);
         //ACT
         boolean evaluateResult = solutionImpl.evaluate();
 

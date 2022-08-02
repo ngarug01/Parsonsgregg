@@ -7,6 +7,7 @@ import com.ten10.training.javaparsons.impl.CaptureConsoleOutput;
 import com.ten10.training.javaparsons.impl.CapturedOutputChecker;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
@@ -28,6 +29,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     private final List<MethodReturnValueChecker> methodReturnValueCheckers;
     private Object result;
     private Field[] klassFields;
+    private SolutionRunner solutionRunner;
 
     /**
      * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
@@ -41,7 +43,9 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
                         List<CapturedOutputChecker> capturedOutputCheckers,
                         List<ClassChecker> classCheckers,
                         List<MethodReturnValueChecker> methodReturnValueCheckers,
-                        ProgressReporter progressReporter, EntryPoint entryPoint) {
+                        ProgressReporter progressReporter,
+                        EntryPoint entryPoint,
+                        SolutionRunner solutionRunner) {
 
         this.compiler = compiler;
         this.userInput = userInput;
@@ -50,6 +54,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         this.methodReturnValueCheckers = methodReturnValueCheckers;
         this.progressReporter = progressReporter;
         this.entryPoint = entryPoint;
+        this.solutionRunner = solutionRunner;
     }
 
     /**
@@ -141,7 +146,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     private boolean run() {
         captureConsoleOutput.start();
         try {
-            return new ThreadSolutionRunner()
+            return solutionRunner
                 .load(entryPoint, getClassLoader(), progressReporter)
                 .map(loadedEntryPoint -> loadedEntryPoint.run(progressReporter))
                 .map(result -> result.isSuccess())

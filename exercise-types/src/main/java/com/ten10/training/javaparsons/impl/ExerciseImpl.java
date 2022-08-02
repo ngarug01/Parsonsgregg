@@ -173,7 +173,14 @@ class ExerciseImpl implements Exercise {
         if (null != prefixCode) {
             progressReporter = new LineNumberTranslationProgressReporter(prefixCode, progressReporter);
         }
-        return new SolutionImpl(compiler, returnAppendedUserInput(userInput), capturedOutputCheckers, classCheckers, methodReturnValueCheckers, progressReporter, entryPoint);
+        return new SolutionImpl(compiler,
+            returnAppendedUserInput(userInput),
+            capturedOutputCheckers,
+            classCheckers,
+            methodReturnValueCheckers,
+            progressReporter,
+            entryPoint,
+            runner);
     }
 }
 
