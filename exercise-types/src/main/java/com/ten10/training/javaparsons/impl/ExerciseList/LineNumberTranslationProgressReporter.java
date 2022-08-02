@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseList;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 
 
@@ -16,13 +17,14 @@ public class LineNumberTranslationProgressReporter extends AbstractProgressRepor
         return lineNumber - prefixLines;
     }
 
-    @Override
-    public void reportCompilerError(long lineNumber, String message) {
-        super.reportCompilerError(translateLineNumber(lineNumber), message);
-    }
 
     @Override
     public void reportCompilerInfo(long lineNumber, String message) {
         super.reportCompilerInfo(translateLineNumber(lineNumber), message);
+    }
+
+    @Override
+    public void reportError(Phase phase, long linenumber, String message) {
+        super.reportError(phase, translateLineNumber(linenumber), message);
     }
 }
