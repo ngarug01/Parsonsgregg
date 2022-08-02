@@ -2,6 +2,7 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.Exercise;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
+import com.ten10.training.javaparsons.impl.ExerciseCheckers.ArrayReturnChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.PrintOutChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.ReturnTypeChecker;
 import com.ten10.training.javaparsons.impl.ExerciseCheckers.StaticFieldValueChecker;
@@ -88,6 +89,12 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
+    public ExerciseBuilder checkOutputIsArray(Object[] expectedReturnArray) {
+        this.methodReturnValueCheckers.add(new ArrayReturnChecker(expectedReturnArray));
+        return this;
+    }
+
+    @Override
     public ExerciseBuilder checkReturnValueIs(Object expectedReturnValue) {
         this.methodReturnValueCheckers.add(new ReturnTypeChecker(expectedReturnValue));
         return this;
@@ -100,10 +107,10 @@ class CreateExercise implements ExerciseBuilder {
     }
 
     @Override
-    public ExerciseBuilder checkStaticField(String expectedVariableType, String expectedVariableInput, Object expectedValue) {
+    public ExerciseBuilder checkStaticField(String expectedVariableInput, Object expectedValue) {
         String exerciseDescription = new StringBuilder()
             .append("has a static ")
-            .append(expectedVariableType)
+            .append(expectedValue.getClass().getName().split("^((?!([^.]*)+$).)*")[1])
             .append(" field ")
             .append(expectedVariableInput)
             .append(" with a value of ")

@@ -65,8 +65,8 @@ public class Application {
 
         repository.addExercise(builder -> builder
             .named("Static Field")
-            .checkStaticField("Int", "x", 3)
-            .checkStaticField("String", "y", "hello")
+            .checkStaticField("x", 3)
+            .checkStaticField("y", "hello")
             .withPrefixCode("public class Main { \n")
             .withSuffixCode("public static void main (String[] args) {}}\n")
             .withExerciseHint("Try assigning a value to Int x and String y"));
@@ -83,7 +83,7 @@ public class Application {
             .checkReturnValueIs('A')
             .withPrefixCode("public class Main { \npublic static char main (String[] args) {")
             .withSuffixCode("}\n}")
-            .withExerciseHint("Try using return with \'  \'"));
+            .withExerciseHint("Try using return with '  '"));
 
         repository.addExercise(builder -> builder
             .named("Complete the code - Hello World!")
@@ -101,6 +101,18 @@ public class Application {
                 .methodName("squaresTwo")
                 .parameterTypes(new Class<?>[]{String[].class})
                 .parameters(new Object[]{new String[]{}})));
+
+        Integer[] outputArray = new Integer[100];
+        for (int i = 0; i < 100; i++) {
+            outputArray[i] = i + 1;
+        }
+        repository.addExercise(builder -> builder
+            .named("Array Tester")
+            .checkOutputIsArray(outputArray)
+            .withPrefixCode("public class Main { \npublic static Integer[] main (String[] args) {")
+            .withSuffixCode("}\n}")
+            .withExerciseHint("Integer[] x = new Integer[100];\n" +
+                "for(int i = 0; i < 100; i++){"));
 
         return repository;
     }
