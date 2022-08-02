@@ -89,7 +89,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        var loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.map(x -> x.run(reporter));
         //Assert
         verify(reporter).reportLoadError("Parameter types and parameters must be the same length");
@@ -113,7 +113,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        var loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
         assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.map(x -> x.run(progressReporter)));
     }
@@ -148,7 +148,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        var loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
@@ -203,7 +203,7 @@ class ThreadSolutionRunnerTest {
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        var loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
         loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
         loadedEntryPoint.get().run(progressReporter);

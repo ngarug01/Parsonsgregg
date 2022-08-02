@@ -104,8 +104,8 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
         final boolean allParameterTypesMatch = IntStream.range(0, parameters.length)
             .allMatch(i -> {
-                var a = parameters[i].getClass();
-                var b = parameterTypes[i];
+                Class a = parameters[i].getClass();
+                Class b = parameterTypes[i];
                 String sa = a.toString().toLowerCase();
                 String sb = b.toString().toLowerCase();
                 //TODO should use something like isInstance or isAssignable here

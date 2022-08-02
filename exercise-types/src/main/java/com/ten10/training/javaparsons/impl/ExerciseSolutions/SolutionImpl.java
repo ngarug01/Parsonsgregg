@@ -9,7 +9,6 @@ import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
-import com.ten10.training.javaparsons.runner.impl.ThreadSolutionRunner;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

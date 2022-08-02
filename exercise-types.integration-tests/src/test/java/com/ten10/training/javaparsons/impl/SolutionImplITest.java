@@ -49,11 +49,11 @@ class SolutionImplITest {
         methodReturnValueCheckers,
         progressReporter,
         new EntryPointBuilderImpl()
-        .className("Main")
-        .methodName("main")
-        .parameterTypes(new Class<?>[]{String[].class})
-        .parameters(new Object[]{new String[]{}})
-        .build(),
+            .className("Main")
+            .methodName("main")
+            .parameterTypes(new Class<?>[]{String[].class})
+            .parameters(new Object[]{new String[]{}})
+            .build(),
         runner);
     private ClassLoader classLoader = mock(ClassLoader.class);
     //    private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
@@ -144,11 +144,11 @@ class SolutionImplITest {
             methodReturnValueCheckers,
             progressReporter,
             new EntryPointBuilderImpl()
-            .className("Main")
-            .methodName("main")
-            .parameterTypes(new Class<?>[]{String[].class})
-            .parameters(new Object[]{new String[]{}})
-            .build(),
+                .className("Main")
+                .methodName("main")
+                .parameterTypes(new Class<?>[]{String[].class})
+                .parameters(new Object[]{new String[]{}})
+                .build(),
             runner);
         solutionImpl.evaluate();
         verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
@@ -169,11 +169,11 @@ class SolutionImplITest {
                 methodReturnValueCheckers,
                 progressReporter,
                 new EntryPointBuilderImpl()
-                .className("Main")
-                .methodName("main")
-                .parameterTypes(new Class<?>[]{String[].class})
-                .parameters(new Object[]{new String[]{}})
-                .build(),
+                    .className("Main")
+                    .methodName("main")
+                    .parameterTypes(new Class<?>[]{String[].class})
+                    .parameters(new Object[]{new String[]{}})
+                    .build(),
                 runner);
         //ACT
         boolean evaluateResult = solutionImpl.evaluate();
