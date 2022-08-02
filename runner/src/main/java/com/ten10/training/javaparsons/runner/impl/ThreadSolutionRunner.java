@@ -9,6 +9,7 @@ import java.lang.reflect.Modifier;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.IntStream;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
@@ -101,14 +102,21 @@ public class ThreadSolutionRunner implements SolutionRunner {
             reporter.reportLoadError("Parameter types and parameters must be the same length");
             return false;
         }
-        //TODO could use streams here. --Hannah
-        for (int i = 0; i < parameters.length; i++) {
-            String a = parameters[i].getClass().toString().toLowerCase();
-            String b = parameterTypes[i].toString().toLowerCase();
-            if (!a.contains(b)) {
-                reporter.reportLoadError("The types must match the parameters");
-                return false;
-            }
+        final boolean allParameterTypesMatch = IntStream.range(0, parameters.length)
+            .allMatch(i -> {
+                var a = parameters[i].getClass();
+                var b = parameterTypes[i];
+                String sa = a.toString().toLowerCase();
+                String sb = b.toString().toLowerCase();
+                //TODO should use something like isInstance or isAssignable here
+                //return a.isInstance(b);
+                //return b.isAssignableFrom(a);
+                //did not work due to the differences between Integer and int
+                return sa.contains(sb);
+            });
+        if (!allParameterTypesMatch) {
+            reporter.reportLoadError("The types must match the parameters");
+            return false;
         }
         return true;
     }
