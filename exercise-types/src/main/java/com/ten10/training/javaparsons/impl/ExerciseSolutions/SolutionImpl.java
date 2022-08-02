@@ -143,8 +143,8 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
         try {
             return new ThreadSolutionRunner()
                 .load(entryPoint, getClassLoader(), progressReporter)
-                .map(x -> x.run(progressReporter))
-                .map(x -> x.isSuccess())
+                .map(loadedEntryPoint -> loadedEntryPoint.run(progressReporter))
+                .map(result -> result.isSuccess())
                 .orElse(false);
         } finally {
             this.output = captureConsoleOutput.stop();
