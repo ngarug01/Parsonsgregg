@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.impl.ExerciseList.AbstractProgressReporterDecorator;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +20,7 @@ class AbstractProgressReporterDecoratorTest {
     private static final List<Consumer<ProgressReporter>> METHOD_CALLS = Arrays.asList(
         progressReporter -> progressReporter.reportCompilerInfo(1, "message"),
         progressReporter -> progressReporter.reportRunnerError("message"),
-        progressReporter -> progressReporter.reportCompilerError(1, "Message"),
+        progressReporter -> progressReporter.reportError(Phase.COMPILATION, 1, "Message"),
         progressReporter -> progressReporter.storeCapturedOutput("output")
     );
 

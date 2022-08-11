@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseList;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 
 public abstract class AbstractProgressReporterDecorator implements ProgressReporter {
@@ -15,10 +16,6 @@ public abstract class AbstractProgressReporterDecorator implements ProgressRepor
         this.wrapped.storeCapturedOutput(output);
     }
 
-    @Override
-    public void reportCompilerError(long lineNumber, String message) {
-        this.wrapped.reportCompilerError(lineNumber, message);
-    }
 
     @Override
     public void reportCompilerInfo(long lineNumber, String message) {
@@ -33,5 +30,10 @@ public abstract class AbstractProgressReporterDecorator implements ProgressRepor
     @Override
     public void reportLoadError(String message) {
         this.wrapped.reportLoadError(message);
+    }
+
+    @Override
+    public void reportError(Phase phase, long linenumber, String message) {
+        this.wrapped.reportError(phase, linenumber, message);
     }
 }

@@ -15,7 +15,9 @@ public interface ProgressReporter {
      * @param lineNumber of the error
      * @param message    description of the error
      */
-    void reportCompilerError(long lineNumber, String message);
+    default void reportCompilerError(long lineNumber, String message) {
+        reportError(Phase.COMPILATION, lineNumber, message);
+    }
 
     /**
      * Stores any compiler information in the results object
@@ -34,4 +36,5 @@ public interface ProgressReporter {
 
     void reportLoadError(String message);
 
+    void reportError(Phase phase, long linenumber, String message);
 }
