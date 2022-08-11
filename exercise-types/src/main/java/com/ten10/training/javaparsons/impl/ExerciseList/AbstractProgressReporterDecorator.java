@@ -2,7 +2,7 @@ package com.ten10.training.javaparsons.impl.ExerciseList;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 
-public class AbstractProgressReporterDecorator implements ProgressReporter {
+public abstract class AbstractProgressReporterDecorator implements ProgressReporter {
 
     private final ProgressReporter wrapped;
 
