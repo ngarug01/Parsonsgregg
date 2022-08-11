@@ -102,13 +102,13 @@ public class Results implements ProgressReporter {
     @Override
     public void reportError(Phase phase, long linenumber, String message) {
         switch (phase){
-            case LOADER:
+            case LOAD:
                 loadErrors.add(new Information(message));
                 break;
-            case RUNNER:
+            case RUN:
                 runnerErrors.add(new Information(message));
                 break;
-            case COMPILER:
+            case COMPILATION:
                 compilerErrors.add(new Information(linenumber, message));
                 break;
         }
