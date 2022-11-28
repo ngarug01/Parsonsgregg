@@ -51,7 +51,7 @@ public class Application {
 
         ExerciseRepositoryImpl repository = new ExerciseRepositoryImpl(compiler, runner);
         repository.addExercise(builder -> builder
-            .named("Whole Class \"Hello world\"")
+            .named("Whole Class \"Hello World!\"")
             .checkOutputIs("Hello World!")
             .withExerciseHint("Try including public static Main"));
 
