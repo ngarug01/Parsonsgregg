@@ -80,9 +80,50 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             methodName = builder.methodName;
             parameterTypes = builder.parameterTypes;
             parameters = builder.parameters;
-
+            parameterChecker(parameterTypes, parameters);
         }
     }
+
+    static void parameterChecker(Class<?>[] parameterClassArray, Object[] parameterArray) {
+        if (parameterClassArray.length != parameterArray.length) {
+            throw new IllegalArgumentException("Exercise parameters invalid (length must match).");
+
+        }
+        for (int i = 0; i < parameterClassArray.length; i++) {
+            if (!parameterPairValid(parameterClassArray[i], parameterArray[i])) {
+                throw new IllegalArgumentException("Exercise parameters invalid (data type must match).");
+            }
+        }
+    }
+
+    static boolean parameterPairValid(Class<?> parameterClass, Object parameterObject) {
+        if (parameterClass.equals(boolean.class)) {
+            parameterClass = Boolean.class;
+        }
+        if (parameterClass.equals(byte.class)) {
+            parameterClass = Byte.class;
+        }
+        if (parameterClass.equals(char.class)) {
+            parameterClass = Character.class;
+        }
+        if (parameterClass.equals(short.class)) {
+            parameterClass = Short.class;
+        }
+        if (parameterClass.equals(int.class)) {
+            parameterClass = Integer.class;
+        }
+        if (parameterClass.equals(long.class)) {
+            parameterClass = Long.class;
+        }
+        if (parameterClass.equals(float.class)) {
+            parameterClass = Float.class;
+        }
+        if (parameterClass.equals(double.class)) {
+            parameterClass = Double.class;
+        }
+        return parameterClass.isInstance(parameterObject);
+    }
+
 
     static Object returnValue;
 
