@@ -9,14 +9,12 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Thread.currentThread;
-import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -27,9 +25,8 @@ class ThreadSolutionRunnerTest {
     private static final AtomicBoolean exampleMethodCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesArgsCalled = new AtomicBoolean(false);
     private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
-    private static final AtomicBoolean takesNoArgsCalled = new AtomicBoolean(false);
-    private ProgressReporter progressReporter = mock(ProgressReporter.class);
-    private static EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
+    private final ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private static final EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
 
 
     @SuppressWarnings("unused")
@@ -55,21 +52,23 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    void runShouldBeAbleToCallStaticMethodOnClass() throws ReflectiveOperationException, ExecutionException, InterruptedException {
+    void runShouldBeAbleToCallStaticMethodOnClass() {
         // Arrange
         exampleMethodCalled.set(false);
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("exampleMethod")
-            .parameterTypes(new Class<?>[0])
-            .parameters(new Object[0]);
+            .parameterTypes()
+            .parameters();
 
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
         ProgressReporter reporter = mock(ProgressReporter.class);
-        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.map(x -> x.run(progressReporter));
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(entryPoint, currentThread().getContextClassLoader(), reporter)
+            .orElseThrow(AssertionError::new);
+        loadedEntryPoint.run(progressReporter);
 
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
@@ -77,7 +76,7 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    void runReportsErrorWhenParameterListArentEqual() throws ClassNotFoundException {
+    void runReportsErrorWhenParameterListArentEqual() {
         //Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
@@ -88,11 +87,11 @@ class ThreadSolutionRunnerTest {
         //Act
         EntryPoint entryPoint = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
-        ProgressReporter reporter = mock(ProgressReporter.class);
-        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.map(x -> x.run(reporter));
+        assertFalse(runner
+            .load(entryPoint, currentThread().getContextClassLoader(), progressReporter)
+            .isPresent());
         //Assert
-        verify(reporter).reportLoadError("Parameter types and parameters must be the same length");
+        verify(progressReporter).reportLoadError("Parameter types and parameters must be the same length");
     }
 
 
@@ -102,20 +101,23 @@ class ThreadSolutionRunnerTest {
 
     @Test
     @Tag("slow")
-    void methodsShouldTimeOut() throws ClassNotFoundException {
+    void methodsShouldTimeOut() {
         //Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("blockForever")
-            .parameterTypes(new Class<?>[0])
-            .parameters(new Object[0]);
+            .parameterTypes()
+            .parameters();
 
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
-        ProgressReporter reporter = mock(ProgressReporter.class);
-        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.map(x -> x.run(progressReporter)));
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
+        loadedEntryPoint.run(progressReporter);
+
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
     }
 //
 //    @Test     //call information parameter does not exist.
@@ -137,23 +139,24 @@ class ThreadSolutionRunnerTest {
 //    }
 
     @Test
-    void methodsShouldAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    void methodsShouldAcceptParameters() {
         // Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("takesArgs")
-            .parameterTypes(new Class<?>[]{int.class, int.class})
-            .parameters(new Object[]{1, 3});
+            .parameterTypes(int.class, int.class)
+            .parameters(1, 3);
 
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
-        ProgressReporter reporter = mock(ProgressReporter.class);
-        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
 //        assertTrue(result, "run() should have completed successfully");
-        loadedEntryPoint.get().run(progressReporter);
+        loadedEntryPoint.run(progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
@@ -191,22 +194,23 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    void handleInstanceMethods() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    void handleInstanceMethods() {
         // Arrange
 
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("instanceMethod")
-            .parameterTypes(new Class<?>[0])
-            .parameters(new Object[0]);
+            .parameterTypes()
+            .parameters();
 
         EntryPoint callInformation = entryPointBuilder.build();
         SolutionRunner runner = new ThreadSolutionRunner();
-        ProgressReporter reporter = mock(ProgressReporter.class);
-        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), reporter);
-        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         //Act
-        loadedEntryPoint.get().run(progressReporter);
+        loadedEntryPoint.run(progressReporter);
         //Assert
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
