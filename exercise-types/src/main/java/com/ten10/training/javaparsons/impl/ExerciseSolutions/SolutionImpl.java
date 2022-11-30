@@ -149,7 +149,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             return solutionRunner
                 .load(entryPoint, getClassLoader(), progressReporter)
                 .map(loadedEntryPoint -> loadedEntryPoint.run(progressReporter))
-                .map(result -> result.isSuccess())
+                .map(result -> result.ranToCompletion())
                 .orElse(false);
         } finally {
             this.output = captureConsoleOutput.stop();

@@ -62,11 +62,13 @@ public interface SolutionRunner {
 
 
     interface RunResult {
-        boolean isSuccess();
+        boolean ranToCompletion();
 
         boolean hasReturnValue();
 
         Object getReturnValue();
+
+        Throwable getException();
     }
 
     /**

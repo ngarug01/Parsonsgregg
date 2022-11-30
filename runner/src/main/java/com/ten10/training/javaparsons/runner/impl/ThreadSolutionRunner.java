@@ -15,7 +15,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
     private static final RunResult FAILURE = new RunResult() {
         @Override
-        public boolean isSuccess() {
+        public boolean ranToCompletion() {
             return false;
         }
 
@@ -26,6 +26,11 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
         @Override
         public Object getReturnValue() {
+            throw new IllegalStateException();
+        }
+
+        @Override
+        public Throwable getException() {
             throw new IllegalStateException();
         }
     };

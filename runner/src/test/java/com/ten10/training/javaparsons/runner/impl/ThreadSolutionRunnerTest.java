@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -48,6 +47,30 @@ class ThreadSolutionRunnerTest {
         public void instanceMethod() {
             instanceMethodCalled.set(true);
         }
+
+        public void throwsException() throws Exception {
+            throw new Exception();
+        }
+    }
+
+    @Test
+    void passesWithExceptionThrown()  {
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("throwsException")
+            .parameterTypes()
+            .parameters();
+
+        EntryPoint entryPoint = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(entryPoint, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+
+        SolutionRunner.RunResult run = loadedEntryPoint.run(progressReporter);
+
+        assertTrue(run.ranToCompletion());
+        assertInstanceOf(Exception.class, run.getException());
     }
 
 

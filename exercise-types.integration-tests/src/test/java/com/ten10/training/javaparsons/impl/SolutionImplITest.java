@@ -84,7 +84,7 @@ class SolutionImplITest {
                 return true;
             });
 
-        when(runResult.isSuccess()).thenReturn(true);
+        when(runResult.ranToCompletion()).thenReturn(true);
         when(loadedClassRunner.run(any(ProgressReporter.class))).thenReturn(runResult);
     }
 
