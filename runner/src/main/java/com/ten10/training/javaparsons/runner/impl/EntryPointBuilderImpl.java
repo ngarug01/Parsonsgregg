@@ -83,7 +83,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             parameterChecker(parameterTypes, parameters);
         }
     }
-
     static void parameterChecker(Class<?>[] parameterClassArray, Object[] parameterArray) {
         if (parameterClassArray.length != parameterArray.length) {
             throw new IllegalArgumentException("Exercise parameters invalid (length must match).");
