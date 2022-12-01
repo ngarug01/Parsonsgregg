@@ -118,27 +118,6 @@ class ThreadSolutionRunnerTest {
 //        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
 //    }
 
-    @Test
-    void methodsShouldAcceptParameters() {
-        // Arrange
-        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-            .className(Example.class.getName())
-            .methodName("takesArgs")
-            .parameterTypes(int.class, int.class)
-            .parameters(1, 3);
-
-        EntryPoint callInformation = entryPointBuilder.build();
-        SolutionRunner runner = new ThreadSolutionRunner();
-        LoadedEntryPoint loadedEntryPoint = runner
-            .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
-            .orElseThrow(AssertionError::new);
-        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
-        // Act
-        //Assert
-//        assertTrue(result, "run() should have completed successfully");
-        loadedEntryPoint.run(progressReporter);
-        assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
-    }
 
 //    @Test  //doesn't implement every method in EntryPoint() and so doesn't work.
 //    void methodShouldNotAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
