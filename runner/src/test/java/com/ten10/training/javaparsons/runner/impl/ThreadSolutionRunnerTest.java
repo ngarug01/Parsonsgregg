@@ -75,26 +75,6 @@ class ThreadSolutionRunnerTest {
     }
 
 
-    @Test
-    void runReportsErrorWhenParameterListArentEqual() {
-        //Arrange
-        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-            .className(Example.class.getName())
-            .methodName("exampleMethod")
-            .parameterTypes(new Class<?>[2])
-            .parameters(new Object[1]);
-
-        //Act
-        EntryPoint entryPoint = entryPointBuilder.build();
-        SolutionRunner runner = new ThreadSolutionRunner();
-        assertFalse(runner
-            .load(entryPoint, currentThread().getContextClassLoader(), progressReporter)
-            .isPresent());
-        //Assert
-        verify(progressReporter).reportLoadError("Parameter types and parameters must be the same length");
-    }
-
-
     //Original test doesn't work and appears unnecessary so has been deleted.
     //void runDoesNotThrowExceptionWhenParameterListAreEqual() throws InterruptedException, ExecutionException, ReflectiveOperationException {}
 
@@ -155,7 +135,6 @@ class ThreadSolutionRunnerTest {
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
         // Act
         //Assert
-//        assertTrue(result, "run() should have completed successfully");
         loadedEntryPoint.run(progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
