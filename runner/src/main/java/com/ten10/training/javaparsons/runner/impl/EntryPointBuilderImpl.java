@@ -2,7 +2,6 @@ package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
-//import com.ten10.training.javaparsons.runner.EntryPointBuilder;
 
 
 public class EntryPointBuilderImpl implements EntryPointBuilder {
@@ -80,22 +79,22 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             methodName = builder.methodName;
             parameterTypes = builder.parameterTypes;
             parameters = builder.parameters;
-            parameterChecker(parameterTypes, parameters);
+            validateParameters(parameterTypes, parameters);
         }
     }
-    static void parameterChecker(Class<?>[] parameterClassArray, Object[] parameterArray) {
+    static void validateParameters(Class<?>[] parameterClassArray, Object[] parameterArray) {
         if (parameterClassArray.length != parameterArray.length) {
             throw new IllegalArgumentException("Exercise parameters invalid (length must match).");
 
         }
         for (int i = 0; i < parameterClassArray.length; i++) {
-            if (!parameterPairValid(parameterClassArray[i], parameterArray[i])) {
+            if (!validateParameterTypeAndValue(parameterClassArray[i], parameterArray[i])) {
                 throw new IllegalArgumentException("Exercise parameters invalid (data type must match).");
             }
         }
     }
 
-    static boolean parameterPairValid(Class<?> parameterClass, Object parameterObject) {
+    static boolean validateParameterTypeAndValue(Class<?> parameterClass, Object parameterObject) {
         if (parameterClass.equals(boolean.class)) {
             parameterClass = Boolean.class;
         }
