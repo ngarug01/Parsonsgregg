@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ParameterValidationTests {
+class EntryPointBuilderTests {
 
     private static SolutionRunner.EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
 
@@ -15,7 +15,7 @@ class ParameterValidationTests {
         Throwable exception = assertThrows(
             IllegalArgumentException.class, () -> {
                 SolutionRunner.EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-                    .className(MethodValidationTests.Example.class.getName())
+                    .className(ThreadSolutionRunnerTest.Example.class.getName())
                     .methodName("exampleMethod")
                     .parameterTypes(int.class, boolean.class)
                     .parameters(5);
@@ -35,7 +35,7 @@ class ParameterValidationTests {
         Throwable exception = assertThrows(
             IllegalArgumentException.class, () -> {
                 SolutionRunner.EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-                    .className(MethodValidationTests.Example.class.getName())
+                    .className(ThreadSolutionRunnerTest.Example.class.getName())
                     .methodName("exampleMethod")
                     .parameterTypes(int.class, boolean.class)
                     .parameters('c' ,5);
