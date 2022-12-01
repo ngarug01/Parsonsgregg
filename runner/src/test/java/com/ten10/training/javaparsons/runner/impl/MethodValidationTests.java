@@ -1,0 +1,110 @@
+package com.ten10.training.javaparsons.runner.impl;
+
+import com.ten10.training.javaparsons.ProgressReporter;
+import com.ten10.training.javaparsons.runner.SolutionRunner;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
+import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static java.lang.Thread.currentThread;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
+
+class MethodValidationTests {
+
+
+    private static final AtomicBoolean exampleMethodCalled = new AtomicBoolean(false);
+    private static final AtomicBoolean takesArgsCalled = new AtomicBoolean(false);
+    private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
+    private ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private static EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
+
+
+    @SuppressWarnings("unused")
+    static class Example {
+        public static void exampleMethod() {
+            exampleMethodCalled.set(true);
+        }
+
+        @SuppressWarnings("InfiniteLoopStatement")
+        public static void blockForever() {
+            while (true) ;
+        }
+
+        public static void takesArgs(int a, int b) {
+            takesArgsCalled.set(true);
+        }
+
+        public void instanceMethod() {
+            instanceMethodCalled.set(true);
+        }
+    }
+
+
+    @Test
+    void runShouldBeAbleToCallStaticMethodOnClass() {
+        // Arrange
+        exampleMethodCalled.set(false);
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("exampleMethod")
+            .parameterTypes(new Class<?>[0])
+            .parameters(new Object[0]);
+
+        //Act
+        EntryPoint entryPoint = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(entryPoint, currentThread().getContextClassLoader(), progressReporter);
+        loadedEntryPoint.map(x -> x.run(progressReporter));
+
+        //Assert
+        assertTrue(exampleMethodCalled.get(), "Our method should have been called");
+    }
+
+
+
+    @Test
+    @Tag("slow")
+    void methodsShouldTimeOut() {
+        //Arrange
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("blockForever")
+            .parameterTypes(new Class<?>[0])
+            .parameters(new Object[0]);
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
+        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.map(x -> x.run(progressReporter)));
+    }
+
+    @Test
+    void handleInstanceMethods() {
+        // Arrange
+
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("instanceMethod")
+            .parameterTypes(new Class<?>[0])
+            .parameters(new Object[0]);
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        Optional<LoadedEntryPoint> loadedEntryPoint = runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
+        loadedEntryPoint.get().setTimeout(500, TimeUnit.MILLISECONDS);
+        //Act
+        loadedEntryPoint.get().run(progressReporter);
+        //Assert
+        assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
+    }
+}

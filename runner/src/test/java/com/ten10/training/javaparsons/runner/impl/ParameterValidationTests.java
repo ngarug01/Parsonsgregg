@@ -1,7 +1,6 @@
 package com.ten10.training.javaparsons.runner.impl;
 
 import com.ten10.training.javaparsons.runner.SolutionRunner;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +15,7 @@ class ParameterValidationTests {
         Throwable exception = assertThrows(
             IllegalArgumentException.class, () -> {
                 SolutionRunner.EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-                    .className(ThreadSolutionRunnerTest.Example.class.getName())
+                    .className(MethodValidationTests.Example.class.getName())
                     .methodName("exampleMethod")
                     .parameterTypes(int.class, boolean.class)
                     .parameters(5);
@@ -36,7 +35,7 @@ class ParameterValidationTests {
         Throwable exception = assertThrows(
             IllegalArgumentException.class, () -> {
                 SolutionRunner.EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-                    .className(ThreadSolutionRunnerTest.Example.class.getName())
+                    .className(MethodValidationTests.Example.class.getName())
                     .methodName("exampleMethod")
                     .parameterTypes(int.class, boolean.class)
                     .parameters('c' ,5);
