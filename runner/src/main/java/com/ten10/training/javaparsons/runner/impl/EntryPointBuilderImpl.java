@@ -43,10 +43,10 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
 
 
     private class EntryPointImpl implements EntryPoint {
-        private String className;
-        private String methodName;
-        private Class<?>[] parameterTypes;
-        private Object[] parameters;
+        private final String className;
+        private final String methodName;
+        private final Class<?>[] parameterTypes;
+        private final Object[] parameters;
         private ClassLoader classLoader;
 
         @Override
@@ -120,18 +120,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
             parameterClass = Double.class;
         }
         return parameterClass.isInstance(parameterObject);
-    }
-
-
-    static Object returnValue;
-
-    public static Object getReturnValue() {
-        return returnValue;
-
-    }
-
-    public static void setReturnValue(Object o) {
-        returnValue = o;
     }
 }
 

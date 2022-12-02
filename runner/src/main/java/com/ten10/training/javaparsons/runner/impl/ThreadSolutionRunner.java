@@ -13,24 +13,6 @@ import java.util.stream.IntStream;
 
 public class ThreadSolutionRunner implements SolutionRunner {
 
-    private static final RunResult FAILURE = new RunResult() {
-        @Override
-        public boolean isSuccess() {
-            return false;
-        }
-
-        @Override
-        public boolean hasReturnValue() {
-            return false;
-        }
-
-        @Override
-        public Object getReturnValue() {
-            throw new IllegalStateException();
-        }
-    };
-
-
     private ExecutorService executor;
     private Future<Object> future;
 

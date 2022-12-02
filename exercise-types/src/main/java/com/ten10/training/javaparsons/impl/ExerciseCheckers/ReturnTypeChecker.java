@@ -20,18 +20,19 @@ public class ReturnTypeChecker implements MethodReturnValueChecker {
 
     @Override
     public Boolean validate(Object result, ProgressReporter progressReporter) {
-        if (EntryPointBuilderImpl.getReturnValue() == null) {
+        if (result == null) {
             progressReporter.reportRunnerError("The method is not returning anything");
             return false;
         }
-        if (EntryPointBuilderImpl.getReturnValue().getClass() == answer.getClass()) {
-            if (!EntryPointBuilderImpl.getReturnValue().equals(answer)) {
+        if (result.getClass() == answer.getClass()) {
+            if (!result.equals(answer)) {
                 progressReporter.reportRunnerError("Expected return of " + answer);
+                return false;
             }
-        }
-        if (EntryPointBuilderImpl.getReturnValue().getClass() != answer.getClass()) {
+        } else {
             progressReporter.reportRunnerError("Return type is incorrect");
+            return false;
         }
-        return EntryPointBuilderImpl.getReturnValue().equals(answer);
+        return true;
     }
 }

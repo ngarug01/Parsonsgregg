@@ -25,8 +25,3 @@ public interface ExerciseBuilder {
 
     ExerciseBuilder setEntryPoint(Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner);
 }
-
-
-
-
-

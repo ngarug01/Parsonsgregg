@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -48,6 +47,32 @@ class ThreadSolutionRunnerTest {
         public void instanceMethod() {
             instanceMethodCalled.set(true);
         }
+
+        public void throwsException() throws Exception {
+            throw new Exception();
+        }
+    }
+
+    @Test
+    void passesWithExceptionThrown()  {
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("throwsException")
+            .parameterTypes()
+            .parameters();
+
+        EntryPoint entryPoint = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(entryPoint, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+
+        SolutionRunner.RunResult run = loadedEntryPoint.run(progressReporter);
+
+        assertTrue(run.ranToCompletion());
+        assertTrue(run.hasException());
+        assertFalse(run.hasReturnValue());
+        assertInstanceOf(Exception.class, run.getException());
     }
 
 
@@ -95,9 +120,12 @@ class ThreadSolutionRunnerTest {
             .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
             .orElseThrow(AssertionError::new);
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
-        loadedEntryPoint.run(progressReporter);
 
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
+        SolutionRunner.RunResult runResult = assertTimeoutPreemptively(Duration.ofSeconds(5),
+            () -> loadedEntryPoint.run(progressReporter));
+        assertFalse(runResult.ranToCompletion()
+            || runResult.hasReturnValue()
+            || runResult.hasException());
     }
 //
 //    @Test     //call information parameter does not exist.

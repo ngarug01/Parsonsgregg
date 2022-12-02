@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.runner.impl;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.*;
 
@@ -11,23 +12,6 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
     private final Method method;
     private final Object[] parameters;
     private long timeoutMillis = 500;
-
-    private final SolutionRunner.RunResult FAILURE = new SolutionRunner.RunResult() {
-        @Override
-        public boolean isSuccess() {
-            return false;
-        }
-
-        @Override
-        public boolean hasReturnValue() {
-            return false;
-        }
-
-        @Override
-        public Object getReturnValue() {
-            throw new IllegalStateException();
-        }
-    };
 
     public LoadedEntryPointImpl(Object instance,
                                 Method method,
@@ -43,42 +27,39 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
         Future<Object> future = executor.submit(() -> method.invoke(instance, parameters));
         try {
             if (timeoutMillis != 0) {
-                EntryPointBuilderImpl.returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
+                return SolutionRunner.RunResult.fromReturnValue(future.get(timeoutMillis, TimeUnit.MILLISECONDS));
             } else {
-                EntryPointBuilderImpl.returnValue = future.get();
-
+                return SolutionRunner.RunResult.fromReturnValue(future.get());
             }
-            return new SolutionRunner.RunResult() {
-                @Override
-                public boolean isSuccess() {
-                    return true;
-                }
-
-                @Override
-                public boolean hasReturnValue() {
-                    return !method.getReturnType().equals(Void.TYPE);
-                }
-
-                @Override
-                public Object getReturnValue() {
-                    return EntryPointBuilderImpl.returnValue;
-
-                }
-            };
         } catch (TimeoutException e) {
             future.cancel(true);
             progressReporter.reportRunnerError("timeout error");
-            return FAILURE;
+            return SolutionRunner.RunResult.failure();
 
         } catch (InterruptedException e) {
             future.cancel(true);
             progressReporter.reportRunnerError("interrupted error");
-            return FAILURE;
+            return SolutionRunner.RunResult.failure();
 
-        } catch (ExecutionException e) {
+        } catch (ExecutionException executionException) {
             future.cancel(true);
+            // Something went wrong in the code that we were executing
+            // almost certainly an exception in that code.
+            // That exception is wrapped in two layers:
+            // this ExecutionException (because we were running it in the executor)
+            // and an InvocationTargetException (because we were running it through reflection)
+            // We unwrap it here, and return it to the caller
+
+            Throwable cause = executionException.getCause();
+            if (cause instanceof InvocationTargetException) {
+                Throwable originalException = cause.getCause();
+                if (originalException != null) {
+                    return SolutionRunner.RunResult.fromException(originalException);
+                }
+
+            }
             progressReporter.reportRunnerError("execution error");
-            return FAILURE;
+            return SolutionRunner.RunResult.failure();
 
         } finally {
             executor.shutdownNow();

@@ -62,11 +62,102 @@ public interface SolutionRunner {
 
 
     interface RunResult {
-        boolean isSuccess();
+        boolean ranToCompletion();
 
         boolean hasReturnValue();
 
         Object getReturnValue();
+
+        Throwable getException();
+
+        boolean hasException();
+
+        static RunResult fromReturnValue(Object returnValue){
+            return new RunResult() {
+                @Override
+                public boolean ranToCompletion() {
+                    return true;
+                }
+
+                @Override
+                public boolean hasReturnValue() {
+                    return true;
+                }
+
+                @Override
+                public Object getReturnValue() {
+                    return returnValue;
+                }
+
+                @Override
+                public Throwable getException() {
+                    return null;
+                }
+
+                @Override
+                public boolean hasException() {
+                    return false;
+                }
+            };
+        }
+
+        static RunResult fromException(Throwable originalException){
+            return new RunResult() {
+                @Override
+                public boolean ranToCompletion() {
+                    return true;
+                }
+
+                @Override
+                public boolean hasReturnValue() {
+                    return false;
+                }
+
+                @Override
+                public Object getReturnValue() {
+                    throw new IllegalStateException();
+                }
+
+                @Override
+                public Throwable getException() {
+                    return originalException;
+                }
+
+                @Override
+                public boolean hasException() {
+                    return true;
+                }
+            };
+        }
+
+        static RunResult failure(){
+            return new RunResult() {
+                @Override
+                public boolean ranToCompletion() {
+                    return false;
+                }
+
+                @Override
+                public boolean hasReturnValue() {
+                    return false;
+                }
+
+                @Override
+                public Object getReturnValue() {
+                    throw new IllegalStateException();
+                }
+
+                @Override
+                public Throwable getException() {
+                    throw new IllegalStateException();
+                }
+
+                @Override
+                public boolean hasException() {
+                    return false;
+                }
+            };
+        }
     }
 
     /**
