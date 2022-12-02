@@ -23,7 +23,6 @@ public class ArrayReturnCheckerTest {
 
     @Test
     void validate() {
-        EntryPointBuilderImpl.setReturnValue(new Integer[]{1, 2, 3, 4});
-        assertTrue(arrayReturnChecker.validate(Arrays.toString(answer), progressReporter));
+        assertTrue(arrayReturnChecker.validate(new Integer[]{1, 2, 3, 4}, progressReporter));
     }
 }

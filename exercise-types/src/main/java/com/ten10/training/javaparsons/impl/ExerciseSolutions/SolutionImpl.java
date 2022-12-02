@@ -9,6 +9,7 @@ import com.ten10.training.javaparsons.impl.ClassChecker;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
+import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     private Object result;
     private Field[] klassFields;
     private SolutionRunner solutionRunner;
+    private RunResult runResult;
 
     /**
      * Creates a new PrintOutExerciseSolution. This constructor sets the local fields.
@@ -82,11 +84,13 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
                 results.add(checker.validate(klassFields, progressReporter));
             }
         }
-        for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
-            results.add(checker.validate(output, progressReporter));
+        if (runResult.hasReturnValue()) {
+            Object returnValue = runResult.getReturnValue();
+            for (MethodReturnValueChecker checker : methodReturnValueCheckers) {
+                results.add(checker.validate(returnValue, progressReporter));
+            }
         }
         return !results.contains(false);
-
     }
 
     private boolean compile() {
@@ -149,8 +153,10 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             return solutionRunner
                 .load(entryPoint, getClassLoader(), progressReporter)
                 .map(loadedEntryPoint -> loadedEntryPoint.run(progressReporter))
-                .map(result -> result.ranToCompletion())
-                .orElse(false);
+                .map(r -> {
+                    runResult = r;
+                    return r.ranToCompletion();
+                }).orElse(false);
         } finally {
             this.output = captureConsoleOutput.stop();
             progressReporter.storeCapturedOutput(output);

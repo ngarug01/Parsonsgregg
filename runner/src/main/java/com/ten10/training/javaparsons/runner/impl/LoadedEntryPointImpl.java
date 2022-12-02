@@ -48,11 +48,11 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Object> future = executor.submit(() -> method.invoke(instance, parameters));
         try {
+            Object returnValue;
             if (timeoutMillis != 0) {
-                EntryPointBuilderImpl.returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
+                returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
             } else {
-                EntryPointBuilderImpl.returnValue = future.get();
-
+                returnValue = future.get();
             }
             return new SolutionRunner.RunResult() {
                 @Override
@@ -68,8 +68,7 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
 
                 @Override
                 public Object getReturnValue() {
-                    return EntryPointBuilderImpl.returnValue;
-
+                    return returnValue;
                 }
 
                 @Override

@@ -23,8 +23,9 @@ public class ArrayReturnChecker implements MethodReturnValueChecker {
     @Override
     public Boolean validate(Object result, ProgressReporter progressReporter) {
         /* TODO: Add in more validation to check array input */
-        Object[] resultArray = (Object[]) EntryPointBuilderImpl.getReturnValue();
-        if (EntryPointBuilderImpl.getReturnValue() == null) {
+        Object[] resultArray = (Object[]) result;
+
+        if (resultArray == null) {
             progressReporter.reportRunnerError("The method is not returning anything");
             return false;
         }
