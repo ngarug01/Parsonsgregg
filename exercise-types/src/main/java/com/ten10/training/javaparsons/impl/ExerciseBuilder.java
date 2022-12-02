@@ -24,6 +24,4 @@ public interface ExerciseBuilder {
     ExerciseBuilder withExerciseHint(String exerciseHint);
 
     ExerciseBuilder setEntryPoint(Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner);
-
-    ExerciseBuilder checkExceptionThrownIs(Class<? extends Exception> exceptionClass);
 }
