@@ -145,6 +145,10 @@ class CreateExercise implements ExerciseBuilder {
         this.entryPoint = builder.build();
         return this;
     }
+    @Override
+    public ExerciseBuilder checkExceptionThrownIs(Class<? extends Exception> exceptionClass) {
+        return this;
+    }
 
     public CreateExercise setId(int id) {
         this.id = id;

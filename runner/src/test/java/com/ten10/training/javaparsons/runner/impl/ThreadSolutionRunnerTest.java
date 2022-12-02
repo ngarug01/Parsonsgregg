@@ -70,6 +70,8 @@ class ThreadSolutionRunnerTest {
         SolutionRunner.RunResult run = loadedEntryPoint.run(progressReporter);
 
         assertTrue(run.ranToCompletion());
+        assertTrue(run.hasException());
+        assertFalse(run.hasReturnValue());
         assertInstanceOf(Exception.class, run.getException());
     }
 
@@ -118,9 +120,12 @@ class ThreadSolutionRunnerTest {
             .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
             .orElseThrow(AssertionError::new);
         loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
-        loadedEntryPoint.run(progressReporter);
 
-        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
+        SolutionRunner.RunResult runResult = assertTimeoutPreemptively(Duration.ofSeconds(5),
+            () -> loadedEntryPoint.run(progressReporter));
+        assertFalse(runResult.ranToCompletion()
+            || runResult.hasReturnValue()
+            || runResult.hasException());
     }
 //
 //    @Test     //call information parameter does not exist.

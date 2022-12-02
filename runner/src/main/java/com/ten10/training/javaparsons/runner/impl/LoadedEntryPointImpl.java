@@ -13,28 +13,6 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
     private final Object[] parameters;
     private long timeoutMillis = 500;
 
-    private final SolutionRunner.RunResult FAILURE = new SolutionRunner.RunResult() {
-        @Override
-        public boolean ranToCompletion(){
-            return false;
-        }
-
-        @Override
-        public boolean hasReturnValue() {
-            return false;
-        }
-
-        @Override
-        public Object getReturnValue() {
-            throw new IllegalStateException();
-        }
-
-        @Override
-        public Throwable getException() {
-            throw new IllegalStateException();
-        }
-    };
-
     public LoadedEntryPointImpl(Object instance,
                                 Method method,
                                 Object[] parameters) {
@@ -48,43 +26,20 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Object> future = executor.submit(() -> method.invoke(instance, parameters));
         try {
-            Object returnValue;
             if (timeoutMillis != 0) {
-                returnValue = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
+                return SolutionRunner.RunResult.fromReturnValue(future.get(timeoutMillis, TimeUnit.MILLISECONDS));
             } else {
-                returnValue = future.get();
+                return SolutionRunner.RunResult.fromReturnValue(future.get());
             }
-            return new SolutionRunner.RunResult() {
-                @Override
-                public boolean ranToCompletion() {
-                    return true;
-
-                }
-
-                @Override
-                public boolean hasReturnValue() {
-                    return !method.getReturnType().equals(Void.TYPE);
-                }
-
-                @Override
-                public Object getReturnValue() {
-                    return returnValue;
-                }
-
-                @Override
-                public Throwable getException() {
-                    throw new IllegalStateException();
-                }
-            };
         } catch (TimeoutException e) {
             future.cancel(true);
             progressReporter.reportRunnerError("timeout error");
-            return FAILURE;
+            return SolutionRunner.RunResult.failure();
 
         } catch (InterruptedException e) {
             future.cancel(true);
             progressReporter.reportRunnerError("interrupted error");
-            return FAILURE;
+            return SolutionRunner.RunResult.failure();
 
         } catch (ExecutionException executionException) {
             future.cancel(true);
@@ -99,32 +54,12 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
             if (cause instanceof InvocationTargetException) {
                 Throwable originalException = cause.getCause();
                 if (originalException != null) {
-                    return new SolutionRunner.RunResult() {
-                        @Override
-                        public boolean ranToCompletion() {
-                            return true;
-                        }
-
-                        @Override
-                        public boolean hasReturnValue() {
-                            return false;
-                        }
-
-                        @Override
-                        public Object getReturnValue() {
-                            throw new IllegalStateException();
-                        }
-
-                        @Override
-                        public Throwable getException() {
-                            return originalException;
-                        }
-                    };
+                    return SolutionRunner.RunResult.fromException(originalException);
                 }
 
             }
             progressReporter.reportRunnerError("execution error");
-            return FAILURE;
+            return SolutionRunner.RunResult.failure();
 
         } finally {
             executor.shutdownNow();
