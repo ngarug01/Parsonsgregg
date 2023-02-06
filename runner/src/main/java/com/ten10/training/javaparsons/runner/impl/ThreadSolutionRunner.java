@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.runner.impl;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
@@ -27,7 +28,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
 
         if (entryPointMethodName.equals("main")) {
             //TODO this should be a load error now --Hannah
-            progressReporter.reportRunnerError("main method should be static");
+            progressReporter.reportError(Phase.RUNNER, 31, "main method should be static");
             return ClassInstance.neededButNotAvailable();
         }
 
@@ -35,19 +36,19 @@ public class ThreadSolutionRunner implements SolutionRunner {
             return ClassInstance.of(klass.getDeclaredConstructor().newInstance());
         } catch (InstantiationException e) {
             //TODO this should be a load error now --Hannah
-            progressReporter.reportRunnerError("Class object cannot be instantiated because it is an interface or an abstract class");
+            progressReporter.reportError(Phase.RUNNER, 39, "Class object cannot be instantiated because it is an interface or an abstract class");
             return ClassInstance.neededButNotAvailable();
         } catch (IllegalAccessException e) {
             //TODO this should be a load error now --Hannah
-            progressReporter.reportRunnerError("Cannot access method due to visibility qualifiers");
+            progressReporter.reportError(Phase.RUNNER, 43, "Cannot access method due to visibility qualifiers");
             return ClassInstance.neededButNotAvailable();
         } catch (InvocationTargetException e) {
             //TODO this should be a load error now --Hannah
-            progressReporter.reportRunnerError("Exception thrown by an invoked method or constructor");
+            progressReporter.reportError(Phase.RUNNER, 47, "Exception thrown by an invoked method or constructor");
             return ClassInstance.neededButNotAvailable();
         } catch (NoSuchMethodException e) {
             //TODO this should be a load error now --Hannah
-            progressReporter.reportRunnerError("No such method");
+            progressReporter.reportError(Phase.RUNNER, 51, "No such method");
             return ClassInstance.neededButNotAvailable();
         }
     }
@@ -59,7 +60,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
         try {
             return Optional.of(klass.getMethod(entryPointMethodName, parameterTypes));
         } catch (NoSuchMethodException e) {
-            progressReporter.reportRunnerError("No such method " + entryPointMethodName);
+            progressReporter.reportError(Phase.RUNNER, 63, "No such method " + entryPointMethodName);
             return Optional.empty();
         }
     }
@@ -71,7 +72,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
         try {
             return Optional.of(classLoader.loadClass(entryPointClassName));
         } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("No such class " + entryPointClassName);
+            progressReporter.reportError(Phase.RUNNER, 75, "No such class " + entryPointClassName);
             return Optional.empty();
         }
     }
@@ -81,7 +82,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
                                               ProgressReporter reporter) {
         // Validate data. TODO: It would be worth validating that the types match the parameters, but primitives!
         if (parameters.length != parameterTypes.length) {
-            reporter.reportLoadError("Parameter types and parameters must be the same length");
+            reporter.reportError(Phase.LOADER, 85, "Parameter types and parameters must be the same length");
             return false;
         }
         final boolean allParameterTypesMatch = IntStream.range(0, parameters.length)
@@ -97,7 +98,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
                 return sa.contains(sb);
             });
         if (!allParameterTypesMatch) {
-            reporter.reportLoadError("The types must match the parameters");
+            reporter.reportError(Phase.LOADER, 101, "The types must match the parameters");
             return false;
         }
         return true;

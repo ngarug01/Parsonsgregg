@@ -17,14 +17,13 @@ public class LineNumberTranslationProgressReporter extends AbstractProgressRepor
         return lineNumber - prefixLines;
     }
 
-
-    @Override
-    public void reportCompilerInfo(long lineNumber, String message) {
-        super.reportCompilerInfo(translateLineNumber(lineNumber), message);
-    }
-
     @Override
     public void reportError(Phase phase, long linenumber, String message) {
         super.reportError(phase, translateLineNumber(linenumber), message);
+    }
+
+    @Override
+    public void reportInfo(Phase phase, String message) {
+        super.reportInfo(phase, message);
     }
 }

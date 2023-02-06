@@ -16,24 +16,13 @@ public abstract class AbstractProgressReporterDecorator implements ProgressRepor
         this.wrapped.storeCapturedOutput(output);
     }
 
-
-    @Override
-    public void reportCompilerInfo(long lineNumber, String message) {
-        this.wrapped.reportCompilerInfo(lineNumber, message);
-    }
-
-    @Override
-    public void reportRunnerError(String message) {
-        this.wrapped.reportRunnerError(message);
-    }
-
-    @Override
-    public void reportLoadError(String message) {
-        this.wrapped.reportLoadError(message);
-    }
-
     @Override
     public void reportError(Phase phase, long linenumber, String message) {
         this.wrapped.reportError(phase, linenumber, message);
+    }
+
+    @Override
+    public void reportInfo(Phase phase, String message) {
+        this.wrapped.reportInfo(phase, message);
     }
 }

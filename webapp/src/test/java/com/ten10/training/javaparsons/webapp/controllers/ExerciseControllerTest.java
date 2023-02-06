@@ -1,11 +1,9 @@
 package com.ten10.training.javaparsons.webapp.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ten10.training.javaparsons.Exercise;
-import com.ten10.training.javaparsons.ExerciseRepository;
-import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.Solution;
+import com.ten10.training.javaparsons.*;
 import com.ten10.training.javaparsons.webapp.views.Results;
 import com.ten10.training.javaparsons.webapp.views.SubmittedSolution;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +28,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -109,14 +108,33 @@ class ExerciseControllerTest {
     }
 
     @Test
-    void serialiseCompilerError() throws JsonProcessingException {
+    void testResultsSerialization() throws JsonProcessingException {
         Results results = new Results();
         results.storeCapturedOutput("Null");
-        results.reportCompilerError(3, "incorrect Method");
-        String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Null\",\"successfulSolution\":false,\"compilerErrors\":[{\"lineNumber\":3,\"message\":\"incorrect Method\"}],\"compilerInfo\":[],\"runnerErrors\":[],\"loadErrors\":[]}"));
-    }
+        results.reportError(Phase.COMPILER, 3, "incorrect Method");
+        results.reportInfo(Phase.COMPILER, "compilation completed successfully");
+        results.reportError(Phase.RUNNER, 5, "error running code");
 
+        String output = objectMapper.writeValueAsString(results);
+
+        JsonNode tree = objectMapper.readTree(output);
+
+        assertEquals(false, tree.get("successfulSolution").asBoolean());
+
+        JsonNode compilerErrors = tree.get("compilerErrors");
+        assertEquals(1, compilerErrors.size());
+        assertEquals(3, compilerErrors.get(0).get("lineNumber").asInt());
+        assertEquals("incorrect Method", compilerErrors.get(0).get("message").asText());
+
+        JsonNode compilerInfo = tree.get("compilerInfo");
+        assertEquals(1, compilerInfo.size());
+        assertEquals("compilation completed successfully", compilerInfo.get(0).get("message").asText());
+
+        JsonNode runnerErrors = tree.get("runnerErrors");
+        assertEquals(1, runnerErrors.size());
+        assertEquals(5, runnerErrors.get(0).get("lineNumber").asInt());
+        assertEquals("error running code", runnerErrors.get(0).get("message").asText());
+    }
 
     @Test
     void getDropdownListMembersReturnsListInputText() {

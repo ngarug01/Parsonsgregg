@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseCheckers;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.impl.ClassChecker;
 
@@ -39,25 +40,25 @@ public class StaticFieldValueChecker implements ClassChecker {
 
             Optional<Field> optionalField = findField(klassFields);
             if (!optionalField.isPresent()) {
-                progressReporter.reportRunnerError("Either your variables have incorrect access modifiers and/or names, or one isn't there!");
+                progressReporter.reportError(Phase.RUNNER, 43, "Either your variables have incorrect access modifiers and/or names, or one isn't there!");
                 return false;
             }
             Field field = optionalField.get();
             try {
                 field.setAccessible(true);
                 if (!Modifier.isStatic(field.getModifiers())) {
-                    progressReporter.reportRunnerError("your variable(s) need to be static!");
+                    progressReporter.reportError(Phase.RUNNER, 50, "your variable(s) need to be static!");
                     return false;
                 }
                 if (!field.get(null).equals(answer)) {
-                    progressReporter.reportRunnerError("The " + field.getName() + " variable has not been initialised correctly!");
+                    progressReporter.reportError(Phase.RUNNER, 54, "The " + field.getName() + " variable has not been initialised correctly!");
                     return false;
                 }
             } catch (IllegalArgumentException e) {
-                progressReporter.reportRunnerError("your variable(s) need to be static!");
+                progressReporter.reportError(Phase.RUNNER, 58, "your variable(s) need to be static!");
                 return false;
             } catch (IllegalAccessException e) {
-                progressReporter.reportRunnerError("No access to a field");
+                progressReporter.reportError(Phase.RUNNER, 61, "No access to a field");
                 return false;
             }
         }

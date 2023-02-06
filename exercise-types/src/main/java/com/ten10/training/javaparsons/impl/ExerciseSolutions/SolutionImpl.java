@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseSolutions;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.Solution;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
@@ -170,11 +171,11 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             if (klassFields.length != 0) {
                 return true;
             } else {
-                progressReporter.reportRunnerError("There is no fields here.");
+                progressReporter.reportError(Phase.RUNNER, 174, "There is no fields here.");
                 results.add(false);
             }
         } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("No such class " + entryPoint.getEntryPointClass());
+            progressReporter.reportError(Phase.RUNNER, 178, "No such class " + entryPoint.getEntryPointClass());
         }
 
         return false;
