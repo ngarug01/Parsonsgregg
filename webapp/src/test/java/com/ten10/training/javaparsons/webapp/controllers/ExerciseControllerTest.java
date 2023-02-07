@@ -25,9 +25,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -84,8 +84,15 @@ class ExerciseControllerTest {
     void serialiseResult() throws JsonProcessingException {
         Results results = new Results();
         results.storeCapturedOutput("Foo");
+
         String output = objectMapper.writeValueAsString(results);
-        assertThat(output, is("{\"output\":\"Foo\",\"successfulSolution\":false,\"compilerErrors\":[],\"compilerInfo\":[],\"runnerErrors\":[],\"loadErrors\":[]}"));
+
+        JsonNode deserialised = objectMapper.readTree(output);
+        assertThat(deserialised.get("output").asText(), is("Foo"));
+        assertThat(deserialised.get("successfulSolution").asBoolean(), is(false));
+        for (String key : asList("compilerErrors", "compilerInfo", "runnerErrors","loadErrors")){
+            assertTrue(deserialised.get(key).isEmpty());
+        }
     }
 
     @Test
