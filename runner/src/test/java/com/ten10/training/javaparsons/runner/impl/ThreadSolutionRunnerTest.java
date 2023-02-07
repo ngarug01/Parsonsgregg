@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.runner.impl;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
@@ -183,7 +184,7 @@ class ThreadSolutionRunnerTest {
         runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
 
         //Assert
-        verify(progressReporter).reportLoadError("No such class xample");
+        verify(progressReporter).reportError(Phase.LOADER, "No such class xample");
     }
 
 //    @Test  //doesn't implement every method in EntryPoint() and so doesn't work.

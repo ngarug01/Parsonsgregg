@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.compiler.impl;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +35,10 @@ class ProgressReporterAdapter implements DiagnosticListener<JavaFileObject> {
         lineNumber = diagnostic.getLineNumber();
         switch (diagnostic.getKind()) {
             case ERROR:
-                progressReporter.reportCompilerError(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
+                progressReporter.reportError(Phase.COMPILER, diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
                 break;
             default:
-                progressReporter.reportCompilerInfo(diagnostic.getLineNumber(), diagnostic.getMessage(Locale.UK));
+                progressReporter.reportInfo(Phase.COMPILER, diagnostic.getMessage(Locale.UK));
         }
     }
 

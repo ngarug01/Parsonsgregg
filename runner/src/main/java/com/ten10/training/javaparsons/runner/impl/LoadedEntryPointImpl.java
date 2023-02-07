@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.runner.impl;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
@@ -33,12 +34,12 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
             }
         } catch (TimeoutException e) {
             future.cancel(true);
-            progressReporter.reportRunnerError("timeout error");
+            progressReporter.reportError(Phase.RUNNER, "timeout error");
             return SolutionRunner.RunResult.failure();
 
         } catch (InterruptedException e) {
             future.cancel(true);
-            progressReporter.reportRunnerError("interrupted error");
+            progressReporter.reportError(Phase.RUNNER, "interrupted error");
             return SolutionRunner.RunResult.failure();
 
         } catch (ExecutionException executionException) {
@@ -58,7 +59,7 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
                 }
 
             }
-            progressReporter.reportRunnerError("execution error");
+            progressReporter.reportError(Phase.RUNNER, "execution error");
             return SolutionRunner.RunResult.failure();
 
         } finally {

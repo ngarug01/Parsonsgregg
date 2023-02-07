@@ -99,7 +99,7 @@ public class Application {
             .setEntryPoint(ep -> ep
                 .className("Methods")
                 .methodName("squaresTwo")
-                .parameterTypes(new Class<?>[]{String[].class})
+                .parameterTypes(String[].class)
                 .parameters(new Object[]{new String[]{}})));
 
         Integer[] outputArray = new Integer[100];

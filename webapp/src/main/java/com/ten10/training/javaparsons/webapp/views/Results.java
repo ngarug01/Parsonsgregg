@@ -8,10 +8,6 @@ import java.util.List;
 
 public class Results implements ProgressReporter {
 
-    public List<Information> getLoadErrors() {
-        return loadErrors;
-    }
-
     /**
      * Nested class that sets the structure for information captured in results
      */
@@ -44,40 +40,43 @@ public class Results implements ProgressReporter {
     private boolean successfulSolution = false;
 
     private final List<Information> compilerErrors = new ArrayList<>();
-    private final List<Information> compilerInfo = new ArrayList<>();
     private final List<Information> runnerErrors = new ArrayList<>();
-
     private final List<Information> loadErrors = new ArrayList<>();
-
-    public String getOutput() {
-        return output;
-    }
+    private final List<Information> compilerInfo = new ArrayList<>();
+    private final List<Information> runnerInfo = new ArrayList<>();
+    private final List<Information> loadInfo = new ArrayList<>();
 
     public List<Information> getCompilerErrors() {
         return compilerErrors;
-    }
-
-    public List<Information> getCompilerInfo() {
-        return compilerInfo;
     }
 
     public List<Information> getRunnerErrors() {
         return runnerErrors;
     }
 
+    public List<Information> getLoadErrors() {
+        return loadErrors;
+    }
+
+    public List<Information> getCompilerInfo() {
+        return compilerInfo;
+    }
+
+    public List<Information> getRunnerInfo() {
+        return runnerInfo;
+    }
+
+    public List<Information> getLoadInfo() {
+        return loadInfo;
+    }
+
+    public String getOutput() {
+        return output;
+    }
+
     @Override
     public void storeCapturedOutput(String output) {
         this.output = output;
-    }
-
-    @Override
-    public void reportCompilerError(long lineNumber, String message) {
-        compilerErrors.add(new Information(lineNumber, message));
-    }
-
-    @Override
-    public void reportCompilerInfo(long lineNumber, String message) {
-        compilerInfo.add(new Information(lineNumber, message));
     }
 
     /**
@@ -90,30 +89,49 @@ public class Results implements ProgressReporter {
     }
 
     @Override
-    public void reportRunnerError(String message) {
-        runnerErrors.add(new Information(message));
-    }
-
-    @Override
-    public void reportLoadError(String message) {
-        loadErrors.add(new Information( message ));
-    }
-
-    @Override
     public void reportError(Phase phase, long linenumber, String message) {
         switch (phase){
-            case LOAD:
-                loadErrors.add(new Information(message));
-                break;
-            case RUN:
-                runnerErrors.add(new Information(message));
-                break;
-            case COMPILATION:
+            case COMPILER:
                 compilerErrors.add(new Information(linenumber, message));
+                break;
+            case LOADER:
+                loadErrors.add(new Information(linenumber, message));
+                break;
+            case RUNNER:
+                runnerErrors.add(new Information(linenumber, message));
                 break;
         }
     }
 
+    @Override
+    public void reportError(Phase phase, String message) {
+        switch (phase){
+            case COMPILER:
+                compilerErrors.add(new Information(message));
+                break;
+            case LOADER:
+                loadErrors.add(new Information(message));
+                break;
+            case RUNNER:
+                runnerErrors.add(new Information(message));
+                break;
+        }
+    }
+
+    @Override
+    public void reportInfo(Phase phase, String message) {
+        switch (phase){
+            case COMPILER:
+                compilerInfo.add(new Information(message));
+                break;
+            case LOADER:
+                loadInfo.add(new Information(message));
+                break;
+            case RUNNER:
+                runnerInfo.add(new Information(message));
+                break;
+        }
+    }
     public boolean isSuccessfulSolution() {
         return successfulSolution;
     }
