@@ -167,6 +167,25 @@ class ThreadSolutionRunnerTest {
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
     }
 
+    @Test
+    void reportLoadErrorWhenClassNameIncorrect() {
+        // Arrange
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className("xample")
+            .methodName("exampleMethod")
+            .parameterTypes()
+            .parameters();
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+
+        // Act
+        runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
+
+        //Assert
+        verify(progressReporter).reportLoadError("No such class xample");
+    }
+
 //    @Test  //doesn't implement every method in EntryPoint() and so doesn't work.
 //    void methodShouldNotAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
 //        //Arrange

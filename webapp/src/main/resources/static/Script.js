@@ -250,14 +250,19 @@ let exercises = null;
             if (response.compilerErrors && response.compilerErrors.length) {
                 response.compilerErrors.forEach(error => {
                 incorrectAnswer.innerHTML += ("<br>Error on line: " + error.lineNumber + "<br>The compiler error description was: " + error.message + "<br>");
-            });
-        }
-        if (response.runnerErrors && response.runnerErrors.length) {
-            response.runnerErrors.forEach(error => {
-            incorrectAnswer.innerHTML += ("<br>The runner error description was: " + error.message + "<br>");
-            });
-        }
-        makeVisible("incorrect-answer");
+                });
+            }
+            if (response.loadErrors && response.loadErrors.length) {
+                response.loadErrors.forEach(error => {
+                incorrectAnswer.innerHTML += ("<br>The load error description was: " + error.message + "<br>");
+                });
+            }
+            if (response.runnerErrors && response.runnerErrors.length) {
+                response.runnerErrors.forEach(error => {
+                incorrectAnswer.innerHTML += ("<br>The runner error description was: " + error.message + "<br>");
+                });
+            }
+            makeVisible("incorrect-answer");
         }
 
         if (response.compilerInfo && response.compilerInfo.length) {
