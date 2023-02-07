@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 
 class ThreadSolutionRunnerTest {
@@ -171,6 +172,25 @@ class ThreadSolutionRunnerTest {
         //Assert
         loadedEntryPoint.run(progressReporter);
         assertTrue(takesArgsCalled.get(), "run() should have completed successfully");
+    }
+
+    @Test
+    void reportLoadErrorWhenClassNameIncorrect() {
+        // Arrange
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className("xample")
+            .methodName("exampleMethod")
+            .parameterTypes()
+            .parameters();
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+
+        // Act
+        runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
+
+        //Assert
+        verify(progressReporter).reportLoadError("No such class xample");
     }
 
     @Test

@@ -70,8 +70,11 @@ public class ThreadSolutionRunner implements SolutionRunner {
         String entryPointClassName = entryPoint.getEntryPointClass();
         try {
             return Optional.of(classLoader.loadClass(entryPointClassName));
+        } catch (NoClassDefFoundError e) {
+            progressReporter.reportLoadError(e.getMessage());
+            return Optional.empty();
         } catch (ClassNotFoundException e) {
-            progressReporter.reportRunnerError("No such class " + entryPointClassName);
+            progressReporter.reportLoadError("No such class " + entryPointClassName);
             return Optional.empty();
         }
     }
