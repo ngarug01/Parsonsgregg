@@ -32,7 +32,7 @@ class ExerciseImplTest {
     }
 
     @Test
-    void getSolutionFromUserInputReturnsBaseSolution() throws Exception {
+    void getSolutionFromUserInputReturnsBaseSolution() {
         assertThat(wholeClassExercise.getSolutionFromUserInput("", progressReporter), is(instanceOf(SolutionImpl.class)));
     }
 

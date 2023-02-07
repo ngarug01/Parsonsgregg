@@ -17,56 +17,47 @@ import org.mockito.stubbing.Answer;
 import javax.tools.ToolProvider;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class SolutionImplITest {
 
 
-    private static SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
+    public static final SolutionCompiler SOLUTION_COMPILER = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+    private static final SolutionRunner.EntryPoint ENTRY_POINT = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
-        .parameterTypes(new Class<?>[]{String[].class})
+        .parameterTypes(String[].class)
         .parameters(new Object[]{new String[]{}})
         .build();
 
 
     private static final String USER_INPUT = "Answer ";
-    private SolutionCompiler mockCompiler = mock(SolutionCompiler.class);
-    private ThreadSolutionRunner runner = new ThreadSolutionRunner();
-    private PrintOutChecker printOutChecker = mock(PrintOutChecker.class);
-    private List<CapturedOutputChecker> capturedOutputCheckers = singletonList(printOutChecker);
-    private List<ClassChecker> classCheckers = new ArrayList<>();
-    private List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
-    private ProgressReporter progressReporter = mock(ProgressReporter.class);
+    private final SolutionCompiler mockCompiler = mock(SolutionCompiler.class);
+    private final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+    private final PrintOutChecker printOutChecker = mock(PrintOutChecker.class);
+    private final List<CapturedOutputChecker> capturedOutputCheckers = singletonList(printOutChecker);
+    private final List<ClassChecker> classCheckers = new ArrayList<>();
+    private final List<MethodReturnValueChecker> methodReturnValueCheckers = new ArrayList<>();
+    private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     private final SolutionImpl solutionImpl = new SolutionImpl(mockCompiler,
         USER_INPUT,
         capturedOutputCheckers,
         classCheckers,
         methodReturnValueCheckers,
         progressReporter,
-        new EntryPointBuilderImpl()
-            .className("Main")
-            .methodName("main")
-            .parameterTypes(new Class<?>[]{String[].class})
-            .parameters(new Object[]{new String[]{}})
-            .build(),
+        ENTRY_POINT,
         runner);
-    private ClassLoader classLoader = mock(ClassLoader.class);
-    //    private SolutionRunner.EntryPoint entryPoint = mock(SolutionRunner.EntryPoint.class);
     private final SolutionRunner.RunResult runResult = mock(SolutionRunner.RunResult.class);
-    //    private SolutionRunner.LoadedEntryPoint loadedEntryPoint=entryPoint.load(classLoader);
-    private SolutionRunner.LoadedEntryPoint loadedClassRunner = mock(SolutionRunner.LoadedEntryPoint.class);
+    private final SolutionRunner.LoadedEntryPoint loadedClassRunner = mock(SolutionRunner.LoadedEntryPoint.class);
 
-    SolutionImplITest() throws ClassNotFoundException {
+    SolutionImplITest() {
     }
 
     @BeforeEach
-    void setUpMocks() throws InterruptedException, ExecutionException, ReflectiveOperationException {
+    void setUpMocks() {
         // By default, compiling and running methods solutions should be successful
 
         // The contract of SolutionCompiler.compile() is that the callback method recordCompiledClass will be called.
@@ -79,7 +70,7 @@ class SolutionImplITest {
             .thenAnswer((Answer<Boolean>) invocationOnMock -> {
                 // ... Get the callback object
                 SolutionCompiler.CompilableSolution callback = invocationOnMock.getArgument(0);
-                // .. and invoke the method
+                // ... and invoke the method
                 callback.recordCompiledClass(new byte[0]);
                 // ... before returning true.
                 return true;
@@ -90,15 +81,15 @@ class SolutionImplITest {
     }
 
 
-//    @Test //Test does not work
-//    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
-//    void evaluateCallsCompiler() throws Exception {
-//        // Act
-//        solutionImpl.evaluate();
-//        // Assert
-//        verify(mockCompiler).compile(solutionImpl, progressReporter);
-//    }
-
+    @Test
+    @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
+    void evaluateCallsCompiler() {
+        when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
+        // Act
+        solutionImpl.evaluate();
+        // Assert
+        verify(mockCompiler).compile(solutionImpl, progressReporter);
+    }
 
     @Test
     @DisplayName("Calling getFullClassText() should return the provided text")
@@ -112,44 +103,63 @@ class SolutionImplITest {
         assertEquals("Main", solutionImpl.getClassName());
     }
 
-
-//    @Test //Test does not work
-//    void correctCheckerCalledPrintOut() throws Exception {
-//        // Act
-//        solutionImpl.evaluate();
-//        // Assert
-//        verify(printOutChecker).validate("", progressReporter);
-//    }
-
-//    @Test //Test does not work
-//    void correctCheckerCalledPrintOutReturnsTrue() throws Exception {
-//        when(printOutChecker.validate("", progressReporter)).thenReturn(true);
-//        assertTrue(solutionImpl.evaluate());
-//    }
+    @Test //Test does not work
+    void correctCheckerCalledPrintOut() {
+        String userInput =
+            "public class Main{\n" +
+                "public String i = \"42\";\n" +
+                "public static void main(String[] args){{}}}";
+        SolutionImpl solutionImpl =
+            new SolutionImpl(SOLUTION_COMPILER,
+                userInput,
+                capturedOutputCheckers,
+                classCheckers,
+                methodReturnValueCheckers,
+                progressReporter,
+                ENTRY_POINT,
+                runner);
+        // Act
+        solutionImpl.evaluate();
+        // Assert
+        verify(printOutChecker).validate("", progressReporter);
+    }
 
     @Test
-    void earlyReturnWhenCompileFails() throws Exception {
+    void correctCheckerCalledPrintOutReturnsTrue() {
+        when(printOutChecker.validate("", progressReporter)).thenReturn(true);
+        String userInput =
+            "public class Main{\n" +
+                "public String i = \"42\";\n" +
+                "public static void main(String[] args){{}}}";
+        SolutionImpl solutionImpl =
+            new SolutionImpl(SOLUTION_COMPILER,
+                userInput,
+                capturedOutputCheckers,
+                classCheckers,
+                methodReturnValueCheckers,
+                progressReporter,
+                ENTRY_POINT,
+                runner);
+        assertTrue(solutionImpl.evaluate());
+    }
+
+    @Test
+    void earlyReturnWhenCompileFails() {
         when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
         solutionImpl.evaluate();
         verify(loadedClassRunner, never()).run(progressReporter);
     }
 
     @Test
-    void evaluateFailsOnCompileClassNameIncorrect() throws Exception {
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
+    void evaluateFailsOnCompileClassNameIncorrect() {
         String userInput = "public class ain{\npublic Integer main(String[] args){return 12;}}";
-        SolutionImpl solutionImpl = new SolutionImpl(compiler,
+        SolutionImpl solutionImpl = new SolutionImpl(SOLUTION_COMPILER,
             userInput,
             capturedOutputCheckers,
             classCheckers,
             methodReturnValueCheckers,
             progressReporter,
-            new EntryPointBuilderImpl()
-                .className("Main")
-                .methodName("main")
-                .parameterTypes(new Class<?>[]{String[].class})
-                .parameters(new Object[]{new String[]{}})
-                .build(),
+            ENTRY_POINT,
             runner);
         solutionImpl.evaluate();
         verify(progressReporter).reportError(Phase.COMPILER, 1, "class ain is public, should be declared in a file named ain.java");
@@ -157,24 +167,18 @@ class SolutionImplITest {
 
     //is an IT
     @Test
-    void runTimeFailure() throws Exception {
+    void runTimeFailure() {
         //ARRANGE
-        SolutionCompiler compiler = new JavaSolutionCompiler(ToolProvider.getSystemJavaCompiler());
         String userInput =
             "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){while(true){}}}";
         SolutionImpl solutionImpl =
-            new SolutionImpl(compiler,
+            new SolutionImpl(SOLUTION_COMPILER,
                 userInput,
                 capturedOutputCheckers,
                 classCheckers,
                 methodReturnValueCheckers,
                 progressReporter,
-                new EntryPointBuilderImpl()
-                    .className("Main")
-                    .methodName("main")
-                    .parameterTypes(new Class<?>[]{String[].class})
-                    .parameters(new Object[]{new String[]{}})
-                    .build(),
+                ENTRY_POINT,
                 runner);
         //ACT
         boolean evaluateResult = solutionImpl.evaluate();

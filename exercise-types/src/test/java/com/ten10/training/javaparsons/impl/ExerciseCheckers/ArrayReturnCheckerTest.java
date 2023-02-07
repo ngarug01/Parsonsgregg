@@ -1,11 +1,8 @@
 package com.ten10.training.javaparsons.impl.ExerciseCheckers;
 
 import com.ten10.training.javaparsons.ProgressReporter;
-import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -18,7 +15,6 @@ public class ArrayReturnCheckerTest {
     @Test
     void getGoal() {
         assertEquals("the returned value is " + Arrays.toString(answer), arrayReturnChecker.getGoal());
-
     }
 
     @Test

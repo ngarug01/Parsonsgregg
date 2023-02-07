@@ -24,6 +24,7 @@ class ThreadSolutionRunnerTest {
 
     private static final AtomicBoolean exampleMethodCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesArgsCalled = new AtomicBoolean(false);
+    private static final AtomicBoolean takesNoArgsCalled = new AtomicBoolean(false);
     private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     private static final EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
@@ -31,6 +32,10 @@ class ThreadSolutionRunnerTest {
 
     @SuppressWarnings("unused")
     static class Example {
+        public static void main(String[] args) {
+
+        }
+
         public static void exampleMethod() {
             exampleMethodCalled.set(true);
         }
@@ -43,6 +48,10 @@ class ThreadSolutionRunnerTest {
 
         public static void takesArgs(int a, int b) {
             takesArgsCalled.set(true);
+        }
+
+        public static void takesNoArgs() {
+            takesNoArgsCalled.set(true);
         }
 
         public void instanceMethod() {
@@ -101,10 +110,6 @@ class ThreadSolutionRunnerTest {
     }
 
 
-    //Original test doesn't work and appears unnecessary so has been deleted.
-    //void runDoesNotThrowExceptionWhenParameterListAreEqual() throws InterruptedException, ExecutionException, ReflectiveOperationException {}
-
-
     @Test
     @Tag("slow")
     void methodsShouldTimeOut() {
@@ -128,24 +133,26 @@ class ThreadSolutionRunnerTest {
             || runResult.hasReturnValue()
             || runResult.hasException());
     }
-//
-//    @Test     //call information parameter does not exist.
-//    void methodsShouldNotTimeOut() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-//        // Arrange
-//        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-//       EntryPoint entryPoint = new EntryPointBuilderImpl()
-//            .className("Main")
-//            .methodName("main")
-//            .parameterTypes( new Class<?>[]{String[].class})
-//            .parameters(new Object[]{new String[]{}})
-//            .build();
-//
-//        LoadedEntryPoint loadedEntryPoint=entryPoint.load(null);
-//        // Act
-//        runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
-//        //Assert
-//        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
-//    }
+
+    @Test
+    void methodsShouldNotTimeOut() {
+        // Arrange
+        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+       EntryPoint entryPoint = new EntryPointBuilderImpl()
+            .className(Example.class.getName())
+            .methodName("main")
+            .parameterTypes(String[].class)
+            .parameters(new Object[]{new String[]{}})
+            .build();
+
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(entryPoint, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+        // Act
+        loadedEntryPoint.run(progressReporter);
+        //Assert
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
+    }
 
     @Test
     void methodsShouldAcceptParameters() {
@@ -187,37 +194,25 @@ class ThreadSolutionRunnerTest {
         verify(progressReporter).reportError(Phase.LOADER, "No such class xample");
     }
 
-//    @Test  //doesn't implement every method in EntryPoint() and so doesn't work.
-//    void methodShouldNotAcceptParameters() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-//        //Arrange
-//        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-//        final EntryPoint entryPoint = new EntryPoint() {
-//            @Override
-//            public String getEntryPointClass() {
-//                return Example.class.getName();
-//            }
-//
-//            @Override
-//            public String getEntryPointMethod() {
-//                return "takesNoArgs";
-//            }
-//
-//            @Override
-//            public Class<?>[] getParameterTypes() {
-//                return new Class<?>[0];
-//            }
-//
-//            @Override
-//            public Object[] getParameters() {
-//                return new Object[0];
-//            }
-//        };
-//        runner.setTimeout(500, TimeUnit.MILLISECONDS);
-//        //Act
-//        runner.run(currentThread().getContextClassLoader(), entryPoint, progressReporter);
-//        //Assert
-//        assertTrue(takesNoArgsCalled.get(), "run() should have completed successfully");
-//    }
+    @Test
+    void methodShouldAcceptNoParameters() {
+        //Arrange
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("takesNoArgs")
+            .parameterTypes()
+            .parameters();
+        EntryPoint callInformation = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(callInformation, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+        loadedEntryPoint.setTimeout(500, TimeUnit.MILLISECONDS);
+        //Act
+        loadedEntryPoint.run(progressReporter);
+        //Assert
+        assertTrue(takesNoArgsCalled.get(), "run() should have completed successfully");
+    }
 
 
     @Test

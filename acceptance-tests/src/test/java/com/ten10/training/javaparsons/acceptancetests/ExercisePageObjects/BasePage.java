@@ -41,11 +41,7 @@ public abstract class BasePage {
     as for port below
      */
     private void setHost() {
-//        String host = System.getProperty("YOUR_PROPERTY_NAME");
-//        if (host.equals("")){
         host = "localhost";
-//        } else
-//            host = host;
     }
 
     private void setPort() {
