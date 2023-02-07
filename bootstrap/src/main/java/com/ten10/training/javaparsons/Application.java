@@ -102,6 +102,8 @@ public class Application {
                 .parameterTypes(new Class<?>[]{String[].class})
                 .parameters(new Object[]{new String[]{}})));
 
+
+
         Integer[] outputArray = new Integer[100];
         for (int i = 0; i < 100; i++) {
             outputArray[i] = i + 1;
@@ -114,6 +116,21 @@ public class Application {
             .withExerciseHint("Integer[] x = new Integer[100];\n" +
                 "for(int i = 0; i < 100; i++){"));
 
+        String method = ( "class Methods {\n" +
+            "public void methodname() \n{" +
+            " //method body\n" +
+            "} \n" +
+            "}");
+
+        repository.addExercise(builder -> builder
+            .named("Create a method that is an instance method")
+            .setEntryPoint(ep -> ep
+                .className("Method")
+                .methodIsNotStatic("static")
+                .methodName("instanceMethod")
+                .parameterTypes()
+                .parameters())
+            .withExerciseHint("Try using an instance method in your class"));
         return repository;
     }
 
@@ -121,7 +138,10 @@ public class Application {
     /**
      * Runs the {@link SpringBootApplication} with this {@code class} as a parameter.
      */
+
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+
     }
 }

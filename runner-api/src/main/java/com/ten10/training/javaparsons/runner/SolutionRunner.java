@@ -19,6 +19,7 @@ public interface SolutionRunner {
         EntryPointBuilder parameters(Object... parameterList);
 
         EntryPoint build();
+        EntryPointBuilder methodIsNotStatic(String methodType);
     }
 
     interface EntryPoint {

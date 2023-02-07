@@ -143,6 +143,10 @@ public class ExercisePage extends BasePage {
         return wait.until(INFORMATION_BOX_IS_VISIBLE).getText();
     }
 
+    public String getInput(){
+        return driver.findElement(INPUT_BOX).getText();
+    }
+
     public String getDescription() {
         return driver.findElement(DESCRIPTION).getText();
     }

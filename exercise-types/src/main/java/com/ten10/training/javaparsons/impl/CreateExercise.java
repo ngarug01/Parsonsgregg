@@ -32,6 +32,8 @@ class CreateExercise implements ExerciseBuilder {
         .parameters(new Object[]{new String[]{}})
         .build();
     private Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner;
+    private String method;
+
 
     public CreateExercise(SolutionCompiler compiler, SolutionRunner runner) {
         this.compiler = compiler;
