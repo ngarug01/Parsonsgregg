@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.compiler.SolutionCompiler;
 import com.ten10.training.javaparsons.compiler.impl.JavaSolutionCompiler;
@@ -151,7 +152,7 @@ class SolutionImplITest {
                 .build(),
             runner);
         solutionImpl.evaluate();
-        verify(progressReporter).reportCompilerError(1, "class ain is public, should be declared in a file named ain.java");
+        verify(progressReporter).reportError(Phase.COMPILER, 1, "class ain is public, should be declared in a file named ain.java");
     }
 
     //is an IT
