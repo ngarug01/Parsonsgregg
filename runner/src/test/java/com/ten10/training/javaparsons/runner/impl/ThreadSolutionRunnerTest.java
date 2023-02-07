@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 
 class ThreadSolutionRunnerTest {
@@ -107,10 +106,6 @@ class ThreadSolutionRunnerTest {
         //Assert
         assertTrue(exampleMethodCalled.get(), "Our method should have been called");
     }
-
-
-    //Original test doesn't work and appears unnecessary so has been deleted.
-    //void runDoesNotThrowExceptionWhenParameterListAreEqual() throws InterruptedException, ExecutionException, ReflectiveOperationException {}
 
 
     @Test
