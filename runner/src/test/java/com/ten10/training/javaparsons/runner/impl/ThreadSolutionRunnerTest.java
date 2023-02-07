@@ -127,24 +127,26 @@ class ThreadSolutionRunnerTest {
             || runResult.hasReturnValue()
             || runResult.hasException());
     }
-//
-//    @Test     //call information parameter does not exist.
-//    void methodsShouldNotTimeOut() throws InterruptedException, ExecutionException, ReflectiveOperationException {
-//        // Arrange
-//        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
-//       EntryPoint entryPoint = new EntryPointBuilderImpl()
-//            .className("Main")
-//            .methodName("main")
-//            .parameterTypes( new Class<?>[]{String[].class})
-//            .parameters(new Object[]{new String[]{}})
-//            .build();
-//
-//        LoadedEntryPoint loadedEntryPoint=entryPoint.load(null);
-//        // Act
-//        runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter);
-//        //Assert
-//        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> runner.run(currentThread().getContextClassLoader(), callInformation, progressReporter));
-//    }
+
+    @Test
+    void methodsShouldNotTimeOut() {
+        // Arrange
+        final ThreadSolutionRunner runner = new ThreadSolutionRunner();
+       EntryPoint entryPoint = new EntryPointBuilderImpl()
+            .className(Example.class.getName())
+            .methodName("main")
+            .parameterTypes(String[].class)
+            .parameters(new Object[]{new String[]{}})
+            .build();
+
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(entryPoint, currentThread().getContextClassLoader(), progressReporter)
+            .orElseThrow(AssertionError::new);
+        // Act
+        loadedEntryPoint.run(progressReporter);
+        //Assert
+        assertTimeoutPreemptively(Duration.ofSeconds(5), () -> loadedEntryPoint.run(progressReporter));
+    }
 
     @Test
     void methodsShouldAcceptParameters() {
