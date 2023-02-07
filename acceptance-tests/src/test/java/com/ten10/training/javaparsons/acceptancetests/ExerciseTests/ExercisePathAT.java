@@ -1,3 +1,6 @@
+/* TODO: Tests were created for a potential drag and drop feature. Technically, you can highlight and drag/drop but this is not
+*   the intended method. For now, tests are commenting out if someone wishes to implement a true drag and drop QoL feature. */
+//ctrl + and - to hide/unhide code:
 //package com.ten10.training.javaparsons.acceptancetests.ExerciseTests;
 //
 //import com.ten10.training.javaparsons.acceptancetests.ExercisePageObjects.ExercisePage;
@@ -8,9 +11,6 @@
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.openqa.selenium.chrome.ChromeDriver;
-//
-//import java.util.ArrayList;
-//import java.util.List;
 //
 //import static org.hamcrest.MatcherAssert.assertThat;
 //import static org.hamcrest.core.Is.is;
