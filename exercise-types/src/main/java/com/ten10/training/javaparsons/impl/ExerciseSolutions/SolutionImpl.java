@@ -171,11 +171,11 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
             if (klassFields.length != 0) {
                 return true;
             } else {
-                progressReporter.reportError(Phase.RUNNER, 174, "There is no fields here.");
+                progressReporter.reportError(Phase.RUNNER, "There is no fields here.");
                 results.add(false);
             }
         } catch (ClassNotFoundException e) {
-            progressReporter.reportError(Phase.RUNNER, 178, "No such class " + entryPoint.getEntryPointClass());
+            progressReporter.reportError(Phase.RUNNER, "No such class " + entryPoint.getEntryPointClass());
         }
 
         return false;

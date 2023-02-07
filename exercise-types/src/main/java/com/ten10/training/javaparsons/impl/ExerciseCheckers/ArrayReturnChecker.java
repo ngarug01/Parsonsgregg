@@ -27,14 +27,14 @@ public class ArrayReturnChecker implements MethodReturnValueChecker {
         Object[] resultArray = (Object[]) result;
 
         if (resultArray == null) {
-            progressReporter.reportError(Phase.RUNNER, 30, "The method is not returning anything");
+            progressReporter.reportError(Phase.RUNNER, "The method is not returning anything");
             return false;
         }
         if (!(resultArray.getClass().equals(answer.getClass()))) {
-            progressReporter.reportError(Phase.RUNNER, 34, "Expected return array of type " + answer.getClass());
+            progressReporter.reportError(Phase.RUNNER, "Expected return array of type " + answer.getClass());
         }
         if (!(resultArray.length == (answer.length))) {
-            progressReporter.reportError(Phase.RUNNER, 37, "Expected return length of " + answer.length);
+            progressReporter.reportError(Phase.RUNNER, "Expected return length of " + answer.length);
         }
         return Arrays.equals(resultArray, answer);
     }

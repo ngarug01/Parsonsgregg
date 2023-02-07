@@ -22,16 +22,16 @@ public class ReturnTypeChecker implements MethodReturnValueChecker {
     @Override
     public Boolean validate(Object result, ProgressReporter progressReporter) {
         if (result == null) {
-            progressReporter.reportError(Phase.RUNNER, 25, "The method is not returning anything");
+            progressReporter.reportError(Phase.RUNNER, "The method is not returning anything");
             return false;
         }
         if (result.getClass() == answer.getClass()) {
             if (!result.equals(answer)) {
-                progressReporter.reportError(Phase.RUNNER, 30, "Expected return of " + answer);
+                progressReporter.reportError(Phase.RUNNER, "Expected return of " + answer);
                 return false;
             }
         } else {
-            progressReporter.reportError(Phase.RUNNER, 34, "Return type is incorrect");
+            progressReporter.reportError(Phase.RUNNER, "Return type is incorrect");
             return false;
         }
         return true;

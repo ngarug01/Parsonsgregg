@@ -104,6 +104,21 @@ public class Results implements ProgressReporter {
     }
 
     @Override
+    public void reportError(Phase phase, String message) {
+        switch (phase){
+            case COMPILER:
+                compilerErrors.add(new Information(message));
+                break;
+            case LOADER:
+                loadErrors.add(new Information(message));
+                break;
+            case RUNNER:
+                runnerErrors.add(new Information(message));
+                break;
+        }
+    }
+
+    @Override
     public void reportInfo(Phase phase, String message) {
         switch (phase){
             case COMPILER:

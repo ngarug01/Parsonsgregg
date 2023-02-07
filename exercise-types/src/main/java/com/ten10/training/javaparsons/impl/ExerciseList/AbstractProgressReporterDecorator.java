@@ -22,6 +22,11 @@ public abstract class AbstractProgressReporterDecorator implements ProgressRepor
     }
 
     @Override
+    public void reportError(Phase phase, String message) {
+        this.wrapped.reportError(phase, message);
+    }
+
+    @Override
     public void reportInfo(Phase phase, String message) {
         this.wrapped.reportInfo(phase, message);
     }

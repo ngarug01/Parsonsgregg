@@ -113,7 +113,7 @@ class ExerciseControllerTest {
         results.storeCapturedOutput("Null");
         results.reportError(Phase.COMPILER, 3, "incorrect Method");
         results.reportInfo(Phase.COMPILER, "compilation completed successfully");
-        results.reportError(Phase.RUNNER, 5, "error running code");
+        results.reportError(Phase.RUNNER, "error running code");
 
         String output = objectMapper.writeValueAsString(results);
 
@@ -132,7 +132,6 @@ class ExerciseControllerTest {
 
         JsonNode runnerErrors = tree.get("runnerErrors");
         assertEquals(1, runnerErrors.size());
-        assertEquals(5, runnerErrors.get(0).get("lineNumber").asInt());
         assertEquals("error running code", runnerErrors.get(0).get("message").asText());
     }
 

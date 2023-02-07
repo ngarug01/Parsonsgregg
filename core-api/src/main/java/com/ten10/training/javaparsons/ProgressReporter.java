@@ -30,5 +30,7 @@ public interface ProgressReporter {
 
     void reportError(Phase phase, long linenumber, String message);
 
+    void reportError(Phase phase, String message);
+
     void reportInfo(Phase phase, String message);
 }

@@ -34,12 +34,12 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
             }
         } catch (TimeoutException e) {
             future.cancel(true);
-            progressReporter.reportError(Phase.RUNNER, 37, "timeout error");
+            progressReporter.reportError(Phase.RUNNER, "timeout error");
             return SolutionRunner.RunResult.failure();
 
         } catch (InterruptedException e) {
             future.cancel(true);
-            progressReporter.reportError(Phase.RUNNER, 42, "interrupted error");
+            progressReporter.reportError(Phase.RUNNER, "interrupted error");
             return SolutionRunner.RunResult.failure();
 
         } catch (ExecutionException executionException) {
@@ -59,7 +59,7 @@ public class LoadedEntryPointImpl implements SolutionRunner.LoadedEntryPoint {
                 }
 
             }
-            progressReporter.reportError(Phase.RUNNER, 62, "execution error");
+            progressReporter.reportError(Phase.RUNNER, "execution error");
             return SolutionRunner.RunResult.failure();
 
         } finally {

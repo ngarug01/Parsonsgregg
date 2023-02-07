@@ -22,6 +22,10 @@ public class LineNumberTranslationProgressReporter extends AbstractProgressRepor
         super.reportError(phase, translateLineNumber(linenumber), message);
     }
 
+    public void reportError(Phase phase, String message) {
+        super.reportError(phase, message);
+    }
+
     @Override
     public void reportInfo(Phase phase, String message) {
         super.reportInfo(phase, message);
