@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EntryPointBuilderTests {
 
-    private static SolutionRunner.EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
+    private static final SolutionRunner.EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
 
     @Test
     void validateParameters() {
@@ -55,7 +55,7 @@ class EntryPointBuilderTests {
                     .parameters(5);
 
                 //Act
-                SolutionRunner.EntryPoint entryPoint = entryPointBuilder.build();
+                entryPointBuilder.build();
             }
         );
 
@@ -75,7 +75,7 @@ class EntryPointBuilderTests {
                     .parameters('c', 5);
 
                 //Act
-                SolutionRunner.EntryPoint entryPoint = entryPointBuilder.build();
+                entryPointBuilder.build();
             }
         );
 

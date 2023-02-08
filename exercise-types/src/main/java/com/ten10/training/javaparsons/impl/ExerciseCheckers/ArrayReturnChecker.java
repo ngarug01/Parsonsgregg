@@ -1,5 +1,6 @@
 package com.ten10.training.javaparsons.impl.ExerciseCheckers;
 
+import com.ten10.training.javaparsons.Phase;
 import com.ten10.training.javaparsons.ProgressReporter;
 import com.ten10.training.javaparsons.impl.MethodReturnValueChecker;
 import com.ten10.training.javaparsons.runner.impl.EntryPointBuilderImpl;
@@ -26,14 +27,14 @@ public class ArrayReturnChecker implements MethodReturnValueChecker {
         Object[] resultArray = (Object[]) result;
 
         if (resultArray == null) {
-            progressReporter.reportRunnerError("The method is not returning anything");
+            progressReporter.reportError(Phase.RUNNER, "The method is not returning anything");
             return false;
         }
         if (!(resultArray.getClass().equals(answer.getClass()))) {
-            progressReporter.reportRunnerError("Expected return array of type " + answer.getClass());
+            progressReporter.reportError(Phase.RUNNER, "Expected return array of type " + answer.getClass());
         }
         if (!(resultArray.length == (answer.length))) {
-            progressReporter.reportRunnerError("Expected return length of " + answer.length);
+            progressReporter.reportError(Phase.RUNNER, "Expected return length of " + answer.length);
         }
         return Arrays.equals(resultArray, answer);
     }
