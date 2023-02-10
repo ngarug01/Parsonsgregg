@@ -3,7 +3,6 @@ package com.ten10.training.javaparsons.runner;
 import com.ten10.training.javaparsons.ProgressReporter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -20,8 +19,11 @@ public interface SolutionRunner {
 
         EntryPointBuilder parameters(Object... parameterList);
 
-        EntryPoint build();
+        EntryPointBuilder requireInstanceMethod();
 
+        EntryPointBuilder allowStaticMethod();
+
+        EntryPoint build();
     }
 
     interface EntryPoint {
@@ -43,7 +45,7 @@ public interface SolutionRunner {
     interface LoadedEntryPoint {
         RunResult run(ProgressReporter progressReporter);
 
-        public void setTimeout(long count, TimeUnit timeUnit);
+         void setTimeout(long count, TimeUnit timeUnit);
     }
 
     /**

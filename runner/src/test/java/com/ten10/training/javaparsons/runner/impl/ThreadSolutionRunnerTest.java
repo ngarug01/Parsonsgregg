@@ -6,7 +6,6 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import java.lang.reflect.InvocationTargetException;
@@ -22,9 +21,10 @@ class ThreadSolutionRunnerTest {
 
 
     private static final AtomicBoolean exampleMethodCalled = new AtomicBoolean(false);
+
+    private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesArgsCalled = new AtomicBoolean(false);
     private static final AtomicBoolean takesNoArgsCalled = new AtomicBoolean(false);
-    private static final AtomicBoolean instanceMethodCalled = new AtomicBoolean(false);
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     private static final EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
 
@@ -58,9 +58,35 @@ class ThreadSolutionRunnerTest {
         public void throwsException() throws Exception {
             throw new Exception();
         }
-
-
+        public static void staticMethodDisallowed(){
+            instanceMethodCalled.set(true);
+        }
     }
+
+    @Test
+    void runShouldBeAbleToCallStaticMethodOnClass() throws InvocationTargetException, IllegalAccessException {
+        // Arrange
+        exampleMethodCalled.set(false);
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("exampleMethod")
+            .parameterTypes()
+            .allowStaticMethod()
+            .parameters();
+
+        //Act
+        EntryPoint entryPoint = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+        ProgressReporter reporter = mock(ProgressReporter.class);
+        LoadedEntryPoint loadedEntryPoint = runner
+            .load(entryPoint, currentThread().getContextClassLoader(), reporter)
+            .orElseThrow(AssertionError::new);
+        loadedEntryPoint.run(progressReporter);
+
+        //Assert
+        assertTrue(exampleMethodCalled.get(), "Our method should have been called");
+    }
+
     @Test
     void passesWithExceptionThrown() throws InvocationTargetException, IllegalAccessException {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
@@ -84,28 +110,6 @@ class ThreadSolutionRunnerTest {
     }
 
 
-    @Test
-    void runShouldBeAbleToCallStaticMethodOnClass() throws InvocationTargetException, IllegalAccessException {
-        // Arrange
-        exampleMethodCalled.set(false);
-        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
-            .className(Example.class.getName())
-            .methodName("exampleMethod")
-            .parameterTypes()
-            .parameters();
-
-        //Act
-        EntryPoint entryPoint = entryPointBuilder.build();
-        SolutionRunner runner = new ThreadSolutionRunner();
-        ProgressReporter reporter = mock(ProgressReporter.class);
-        LoadedEntryPoint loadedEntryPoint = runner
-            .load(entryPoint, currentThread().getContextClassLoader(), reporter)
-            .orElseThrow(AssertionError::new);
-        loadedEntryPoint.run(progressReporter);
-
-        //Assert
-        assertTrue(exampleMethodCalled.get(), "Our method should have been called");
-    }
 
 
     @Test
@@ -239,7 +243,8 @@ class ThreadSolutionRunnerTest {
     void handleStaticMethodIsDisallowed() throws InvocationTargetException, IllegalAccessException {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
-            .methodName("exampleMethod")
+            .requireInstanceMethod()
+            .methodName("staticMethodDisallowed")
             .parameterTypes()
             .parameters();
 
@@ -247,7 +252,7 @@ class ThreadSolutionRunnerTest {
         SolutionRunner runner = new ThreadSolutionRunner();
          runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
 
-        verify(progressReporter).reportError(Phase.LOADER, "This method exampleMethod is not an instance method");
+        verify(progressReporter).reportError(Phase.LOADER, "This method staticMethodDisallowed is not an instance method");
 
     }
 

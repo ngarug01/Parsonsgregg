@@ -10,6 +10,7 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
     private String methodName;
     private Class<?>[] parameterTypes;
     private Object[] parameters;
+    private boolean staticMethodsDisallowed = false;
 
 
     @Override
@@ -33,6 +34,18 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
     @Override
     public EntryPointBuilder methodName(String methodName) {
         this.methodName = methodName;
+        return this;
+    }
+
+    @Override
+    public EntryPointBuilder requireInstanceMethod() {
+        this.staticMethodsDisallowed = true;
+        return this;
+    }
+
+    @Override
+    public EntryPointBuilder allowStaticMethod() {
+        this.staticMethodsDisallowed = false;
         return this;
     }
 
@@ -71,7 +84,7 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
 
         @Override
         public boolean staticMethodsDisallowed() {
-            return false;
+            return staticMethodsDisallowed;
         }
 
         @Override

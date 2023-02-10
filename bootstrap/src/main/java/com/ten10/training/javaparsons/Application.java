@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
-import java.lang.reflect.Method;
 
 @SpringBootApplication
 public class Application {
@@ -124,9 +123,11 @@ public class Application {
             .named("Create a method that is an instance method")
             .setEntryPoint(ep -> ep
                 .className("InstanceClass")
+                    .requireInstanceMethod()
                 .methodName("instanceMethod")
                 .parameterTypes()
-                .parameters())
+                .parameters()
+                )
             .withExerciseHint("Try using an instance method in your class"));
         return repository;
     }

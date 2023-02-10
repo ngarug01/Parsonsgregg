@@ -7,7 +7,6 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -52,7 +51,6 @@ public class ThreadSolutionRunner implements SolutionRunner {
         }
 
     }
-
 
     private static Optional<Method> getMethod(String entryPointMethodName,
                                               Class<?> klass,
@@ -137,6 +135,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
          * if the method staticMethodsDisallowed returns true and instance.getInstance() returns null, then the code calls the reportError to report that the method is not an instance method
          * the code returns Optional.empty() to indicate that there was an error and that the method is not an instance method.
          */
+
         if (entryPoint.staticMethodsDisallowed() && instance.getInstance() == null) {
             reporter.reportError(Phase.LOADER, "This method "+entryPointMethodName+" is not an instance method");
             return Optional.empty();
