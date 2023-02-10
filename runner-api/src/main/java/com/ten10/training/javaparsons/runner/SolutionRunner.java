@@ -2,6 +2,8 @@ package com.ten10.training.javaparsons.runner;
 
 import com.ten10.training.javaparsons.ProgressReporter;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +21,7 @@ public interface SolutionRunner {
         EntryPointBuilder parameters(Object... parameterList);
 
         EntryPoint build();
-        EntryPointBuilder methodIsNotStatic(String methodType);
+
     }
 
     interface EntryPoint {
@@ -33,6 +35,9 @@ public interface SolutionRunner {
         Class<?>[] getParameterTypes();
 
         Object[] getParameters();
+
+        boolean staticMethodsDisallowed();
+
     }
 
     interface LoadedEntryPoint {
@@ -177,6 +182,6 @@ public interface SolutionRunner {
      */
     //EntryPointBuilder entryPoint();
 
-    Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter);
+    Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter) throws InvocationTargetException, IllegalAccessException;
 }
 

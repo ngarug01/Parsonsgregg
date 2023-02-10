@@ -6,17 +6,16 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPointBuilder;
 import com.ten10.training.javaparsons.runner.SolutionRunner.LoadedEntryPoint;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import static java.lang.Thread.currentThread;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
 class ThreadSolutionRunnerTest {
@@ -29,13 +28,11 @@ class ThreadSolutionRunnerTest {
     private final ProgressReporter progressReporter = mock(ProgressReporter.class);
     private static final EntryPointBuilder startEntryPointBuilder = new EntryPointBuilderImpl();
 
-
     @SuppressWarnings("unused")
     static class Example {
         public static void main(String[] args) {
 
         }
-
         public static void exampleMethod() {
             exampleMethodCalled.set(true);
         }
@@ -61,10 +58,11 @@ class ThreadSolutionRunnerTest {
         public void throwsException() throws Exception {
             throw new Exception();
         }
-    }
 
+
+    }
     @Test
-    void passesWithExceptionThrown()  {
+    void passesWithExceptionThrown() throws InvocationTargetException, IllegalAccessException {
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
             .methodName("throwsException")
@@ -87,7 +85,7 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    void runShouldBeAbleToCallStaticMethodOnClass() {
+    void runShouldBeAbleToCallStaticMethodOnClass() throws InvocationTargetException, IllegalAccessException {
         // Arrange
         exampleMethodCalled.set(false);
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
@@ -112,7 +110,7 @@ class ThreadSolutionRunnerTest {
 
     @Test
     @Tag("slow")
-    void methodsShouldTimeOut() {
+    void methodsShouldTimeOut() throws InvocationTargetException, IllegalAccessException {
         //Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
@@ -135,7 +133,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void methodsShouldNotTimeOut() {
+    void methodsShouldNotTimeOut()  {
         // Arrange
         final ThreadSolutionRunner runner = new ThreadSolutionRunner();
        EntryPoint entryPoint = new EntryPointBuilderImpl()
@@ -155,7 +153,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void methodsShouldAcceptParameters() {
+    void methodsShouldAcceptParameters() throws InvocationTargetException, IllegalAccessException {
         // Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
@@ -176,7 +174,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void reportLoadErrorWhenClassNameIncorrect() {
+    void reportLoadErrorWhenClassNameIncorrect() throws InvocationTargetException, IllegalAccessException {
         // Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className("xample")
@@ -195,7 +193,7 @@ class ThreadSolutionRunnerTest {
     }
 
     @Test
-    void methodShouldAcceptNoParameters() {
+    void methodShouldAcceptNoParameters() throws InvocationTargetException, IllegalAccessException {
         //Arrange
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
             .className(Example.class.getName())
@@ -216,7 +214,7 @@ class ThreadSolutionRunnerTest {
 
 
     @Test
-    void handleInstanceMethods() {
+    void handleInstanceMethods() throws InvocationTargetException, IllegalAccessException {
         // Arrange
 
         EntryPointBuilder entryPointBuilder = startEntryPointBuilder
@@ -236,4 +234,21 @@ class ThreadSolutionRunnerTest {
         //Assert
         assertTrue(instanceMethodCalled.get(), "run() should have completed successfully");
     }
+
+    @Test
+    void handleStaticMethodIsDisallowed() throws InvocationTargetException, IllegalAccessException {
+        EntryPointBuilder entryPointBuilder = startEntryPointBuilder
+            .className(Example.class.getName())
+            .methodName("exampleMethod")
+            .parameterTypes()
+            .parameters();
+
+        EntryPoint callInformation = entryPointBuilder.build();
+        SolutionRunner runner = new ThreadSolutionRunner();
+         runner.load(callInformation, currentThread().getContextClassLoader(), progressReporter);
+
+        verify(progressReporter).reportError(Phase.LOADER, "This method exampleMethod is not an instance method");
+
+    }
+
 }

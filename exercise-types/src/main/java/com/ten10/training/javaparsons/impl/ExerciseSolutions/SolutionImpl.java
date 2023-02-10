@@ -13,6 +13,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner.EntryPoint;
 import com.ten10.training.javaparsons.runner.SolutionRunner.RunResult;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
 
 
     @Override
-    public boolean evaluate() {
+    public boolean evaluate() throws InvocationTargetException, IllegalAccessException {
         if (!compile()) {
             return false;
         }
@@ -148,7 +149,7 @@ public class SolutionImpl implements Solution, SolutionCompiler.CompilableSoluti
     private String output = "";
 
 
-    private boolean run() {
+    private boolean run() throws InvocationTargetException, IllegalAccessException {
         captureConsoleOutput.start();
         try {
             return solutionRunner

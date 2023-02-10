@@ -41,11 +41,6 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         return new EntryPointImpl(this);
     }
 
-    @Override
-    public EntryPointBuilder methodIsNotStatic(String methodType) {
-        return this;
-    }
-
 
     private class EntryPointImpl implements EntryPoint {
         private final String className;
@@ -72,6 +67,11 @@ public class EntryPointBuilderImpl implements EntryPointBuilder {
         @Override
         public Object[] getParameters() {
             return parameters;
+        }
+
+        @Override
+        public boolean staticMethodsDisallowed() {
+            return false;
         }
 
         @Override

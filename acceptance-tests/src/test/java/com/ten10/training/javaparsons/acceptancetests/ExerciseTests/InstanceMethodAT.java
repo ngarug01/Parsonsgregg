@@ -7,9 +7,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItem;
 
 @DisplayName("Tests for instance methods and if they have been called.")
 @ExtendWith(SeleniumExtension.class)
@@ -18,21 +15,34 @@ import static org.hamcrest.Matchers.hasItem;
 public class InstanceMethodAT {
 
     private final String CORRECT_INSTANCE_METHOD =
-        "public class Method {\n" +
-            "public void instanceMethod() {\n" +
-            " int a = 5;\n" +
-            " int b = 10;\n" +
+        "public class InstanceClass {\n" +
+            "public int instanceMethod() {\n" +
+            " return 5;\n" +
             "} \n" +
             "}";
 
 
     private final String INCORRECT_INSTANCE_METHOD =
-        "public class Method {\n" +
-            "public static void instanceMethod() {\n" +
-            " int a = 5;\n" +
-            " int b = 10;\n" +
+        "public class InstanceClass {\n" +
+            "public static int instanceMethod() {\n" +
+            " return 5;\n" +
             "} \n" +
             "}";
+
+    private final String ABSTRACT_CLASS_NOT_ALLOWED =
+        "public abstract class InstanceClass {\n" +
+            "public int instanceMethod() {\n" +
+            " return 5;\n" +
+            "} \n" +
+            "}";
+
+    private final String PRIVATE_CLASS_NOT_ALLOWED =
+        "private class InstanceClass {\n" +
+            "public static int instanceMethod() {\n" +
+            " return 5;\n" +
+            "} \n" +
+            "}";
+
 
 
     private final ExercisePage page;
@@ -52,15 +62,29 @@ public class InstanceMethodAT {
     void checkCorrectInstanceMethod(){
         page.trySolution(CORRECT_INSTANCE_METHOD);
         Assertions.assertTrue(page.isSuccessful());
+
     }
 
     @Test
     @Tag("acceptance-tests")
     void checkIncorrectInstanceMethod(){
         page.trySolution(INCORRECT_INSTANCE_METHOD);
-    //    Assertions.assertFalse(page.isSuccessful());
-        Assertions.assertTrue(page.getInput().contains("static"));
+        Assertions.assertFalse(page.isSuccessful());
     }
 
+
+    @Test
+    @Tag("acceptance-tests")
+    void checkIfClassIsAbstract(){
+        page.trySolution(ABSTRACT_CLASS_NOT_ALLOWED);
+        Assertions.assertFalse(page.isSuccessful());
+    }
+
+    @Test
+    @Tag("acceptance-tests")
+    void checkIfClassIsPrivate(){
+        page.trySolution(PRIVATE_CLASS_NOT_ALLOWED);
+        Assertions.assertFalse(page.isSuccessful());
+    }
 
 }

@@ -25,6 +25,7 @@ class CreateExercise implements ExerciseBuilder {
     private String prefixCode;
     private String suffixCode;
     private String exerciseHint;
+
     private SolutionRunner.EntryPoint entryPoint = new EntryPointBuilderImpl()
         .className("Main")
         .methodName("main")
@@ -156,6 +157,9 @@ class CreateExercise implements ExerciseBuilder {
     public Exercise build() {
         return new ExerciseImpl(this);
     }
+
+
+
 }
 
 

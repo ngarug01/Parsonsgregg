@@ -4,6 +4,8 @@ public class ClassInstance {
     private final boolean needed;
     private final Object instance;
 
+
+
     private ClassInstance(boolean needed, Object instance) {
         this.needed = needed;
         this.instance = instance;
@@ -28,4 +30,5 @@ public class ClassInstance {
     public boolean hasFailed() {
         return needed && (instance == null);
     }
+
 }

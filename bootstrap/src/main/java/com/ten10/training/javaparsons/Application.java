@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
+import java.lang.reflect.Method;
 
 @SpringBootApplication
 public class Application {
@@ -108,6 +109,8 @@ public class Application {
         for (int i = 0; i < 100; i++) {
             outputArray[i] = i + 1;
         }
+
+
         repository.addExercise(builder -> builder
             .named("Array Tester")
             .checkOutputIsArray(outputArray)
@@ -116,17 +119,11 @@ public class Application {
             .withExerciseHint("Integer[] x = new Integer[100];\n" +
                 "for(int i = 0; i < 100; i++){"));
 
-        String method = ( "class Methods {\n" +
-            "public void methodname() \n{" +
-            " //method body\n" +
-            "} \n" +
-            "}");
 
         repository.addExercise(builder -> builder
             .named("Create a method that is an instance method")
             .setEntryPoint(ep -> ep
-                .className("Method")
-                .methodIsNotStatic("static")
+                .className("InstanceClass")
                 .methodName("instanceMethod")
                 .parameterTypes()
                 .parameters())

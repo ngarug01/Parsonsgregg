@@ -3,6 +3,7 @@ package com.ten10.training.javaparsons.impl;
 
 import com.ten10.training.javaparsons.runner.SolutionRunner;
 
+import java.lang.reflect.Method;
 import java.util.function.Consumer;
 
 public interface ExerciseBuilder {
@@ -24,4 +25,5 @@ public interface ExerciseBuilder {
     ExerciseBuilder withExerciseHint(String exerciseHint);
 
     ExerciseBuilder setEntryPoint(Consumer<SolutionRunner.EntryPointBuilder> entryPointBuilderRunner);
+
 }

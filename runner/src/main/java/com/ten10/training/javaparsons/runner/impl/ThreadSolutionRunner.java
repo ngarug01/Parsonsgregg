@@ -7,6 +7,7 @@ import com.ten10.training.javaparsons.runner.SolutionRunner;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -25,13 +26,11 @@ public class ThreadSolutionRunner implements SolutionRunner {
         if (Modifier.isStatic(method.getModifiers())) {
             return ClassInstance.notNeeded();
         }
-
         if (entryPointMethodName.equals("main")) {
             //TODO this should be a load error now --Hannah
             progressReporter.reportError(Phase.RUNNER, "main method should be static");
             return ClassInstance.neededButNotAvailable();
         }
-
         try {
             return ClassInstance.of(klass.getDeclaredConstructor().newInstance());
         } catch (InstantiationException e) {
@@ -51,7 +50,9 @@ public class ThreadSolutionRunner implements SolutionRunner {
             progressReporter.reportError(Phase.RUNNER, "No such method");
             return ClassInstance.neededButNotAvailable();
         }
+
     }
+
 
     private static Optional<Method> getMethod(String entryPointMethodName,
                                               Class<?> klass,
@@ -108,7 +109,7 @@ public class ThreadSolutionRunner implements SolutionRunner {
     }
 
     @Override
-    public Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter) {
+    public Optional<LoadedEntryPoint> load(EntryPoint entryPoint, ClassLoader loader, ProgressReporter reporter){
         Class<?>[] parameterTypes = entryPoint.getParameterTypes();
         Object[] parameters = entryPoint.getParameters();
         final boolean validParameters = parametersAreValid(parameterTypes, parameters, reporter);
@@ -126,9 +127,18 @@ public class ThreadSolutionRunner implements SolutionRunner {
         if (!method.isPresent()) {
             return Optional.empty();
         }
-
         ClassInstance instance = getClassInstance(entryPointMethodName, klass.get(), method.get(), reporter);
         if (instance.hasFailed()) {
+            return Optional.empty();
+        }
+        /**
+         * The method staticMethodsDisallowed is used to check if the field of the entrypoint object is true
+         * the instance.getInstance() is used to get the instance associated with the method. if the method is static, the value is null
+         * if the method staticMethodsDisallowed returns true and instance.getInstance() returns null, then the code calls the reportError to report that the method is not an instance method
+         * the code returns Optional.empty() to indicate that there was an error and that the method is not an instance method.
+         */
+        if (entryPoint.staticMethodsDisallowed() && instance.getInstance() == null) {
+            reporter.reportError(Phase.LOADER, "This method "+entryPointMethodName+" is not an instance method");
             return Optional.empty();
         }
         return Optional.of(new LoadedEntryPointImpl(instance.getInstance(), method.get(), parameters));

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
 
 import javax.tools.ToolProvider;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +84,7 @@ class SolutionImplITest {
 
     @Test
     @DisplayName("Calling evaluate should call SolutionCompiler.compile()")
-    void evaluateCallsCompiler() {
+    void evaluateCallsCompiler() throws InvocationTargetException, IllegalAccessException {
         when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
         // Act
         solutionImpl.evaluate();
@@ -104,7 +105,7 @@ class SolutionImplITest {
     }
 
     @Test //Test does not work
-    void correctCheckerCalledPrintOut() {
+    void correctCheckerCalledPrintOut() throws InvocationTargetException, IllegalAccessException {
         String userInput =
             "public class Main{\n" +
                 "public String i = \"42\";\n" +
@@ -125,7 +126,7 @@ class SolutionImplITest {
     }
 
     @Test
-    void correctCheckerCalledPrintOutReturnsTrue() {
+    void correctCheckerCalledPrintOutReturnsTrue() throws InvocationTargetException, IllegalAccessException {
         when(printOutChecker.validate("", progressReporter)).thenReturn(true);
         String userInput =
             "public class Main{\n" +
@@ -144,14 +145,14 @@ class SolutionImplITest {
     }
 
     @Test
-    void earlyReturnWhenCompileFails() {
+    void earlyReturnWhenCompileFails() throws InvocationTargetException, IllegalAccessException {
         when(mockCompiler.compile(any(SolutionCompiler.CompilableSolution.class), any(ProgressReporter.class))).thenReturn(false);
         solutionImpl.evaluate();
         verify(loadedClassRunner, never()).run(progressReporter);
     }
 
     @Test
-    void evaluateFailsOnCompileClassNameIncorrect() {
+    void evaluateFailsOnCompileClassNameIncorrect() throws InvocationTargetException, IllegalAccessException {
         String userInput = "public class ain{\npublic Integer main(String[] args){return 12;}}";
         SolutionImpl solutionImpl = new SolutionImpl(SOLUTION_COMPILER,
             userInput,
@@ -167,7 +168,7 @@ class SolutionImplITest {
 
     //is an IT
     @Test
-    void runTimeFailure() {
+    void runTimeFailure() throws InvocationTargetException, IllegalAccessException {
         //ARRANGE
         String userInput =
             "public class Main{\npublic String i = \"42\";\npublic static void main(String[] args){while(true){}}}";
